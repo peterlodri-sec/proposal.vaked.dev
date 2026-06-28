@@ -75,6 +75,18 @@
             mask-composite: exclude;
             pointer-events: none;
         }
+        .cite-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #4facfe;
+            margin-left: 4px;
+            vertical-align: super;
+            transition: color 0.2s;
+        }
+        .cite-link:hover {
+            color: #00f2fe;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased">
@@ -122,15 +134,15 @@
             <div class="flex justify-center gap-4 flex-wrap">
                 <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Token Savings</span>
-                    <span class="text-lg font-bold text-brand-cyan">78%</span>
+                    <span class="text-lg font-bold text-brand-cyan">78%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 / Table 7 on Page 14">[Paper p.14]</a></span>
                 </div>
                 <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Latency Delta</span>
-                    <span class="text-lg font-bold text-brand-blue">-75%</span>
+                    <span class="text-lg font-bold text-brand-blue">-75%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 on Page 14">[Paper p.14]</a></span>
                 </div>
                 <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Exact Keep Rate</span>
-                    <span class="text-lg font-bold text-brand-emerald">0.993</span>
+                    <span class="text-lg font-bold text-brand-emerald">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></span>
                 </div>
             </div>
         </div>
@@ -306,7 +318,7 @@
 
                     <div class="p-4 bg-slate-900/30 rounded-lg border border-slate-900 text-xs text-slate-400">
                         <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom"></i>
-                        <span id="paradox-explanation">Under AND voting, the ensemble's recall collapses to the weakest voter on each stratum (70% for Identifiers, 68% for File Paths), Pareto-dominated by any single strong model.</span>
+                        <span id="paradox-explanation">Under AND voting, the ensemble's recall collapses to the weakest voter on each stratum (70% for Identifiers, 68% for File Paths), Pareto-dominated by any single strong model.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
                     </div>
                 </div>
             </section>
@@ -316,7 +328,7 @@
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
                 <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
                     <p>
-                        Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:
+                        Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
                     </p>
                     <div class="bg-slate-950 p-4 rounded-lg border border-slate-900 text-center font-mono text-white text-sm my-4">
                         I<sub>ens</sub>(x) = &bigvee;<sub>i=1..N</sub> I<sub>i</sub>(x) = I<sub>i<sup>*</sup><sub>k</sub></sub>(x)
@@ -442,7 +454,7 @@
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            `kompress-v8` uses a 149M-parameter <strong>ModernBERT</strong> backbone with LoRA fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
+                            `kompress-v8` uses a 149M-parameter <strong>ModernBERT</strong> backbone<a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="cite-link" title="See Section 3.4 on Page 8">[Paper p.8]</a> with LoRA fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
                         </p>
                         <ul class="space-y-3 text-sm text-slate-400">
                             <li class="flex items-start gap-2.5">
@@ -455,7 +467,7 @@
                             </li>
                         </ul>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans:
+                            An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans:<a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="cite-link" title="See Section 3.4 on Page 8">[Paper p.8]</a>
                         </p>
                         <div class="bg-slate-950 p-3 rounded-lg border border-slate-900 font-mono text-white text-xs text-center">
                             &Iuml;<sub>i</sub>(x) = &sigma;(logits<sub>tok</sub>(x) - &gamma; g(logits<sub>span</sub>(x)))
@@ -492,7 +504,7 @@
             <section id="benchmarks" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
                 <p class="text-slate-400 mb-6 leading-relaxed">
-                    Evaluated on the <strong>Heretic</strong> adversarial benchmark, `kompress-v8` dominates traditional prompt compression models on exact-keep rates of critical syntactic tokens.
+                    Evaluated on the <strong>Heretic</strong> adversarial benchmark, `kompress-v8` dominates traditional prompt compression models on exact-keep rates of critical syntactic tokens.<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a>
                 </p>
 
                 <div class="overflow-x-auto">
@@ -511,31 +523,31 @@
                                     <span class="w-2 h-2 rounded-full bg-brand-cyan"></span>
                                     kompress-v8 (Ours, Production)
                                 </td>
-                                <td class="py-4 px-4 font-bold text-brand-cyan">0.993</td>
+                                <td class="py-4 px-4 font-bold text-brand-cyan">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.936</td>
                                 <td class="py-4 px-4 font-mono">97.0 ms</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4 font-medium">kompress-v8 (Ours, `v4` SSL)</td>
-                                <td class="py-4 px-4 font-semibold">0.967</td>
+                                <td class="py-4 px-4 font-semibold">0.967<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.823</td>
                                 <td class="py-4 px-4 font-mono">—</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4 text-slate-500">Random Eviction (Floor)</td>
-                                <td class="py-4 px-4 text-slate-500">0.910</td>
+                                <td class="py-4 px-4 text-slate-500">0.910<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono text-slate-500">0.835</td>
                                 <td class="py-4 px-4 font-mono text-slate-500">0.0 ms</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4">LLMLingua-2</td>
-                                <td class="py-4 px-4">0.867</td>
+                                <td class="py-4 px-4">0.867<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">1.550</td>
                                 <td class="py-4 px-4 font-mono">238.9 ms</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4">TextRank (Extractive)</td>
-                                <td class="py-4 px-4">0.599</td>
+                                <td class="py-4 px-4">0.599<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.543</td>
                                 <td class="py-4 px-4 font-mono">23.1 ms</td>
                             </tr>
