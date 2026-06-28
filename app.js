@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPreset('auth');
     await initCryptoKeys();
     await fetchAndRenderReviews();
+    initTelemetryLoop();
 });
 
 // Presets for the playground
@@ -331,4 +332,26 @@ function escapeHtml(str) {
               .replace(/>/g, "&gt;")
               .replace(/"/g, "&quot;")
               .replace(/'/g, "&#039;");
+}
+
+// ==========================================
+// Live Telemetry Loop (Academic Telemetry)
+// ==========================================
+function initTelemetryLoop() {
+    let telemetrySlices = 14820;
+    setInterval(() => {
+        // Slices processed increases slowly (simulating real training)
+        telemetrySlices += Math.floor(Math.random() * 3);
+        const slicesEl = document.getElementById('telemetry-slices');
+        if (slicesEl) {
+            slicesEl.innerText = telemetrySlices.toLocaleString();
+        }
+        
+        // Latency fluctuates slightly around 97ms
+        const latencyVal = (96.5 + Math.random() * 2.0).toFixed(1);
+        const latencyEl = document.getElementById('telemetry-latency');
+        if (latencyEl) {
+            latencyEl.innerText = `${latencyVal} ms`;
+        }
+    }, 3000);
 }

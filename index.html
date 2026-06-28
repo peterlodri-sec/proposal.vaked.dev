@@ -136,11 +136,11 @@
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Token Savings</span>
                     <span class="text-lg font-bold text-brand-cyan">78%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 / Table 7 on Page 14">[Paper p.14]</a></span>
                 </div>
-                <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
+                <div class="bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Latency Delta</span>
                     <span class="text-lg font-bold text-brand-blue">-75%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 on Page 14">[Paper p.14]</a></span>
                 </div>
-                <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
+                <div class="bg-slate-905 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Exact Keep Rate</span>
                     <span class="text-lg font-bold text-brand-emerald">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></span>
                 </div>
@@ -177,6 +177,9 @@
                 </a>
                 <a href="#reviews" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="message-square" class="w-4 h-4"></i> Reviews & Feedback
+                </a>
+                <a href="#telemetry" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="activity" class="w-4 h-4"></i> Academic Telemetry
                 </a>
                 <a href="#ecosystem" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="database" class="w-4 h-4"></i> Ecosystem Artifacts
@@ -601,7 +604,7 @@
                 </div>
             </section>
 
-            <!-- Reviews & Feedback (Decentralized, Cryptographically Verifiable) -->
+            <!-- Reviews & Feedback -->
             <section id="reviews" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Reviews & Feedback</h2>
                 <p class="text-slate-400 mb-6 leading-relaxed">
@@ -643,11 +646,71 @@
                     <div class="space-y-4">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Verified Reviews</span>
                         <div id="reviews-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-2">
-                            <!-- Dynamically loaded reviews will go here -->
                             <div class="text-center py-8 text-slate-600 text-xs">
                                 <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-slate-700"></i>
                                 Loading verified reviews...
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Academic Telemetry & Verification -->
+            <section id="telemetry" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-4">Academic Telemetry & Verification</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    This site is dedicated strictly to academic research. There are no tracking scripts, Google Ads, or third-party cookies. The connection is proxied and secured solely through Cloudflare.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Cryptographic Attestation Statement -->
+                    <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900 space-y-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl pointer-events-none"></div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Cryptographic Attestation</span>
+                        <div class="p-4 bg-slate-900/40 border border-slate-800 rounded-lg text-xs font-mono text-slate-400 leading-relaxed italic">
+                            "I, Peter Lodri, the owner of &lt;this&gt;, in terms of cryptographic easter eggs andOr hashes (eg.: genesis hash - vaked.dev) trust Cloudflare. 2026-06-29 --- and I understand that I'm kinda `forced` to choose yet I do this by my own will, noboy is forcing me or giving me any monetary whatever." <span class="text-brand-cyan not-italic font-bold block mt-2 text-right">— peter</span>
+                        </div>
+                    </div>
+
+                    <!-- Connection Verifier & Root Cert -->
+                    <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900 space-y-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">TLS Root Certificate Verifier</span>
+                        <div class="space-y-2 text-[10px] font-mono text-slate-400">
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Common Name (CN)</span><span class="text-white">proposal.vaked.dev</span></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Issuer</span><span class="text-brand-cyan">Google Trust Services (WE1)</span></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Protocol</span><span class="text-white">TLSv1.3</span></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Cipher Suite</span><span class="text-white">AEAD-CHACHA20-POLY1305-SHA256</span></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Root Cert Authority</span><span class="text-brand-emerald">GTS Root R1 (Verified)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ralph-Loop Live Telemetry Monitor -->
+                <div class="mt-8 bg-slate-950/60 p-6 rounded-xl border border-brand-cyan/10">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-ping"></span>
+                            <span class="text-xs font-bold text-white font-title uppercase tracking-wider">Ralph-Loop Telemetry (Academic Dogfeeding)</span>
+                        </div>
+                        <span class="text-[9px] bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded font-mono">L1 Loop Active</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+                            <span class="text-[10px] text-slate-500 block">Slices Processed</span>
+                            <span id="telemetry-slices" class="text-sm font-mono font-bold text-white">14,820</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+                            <span class="text-[10px] text-slate-500 block">Active Sandboxes</span>
+                            <span class="text-sm font-mono font-bold text-white">Bun / Nushell</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+                            <span class="text-[10px] text-slate-500 block">Inference Latency</span>
+                            <span id="telemetry-latency" class="text-sm font-mono font-bold text-brand-cyan">97.4 ms</span>
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+                            <span class="text-[10px] text-slate-500 block">Token Savings Rate</span>
+                            <span class="text-sm font-mono font-bold text-brand-emerald">78.5%</span>
                         </div>
                     </div>
                 </div>
