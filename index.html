@@ -15,6 +15,10 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for LaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -336,8 +340,8 @@
                     <p>
                         Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
                     </p>
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-900 text-center font-mono text-white text-sm my-4">
-                        I<sub>ens</sub>(x) = &bigvee;<sub>i=1..N</sub> I<sub>i</sub>(x) = I<sub>i<sup>*</sup><sub>k</sub></sub>(x)
+                    <div class="my-4">
+                        $$I_{\text{ens}}(x) = \bigvee_{i=1}^N I_i(x) = I_{i^*_k}(x)$$
                     </div>
                     <p>
                         This yields a stratum-wise Pareto collapse where the ensemble's recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:
@@ -475,8 +479,8 @@
                         <p class="text-sm text-slate-400 leading-relaxed">
                             An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans:<a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="cite-link" title="See Section 3.4 on Page 8">[Paper p.8]</a>
                         </p>
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-900 font-mono text-white text-xs text-center">
-                            &Iuml;<sub>i</sub>(x) = &sigma;(logits<sub>tok</sub>(x) - &gamma; g(logits<sub>span</sub>(x)))
+                        <div class="my-4">
+                            $$\tilde{I}_i(x) = \sigma\left(\text{logits}_{\text{tok}}(x) - \gamma g(\text{logits}_{\text{span}}(x))\right)$$
                         </div>
                     </div>
                     <div class="bg-slate-950/50 p-6 rounded-xl border border-slate-900 flex justify-center">
