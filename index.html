@@ -223,18 +223,19 @@
                                         "I ran the bash command and got exit code..."
                                     </button>
                                 </div>
-                                <textarea id="playground-input" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..."></textarea>
+                                <textarea id="playground-input" oninput="triggerCompression()" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..."></textarea>
                             </div>
 
-                            <div class="flex justify-between items-center">
+                            <div class="flex justify-between items-center flex-wrap gap-4">
                                 <div class="flex items-center gap-6 text-xs text-slate-400">
                                     <div>Original: <span id="original-tokens" class="text-white font-semibold">0</span> tokens</div>
                                     <div>Compressed: <span id="compressed-tokens" class="text-brand-cyan font-semibold">0</span> tokens</div>
                                     <div class="bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded-full font-semibold"><span id="savings-pct">0</span>% Saved</div>
                                 </div>
-                                <button onclick="triggerCompression()" class="bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-sm px-6 py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-brand-cyan/20">
-                                    <i data-lucide="bolt" class="w-4 h-4"></i> Compress Message
-                                </button>
+                                <div class="flex items-center gap-2 text-xs text-brand-cyan bg-brand-cyan/10 px-3 py-1.5 rounded-lg border border-brand-cyan/20">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+                                    Real-time (97ms)
+                                </div>
                             </div>
 
                             <!-- Steps Display -->
