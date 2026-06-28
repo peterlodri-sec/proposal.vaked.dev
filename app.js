@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await initCryptoKeys();
     await fetchAndRenderReviews();
     initTelemetryLoop();
+    // Initialize the paradox simulator
+    inspectToken('path');
 });
 
 // Presets for the playground
@@ -85,40 +87,119 @@ function triggerCompression() {
     document.getElementById('savings-pct').innerText = savings;
 }
 
-// Paradox Simulator Logic
-let currentVotingRule = 'and';
+// ==========================================
+// Veto Committee Paradox Simulator
+// ==========================================
+let pSelectedToken = 'path';
+let pSelectedRule = 'and';
 
-function setVotingRule(rule) {
-    currentVotingRule = rule;
-    const btnAnd = document.getElementById('btn-rule-and');
-    const btnMaj = document.getElementById('btn-rule-majority');
+function inspectToken(tokenType) {
+    pSelectedToken = tokenType;
     
-    if (rule === 'and') {
-        btnAnd.className = "text-xs px-3 py-1.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-medium";
-        btnMaj.className = "text-xs px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-400 font-medium";
+    // Toggle active styles on token buttons
+    ['path', 'cmd', 'ip'].forEach(t => {
+        const btn = document.getElementById(`btn-tok-${t}`);
+        if (t === tokenType) {
+            btn.className = "text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all";
+        } else {
+            btn.className = "text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan/50 transition-all";
+        }
+    });
+    
+    calculateParadoxOutcome();
+}
+
+function setParadoxRule(ruleType) {
+    pSelectedRule = ruleType;
+    
+    // Toggle active styles on rule buttons
+    ['and', 'majority', 'asymmetric'].forEach(r => {
+        const btn = document.getElementById(`btn-p-${r}`);
+        if (r === ruleType) {
+            btn.className = "text-[10px] px-2.5 py-1.5 rounded border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-bold";
+        } else {
+            btn.className = "text-[10px] px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold";
+        }
+    });
+    
+    calculateParadoxOutcome();
+}
+
+function calculateParadoxOutcome() {
+    // 1. Calculate individual votes
+    // Voter 1 is blind to paths
+    const v1Keep = pSelectedToken !== 'path';
+    // Voter 2 is blind to commands
+    const v2Keep = pSelectedToken !== 'cmd';
+    // Voter 3 is blind to IPs
+    const v3Keep = pSelectedToken !== 'ip';
+    
+    // Update individual vote UI
+    updateVoteUI('v1', v1Keep);
+    updateVoteUI('v2', v2Keep);
+    updateVoteUI('v3', v3Keep);
+    
+    // 2. Calculate final decision based on rule
+    let finalDecision = 'evicted';
+    let explanation = "";
+    
+    if (pSelectedRule === 'and') {
+        // Unanimity to keep (any Evict causes eviction)
+        finalDecision = (v1Keep && v2Keep && v3Keep) ? 'kept' : 'evicted';
         
-        document.getElementById('ensemble-recall-ids').innerText = "70%";
-        document.getElementById('ensemble-recall-paths').innerText = "68%";
+        const blindExpert = pSelectedToken === 'path' ? 'Expert 1' : pSelectedToken === 'cmd' ? 'Expert 2' : 'Expert 3';
+        explanation = `Under the <strong>AND Veto Rule</strong>, ${blindExpert} doesn't understand this token type and votes to delete it. Even though the other two experts voted to keep it, <strong>the item is evicted</strong>. The ensemble collapses.`;
+    } else if (pSelectedRule === 'majority') {
+        // Needs 2/3 to keep
+        const keepCount = (v1Keep ? 1 : 0) + (v2Keep ? 1 : 0) + (v3Keep ? 1 : 0);
+        finalDecision = keepCount >= 2 ? 'kept' : 'evicted';
         
-        document.getElementById('bar-ensemble-ids').style.width = "70%";
-        document.getElementById('bar-ensemble-ids').className = "bg-red-500 h-1.5 rounded-full";
-        document.getElementById('bar-ensemble-paths').style.width = "68%";
-        document.getElementById('bar-ensemble-paths').className = "bg-red-500 h-1.5 rounded-full";
-        
-        document.getElementById('paradox-explanation').innerHTML = "Under AND voting (unanimity to keep), the ensemble's recall collapses to the weakest voter on each stratum (70% for Identifiers, 68% for File Paths). It is Pareto-dominated by any single strong model.<a href=\"https://kompress.vaked.dev/paper/main.pdf#page=12\" target=\"_blank\" class=\"cite-link\" title=\"See Table 4 on Page 12\">[Paper p.12]</a>";
+        explanation = `Under the <strong>Majority Rule (2/3)</strong>, because two experts recognized the token and voted to keep it, <strong>the item is saved</strong>. However, if multiple experts have overlapping weaknesses on a complex token, the majority rule still collapses.`;
+    } else if (pSelectedRule === 'asymmetric') {
+        // Asymmetric loss safety floor overrides everything
+        finalDecision = 'asymmetric';
+        explanation = `Under our <strong>Asymmetric Modulation</strong>, the token is recognized as part of the critical-syntactic safety floor ($T_{\\text{crit}}$). The system <strong>instantly overrides the evictions</strong>, guaranteeing the token is saved regardless of expert blindspots.`;
+    }
+    
+    // 3. Update Decision Box UI
+    const decisionBox = document.getElementById('decision-box');
+    const decisionText = document.getElementById('decision-text');
+    const decisionBadge = document.getElementById('decision-badge');
+    const explanationText = document.getElementById('p-explanation-text');
+    
+    explanationText.innerHTML = explanation + ` <a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a>`;
+    
+    if (finalDecision === 'evicted') {
+        decisionBox.className = "p-4 rounded-xl border border-red-500/25 bg-red-500/5 flex items-center justify-between transition-all";
+        decisionText.innerText = "Evicted! (Item is Lost)";
+        decisionText.className = "text-sm font-bold text-red-400";
+        decisionBadge.className = "px-3 py-1.5 rounded bg-red-500/10 border border-red-500/30 text-xs font-mono font-bold text-red-400 flex items-center gap-1.5";
+        decisionBadge.innerHTML = `<i data-lucide="trash-2" class="w-4 h-4"></i> Evicted`;
+    } else if (finalDecision === 'kept') {
+        decisionBox.className = "p-4 rounded-xl border border-brand-emerald/25 bg-brand-emerald/5 flex items-center justify-between transition-all";
+        decisionText.innerText = "Kept! (Item is Saved)";
+        decisionText.className = "text-sm font-bold text-brand-emerald";
+        decisionBadge.className = "px-3 py-1.5 rounded bg-brand-emerald/10 border border-brand-emerald/30 text-xs font-mono font-bold text-brand-emerald flex items-center gap-1.5";
+        decisionBadge.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Kept`;
+    } else if (finalDecision === 'asymmetric') {
+        decisionBox.className = "p-4 rounded-xl border border-brand-cyan/25 bg-brand-cyan/5 flex items-center justify-between transition-all";
+        decisionText.innerText = "Kept! (Overridden by Safety Floor)";
+        decisionText.className = "text-sm font-bold text-brand-cyan";
+        decisionBadge.className = "px-3 py-1.5 rounded bg-brand-cyan/10 border border-brand-cyan/30 text-xs font-mono font-bold text-brand-cyan flex items-center gap-1.5";
+        decisionBadge.innerHTML = `<i data-lucide="shield" class="w-4 h-4 text-brand-cyan animate-pulse"></i> Safety Override`;
+    }
+    
+    lucide.createIcons(); // Update icons inside the decision badge
+}
+
+function updateVoteUI(voterId, keep) {
+    const el = document.getElementById(`vote-${voterId}`);
+    if (keep) {
+        el.className = "text-xs font-bold text-brand-emerald flex items-center justify-center gap-1.5 bg-brand-emerald/5 py-1.5 rounded border border-brand-emerald/10";
+        el.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Keep`;
     } else {
-        btnAnd.className = "text-xs px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-400 font-medium";
-        btnMaj.className = "text-xs px-3 py-1.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-medium";
-        
-        document.getElementById('ensemble-recall-ids').innerText = "78%";
-        document.getElementById('ensemble-recall-paths').innerText = "76%";
-        
-        document.getElementById('bar-ensemble-ids').style.width = "78%";
-        document.getElementById('bar-ensemble-ids').className = "bg-red-400 h-1.5 rounded-full";
-        document.getElementById('bar-ensemble-paths').style.width = "76%";
-        document.getElementById('bar-ensemble-paths').className = "bg-red-400 h-1.5 rounded-full";
-        
-        document.getElementById('paradox-explanation').innerHTML = "Under Majority voting (k=2 of 3), the ensemble acts as the per-stratum median. On strata where multiple voters are weak, the ensemble still collapses, underperforming the best single model (v4 at 96.7%).<a href=\"https://kompress.vaked.dev/paper/main.pdf#page=12\" target=\"_blank\" class=\"cite-link\" title=\"See Table 4 on Page 12\">[Paper p.12]</a>";
+        el.className = "text-xs font-bold text-red-400 flex items-center justify-center gap-1.5 bg-red-500/5 py-1.5 rounded border border-red-500/10";
+        el.innerHTML = `<i data-lucide="x-circle" class="w-4 h-4"></i> Evict`;
     }
 }
 

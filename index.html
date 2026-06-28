@@ -257,79 +257,86 @@
             <!-- Paradox Simulator -->
             <section id="paradox" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">The Voting Ensemble Paradox</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    A multi-checkpoint voting ensemble is meant to be conservative, but under asymmetric training floors, the intuition inverts. Weak checkpoints veto correct keeps on their weakest strata, causing a <strong>stratum-wise Pareto collapse</strong>.
-                </p>
-
+                
                 <div class="bg-slate-950/50 p-6 rounded-xl border border-slate-900 space-y-6">
-                    <div class="flex justify-between items-center flex-wrap gap-4">
-                        <span class="text-sm font-semibold text-white">Interactive Paradox Simulator</span>
-                        <div class="flex gap-2">
-                            <button onclick="setVotingRule('and')" id="btn-rule-and" class="text-xs px-3 py-1.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-medium">AND (k=1 drop)</button>
-                            <button onclick="setVotingRule('majority')" id="btn-rule-majority" class="text-xs px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-400 font-medium">Majority (2/3)</button>
-                        </div>
+                    <!-- ELI5 Explanation -->
+                    <div class="space-y-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-brand-cyan">ELI5: The Veto Committee</span>
+                        <p class="text-sm text-slate-350 leading-relaxed">
+                            Imagine a committee of three experts deciding which words to keep in a document to save space. To be extremely conservative, the rule is: <strong>"If even one expert votes to delete a word, we delete it."</strong>
+                        </p>
+                        <p class="text-sm text-slate-350 leading-relaxed">
+                            Each expert is smart, but has one blind spot where they always vote to delete.
+                            Because of the veto rule, <strong>every single critical item gets deleted</strong> because the expert who doesn't understand it vetoes it. The group becomes worse than any single expert on their own!
+                        </p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Voter 1 -->
-                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-800/80">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs font-semibold text-slate-400">Voter 1 (v3 - Noisy Floor)</span>
-                                <span class="text-xs bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full font-semibold">Weak: Paths</span>
+                    <!-- Interactive Veto Simulator -->
+                    <div class="p-5 bg-slate-900/40 rounded-xl border border-slate-800 space-y-6">
+                        <div class="flex justify-between items-center flex-wrap gap-4 border-b border-slate-800 pb-3">
+                            <span class="text-xs font-bold text-white uppercase tracking-wider">Interactive Veto Simulator</span>
+                            <div class="flex gap-2">
+                                <button onclick="setParadoxRule('and')" id="btn-p-and" class="text-[10px] px-2.5 py-1.5 rounded border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-bold">AND Veto (Standard)</button>
+                                <button onclick="setParadoxRule('majority')" id="btn-p-majority" class="text-[10px] px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold">Majority (2/3)</button>
+                                <button onclick="setParadoxRule('asymmetric')" id="btn-p-asymmetric" class="text-[10px] px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold">Asymmetric Modulation (Ours)</button>
                             </div>
-                            <div class="space-y-3 text-xs">
-                                <div>
-                                    <div class="flex justify-between mb-1"><span>Recall (Identifiers)</span><span class="text-white">92%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-brand-emerald h-1.5 rounded-full" style="width: 92%"></div></div>
+                        </div>
+
+                        <!-- Step 1: Select Token -->
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block">1. Select a Critical Token to Inspect:</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/5 text-white font-mono hover:border-brand-cyan transition-all">src/auth.rs<span class="block text-[8px] text-slate-500 mt-1">File Path</span></button>
+                                <button onclick="inspectToken('cmd')" id="btn-tok-cmd" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">cargo test<span class="block text-[8px] text-slate-500 mt-1">Command</span></button>
+                                <button onclick="inspectToken('ip')" id="btn-tok-ip" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">100.64.0.1<span class="block text-[8px] text-slate-500 mt-1">IP Address</span></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: The Votes -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <!-- Expert 1 -->
+                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                                <span class="text-[10px] text-slate-500 block mb-1">Expert 1 (v3)</span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Paths</strong></span>
+                                <div id="vote-v1" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
+                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
                                 </div>
-                                <div>
-                                    <div class="flex justify-between mb-1"><span class="text-red-400 font-semibold">Recall (File Paths)</span><span class="text-red-400 font-semibold">68%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-red-500 h-1.5 rounded-full" style="width: 68%"></div></div>
+                            </div>
+
+                            <!-- Expert 2 -->
+                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                                <span class="text-[10px] text-slate-500 block mb-1">Expert 2 (v5)</span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Commands</strong></span>
+                                <div id="vote-v2" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
+                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
+                                </div>
+                            </div>
+
+                            <!-- Expert 3 -->
+                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                                <span class="text-[10px] text-slate-500 block mb-1">Expert 3 (v6)</span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">IPs</strong></span>
+                                <div id="vote-v3" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
+                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Voter 2 -->
-                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-800/80">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs font-semibold text-slate-400">Voter 2 (v5 - Domain-specific)</span>
-                                <span class="text-xs bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full font-semibold">Weak: Identifiers</span>
+                        <!-- Step 3: Final Decision -->
+                        <div id="decision-box" class="p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Committee Decision</span>
+                                <span id="decision-text" class="text-sm font-bold text-red-400">Evicted! (Item is Lost)</span>
                             </div>
-                            <div class="space-y-3 text-xs">
-                                <div>
-                                    <div class="flex justify-between mb-1"><span class="text-red-400 font-semibold">Recall (Identifiers)</span><span class="text-red-400 font-semibold">70%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-red-500 h-1.5 rounded-full" style="width: 70%"></div></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between mb-1"><span>Recall (File Paths)</span><span class="text-white">95%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-brand-emerald h-1.5 rounded-full" style="width: 95%"></div></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Resulting Ensemble -->
-                        <div class="bg-slate-900/80 p-4 rounded-lg border border-brand-cyan/20 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full blur-xl pointer-events-none"></div>
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs font-semibold text-brand-cyan font-bold">Ensemble Result</span>
-                                <span class="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold">Paradox Collapse</span>
-                            </div>
-                            <div class="space-y-3 text-xs">
-                                <div>
-                                    <div class="flex justify-between mb-1"><span>Ensemble Recall (Identifiers)</span><span id="ensemble-recall-ids" class="text-red-400 font-bold">70%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div id="bar-ensemble-ids" class="bg-red-500 h-1.5 rounded-full" style="width: 70%"></div></div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between mb-1"><span>Ensemble Recall (File Paths)</span><span id="ensemble-recall-paths" class="text-red-400 font-bold">68%</span></div>
-                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div id="bar-ensemble-paths" class="bg-red-500 h-1.5 rounded-full" style="width: 68%"></div></div>
-                                </div>
+                            <div id="decision-badge" class="px-3 py-1.5 rounded bg-red-500/10 border border-red-500/30 text-xs font-mono font-bold text-red-400 flex items-center gap-1.5">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i> Evicted
                             </div>
                         </div>
                     </div>
 
                     <div class="p-4 bg-slate-900/30 rounded-lg border border-slate-900 text-xs text-slate-400">
                         <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom"></i>
-                        <span id="paradox-explanation">Under AND voting, the ensemble's recall collapses to the weakest voter on each stratum (70% for Identifiers, 68% for File Paths), Pareto-dominated by any single strong model.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
+                        <span id="p-explanation-text">Under the AND veto rule, Expert 1 doesn't understand file paths and votes to delete it. Even though the other two experts voted to keep it, the item is evicted. The ensemble's recall collapses.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
                     </div>
                 </div>
             </section>
