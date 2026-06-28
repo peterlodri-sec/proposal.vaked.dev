@@ -13,114 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- KaTeX for LaTeX Math Rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                        title: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: '#080c14',
-                        card: '#0f172a',
-                        brand: {
-                            cyan: '#00f2fe',
-                            blue: '#4facfe',
-                            emerald: '#10b981',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Custom scrollbar and glassmorphism styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #080c14;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gradient-border {
-            position: relative;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 1px;
-        }
-        .gradient-border::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 1rem;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, rgba(79,172,254,0.2) 100%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-        .cite-link {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: #4facfe;
-            margin-left: 4px;
-            vertical-align: super;
-            transition: color 0.2s;
-        }
-        .cite-link:hover {
-            color: #00f2fe;
-            text-decoration: underline;
-        }
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: #0f172a;
-            color: #94a3b8;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 10;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            border: 1px solid #1e293b;
-            font-size: 11px;
-            font-family: 'Inter', sans-serif;
-            font-weight: normal;
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
+    <!-- Compiled Tailwind CSS -->
+    <link href="index.css" rel="stylesheet">
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased">
 
@@ -581,7 +475,7 @@
             <section id="benchmarks" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
                 <p class="text-slate-400 mb-6 leading-relaxed">
-                    Evaluated on the **Heretic** adversarial benchmark, `kompress-v8` dominates traditional prompt compression models.
+                    Evaluated on the <strong>Heretic</strong> adversarial benchmark, <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> dominates traditional prompt compression models.
                 </p>
 
                 <div class="overflow-x-auto">

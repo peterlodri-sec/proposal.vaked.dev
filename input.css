@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-title: 'Outfit', sans-serif;
+  
+  --color-dark: #080c14;
+  --color-card: #0f172a;
+  --color-brand-cyan: #00f2fe;
+  --color-brand-blue: #4facfe;
+  --color-brand-emerald: #10b981;
+}
+
+/* Custom scrollbar and glassmorphism styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #080c14;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-border {
+    position: relative;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 1px;
+}
+
+.gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, rgba(79,172,254,0.2) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.cite-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #4facfe;
+    margin-left: 4px;
+    vertical-align: super;
+    transition: color 0.2s;
+}
+
+.cite-link:hover {
+    color: #00f2fe;
+    text-decoration: underline;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #0f172a;
+    color: #94a3b8;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    border: 1px solid #1e293b;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    font-weight: normal;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
