@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proposal: Kompress-Ultra for Headroom</title>
     <meta name="description" content="Integrating kompress-ultra context management into Headroom. Solve context bloat with asymmetric loss modulation.">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,6 +151,9 @@
                 <a href="#theory" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="book-open" class="w-4 h-4"></i> Theoretical Core
                 </a>
+                <a href="#vakedc" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="network" class="w-4 h-4"></i> Vaked Capability
+                </a>
                 <a href="#architecture" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="cpu" class="w-4 h-4"></i> Model Architecture
                 </a>
@@ -159,7 +164,7 @@
                     <i data-lucide="send" class="w-4 h-4"></i> Headroom Integration
                 </a>
                 <a href="#ecosystem" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="network" class="w-4 h-4"></i> Ecosystem Artifacts
+                    <i data-lucide="database" class="w-4 h-4"></i> Ecosystem Artifacts
                 </a>
             </nav>
         </aside>
@@ -308,7 +313,7 @@
 
             <!-- Theoretical Core -->
             <section id="theory" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-6">Theoretical Core</h2>
+                <h2 class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
                 <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
                     <p>
                         Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:
@@ -319,11 +324,114 @@
                     <p>
                         This yields a stratum-wise Pareto collapse where the ensemble's recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:
                     </p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li><strong>Mechanism A (Asymmetric Loss Modulation):</strong> Adds a $3.0\times$ weighted cross-entropy penalty on critical-syntactic tokens ($T_{\text{crit}}$) during fine-tuning, concentrating gradients on the weakest strata.</li>
-                        <li><strong>Mechanism B (Post-Inference Regex Override):</strong> A surgical safety net applied after model scoring to force-keep critical tokens (paths, hex addresses, identifiers).</li>
-                        <li><strong>Mechanism C (Self-Labeling Loop):</strong> Closes the training loop by using $A+B$ as an oracle to relabel the training data, internalizing the safety net directly into the model weights.</li>
-                    </ul>
+                    
+                    <!-- 4-Role Pipeline SVG Visual -->
+                    <div class="my-8 bg-slate-950/40 p-6 rounded-xl border border-slate-900">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-4 text-center">The 4-Role Pipeline Architecture</span>
+                        <svg viewBox="0 0 600 220" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Grid Effect -->
+                            <rect width="600" height="220" rx="12" fill="#080c14"/>
+                            <path d="M 0 40 L 600 40 M 0 80 L 600 80 M 0 120 L 600 120 M 0 160 L 600 160 M 0 200 L 600 200" stroke="#0f172a" stroke-width="1"/>
+                            
+                            <!-- Connective Paths -->
+                            <path d="M 90 90 H 130" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 210 90 H 250" stroke="#00f2fe" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 170 115 V 150 H 290" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+                            <path d="M 330 90 H 370" stroke="#00f2fe" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 370 170 H 450 V 115" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 450 90 H 490" stroke="#4facfe" stroke-width="2" marker-end="url(#arrow)"/>
+                            
+                            <!-- Arrow Defs -->
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 2 L 10 5 L 0 8 z" fill="#475569"/>
+                                </marker>
+                                <linearGradient id="glowgrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00f2fe" />
+                                    <stop offset="100%" stop-color="#4facfe" />
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Nodes -->
+                            <!-- Raw History -->
+                            <rect x="10" y="65" width="80" height="50" rx="6" fill="#0f172a" stroke="#1e293b"/>
+                            <text x="50" y="90" fill="#94a3b8" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">Raw History</text>
+                            <text x="50" y="103" fill="#475569" font-family="monospace" font-size="8" text-anchor="middle">Verbose</text>
+
+                            <!-- Pruner -->
+                            <rect x="130" y="65" width="80" height="50" rx="6" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+                            <text x="170" y="90" fill="white" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">1. Pruner</text>
+                            <text x="170" y="103" fill="#ef4444" font-family="monospace" font-size="8" text-anchor="middle">Safety Floor</text>
+
+                            <!-- Rewriter -->
+                            <rect x="250" y="65" width="80" height="50" rx="6" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
+                            <text x="290" y="90" fill="white" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">2. Rewriter</text>
+                            <text x="290" y="103" fill="#00f2fe" font-family="monospace" font-size="8" text-anchor="middle">Squeeze text</text>
+
+                            <!-- Circulator -->
+                            <rect x="290" y="145" width="80" height="50" rx="6" fill="#0f172a" stroke="#334155"/>
+                            <text x="330" y="170" fill="#94a3b8" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">3. Circulator</text>
+                            <text x="330" y="183" fill="#64748b" font-family="monospace" font-size="8" text-anchor="middle">Milvus DB</text>
+
+                            <!-- Composer -->
+                            <rect x="370" y="65" width="80" height="50" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+                            <text x="410" y="90" fill="white" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">4. Composer</text>
+                            <text x="410" y="103" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle">Synthesize</text>
+
+                            <!-- Dense Context -->
+                            <rect x="490" y="65" width="100" height="50" rx="6" fill="#0f172a" stroke="url(#glowgrad)" stroke-width="1.5"/>
+                            <text x="540" y="90" fill="white" font-family="sans-serif" font-size="10" text-anchor="middle" font-weight="600">Dense Context</text>
+                            <text x="540" y="103" fill="#00f2fe" font-family="monospace" font-size="8" text-anchor="middle">Compressed</text>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vaked Capability & Context -->
+            <section id="vakedc" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    The **Vaked** framework governs how context and compute capabilities are shared across heterogeneous nodes. Vaked Capability Context (`vakedc`) models the interaction between active memory floors, target hardware resources, and execution sandboxes.
+                </p>
+
+                <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900">
+                    <svg viewBox="0 0 600 300" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Central Core Router -->
+                        <circle cx="300" cy="150" r="40" fill="#090d16" stroke="#00f2fe" stroke-width="2"/>
+                        <text x="300" y="148" fill="white" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Vaked</text>
+                        <text x="300" y="160" fill="#00f2fe" font-family="monospace" font-size="9" text-anchor="middle">Router</text>
+                        
+                        <!-- Orbits / Connectors -->
+                        <!-- Orbit lines -->
+                        <circle cx="300" cy="150" r="100" stroke="#1e293b" stroke-dasharray="6 6" />
+                        
+                        <!-- Node 1: Active Context -->
+                        <line x1="300" y1="150" x2="300" y2="50" stroke="#4facfe" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <circle cx="300" cy="50" r="24" fill="#0f172a" stroke="#4facfe" stroke-width="1.5"/>
+                        <text x="300" y="47" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Active Context</text>
+                        <text x="300" y="57" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">T_crit Floor</text>
+                        
+                        <!-- Node 2: Passive Memory -->
+                        <line x1="300" y1="150" x2="400" y2="150" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <circle cx="400" cy="150" r="24" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="400" y="147" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Passive Memory</text>
+                        <text x="400" y="157" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">Milvus DB</text>
+                        
+                        <!-- Node 3: Capabilities -->
+                        <line x1="300" y1="150" x2="200" y2="150" stroke="#00f2fe" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <circle cx="200" cy="150" r="24" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
+                        <text x="200" y="147" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Capabilities</text>
+                        <text x="200" y="157" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">CUDA / CPU</text>
+                        
+                        <!-- Node 4: Execution -->
+                        <line x1="300" y1="150" x2="300" y2="250" stroke="#ffb020" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <circle cx="300" cy="250" r="24" fill="#0f172a" stroke="#ffb020" stroke-width="1.5"/>
+                        <text x="300" y="247" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Execution</text>
+                        <text x="300" y="257" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">Bun / Nu</text>
+                    </svg>
+                    <div class="text-xs text-slate-400 mt-4 leading-relaxed">
+                        In this topology, the **Vaked Router** evaluates the request, matches it against available node **Capabilities** (e.g., local CUDA vs. edge CPU), retrieves **Passive Memory** blocks, and formats the **Active Context** window before dispatching it to the **Execution** sandboxes.
+                    </div>
                 </div>
             </section>
 
