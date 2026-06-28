@@ -1,0 +1,49 @@
+name: Compile Reviews
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'reviews/*.json'
+
+permissions:
+  contents: write
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Compile reviews into single JSON
+        run: |
+          echo "=== Compiling Reviews ==="
+          mkdir -p dist
+          # Start JSON array
+          echo "[" > reviews.json
+          
+          first=true
+          for f in reviews/*.json; do
+            if [ -f "$f" ]; then
+              if [ "$first" = true ]; then
+                first=false
+              else
+                echo "," >> reviews.json
+              fi
+              cat "$f" >> reviews.json
+            fi
+          done
+          
+          echo "]" >> reviews.json
+          echo "=== Compiled successfully ==="
+
+      - name: Commit and push compiled reviews
+        run: |
+          git config --global user.name "Vaked Review Bot"
+          git config --global user.email "bot@vaked.dev"
+          git add reviews.json
+          git diff-index --quiet HEAD || git commit -m "chore: compile reviews" && git push origin main

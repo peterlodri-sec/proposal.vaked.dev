@@ -175,6 +175,9 @@
                 <a href="#proposal" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="send" class="w-4 h-4"></i> Headroom Integration
                 </a>
+                <a href="#reviews" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="message-square" class="w-4 h-4"></i> Reviews & Feedback
+                </a>
                 <a href="#ecosystem" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="database" class="w-4 h-4"></i> Ecosystem Artifacts
                 </a>
@@ -403,7 +406,7 @@
             <section id="vakedc" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
                 <p class="text-slate-400 mb-6 leading-relaxed">
-                    The **Vaked** framework governs how context and compute capabilities are shared across heterogeneous nodes. Vaked Capability Context (`vakedc`) models the interaction between active memory floors, target hardware resources, and execution sandboxes.
+                    The **Vaked** framework governs how context and compute capabilities are shared across heterogeneous nodes. Vaked Capability Context (`vakedc`) models the interaction between active memory floors, target hardware resources, and execution sandboxes.<a href="https://kompress.vaked.dev/paper/main.pdf#page=2" target="_blank" class="cite-link" title="See Section 1.1 on Page 2">[Paper p.2]</a>
                 </p>
 
                 <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900">
@@ -593,6 +596,58 @@
                             <p class="text-xs">
                                 Seamlessly write evicted tokens to Headroom's memory spine (e.g. SQLite/Milvus) for semantic recall in future turns.
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reviews & Feedback (Decentralized, Cryptographically Verifiable) -->
+            <section id="reviews" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-4">Reviews & Feedback</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a **GitHub Pull Request**, guaranteeing they are **provably immutable** (the author cannot modify them without breaking the signature).
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Submit Form -->
+                    <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900 space-y-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Submit a Review</span>
+                        
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Name / Pseudonym</label>
+                            <input type="text" id="review-name" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-brand-cyan" placeholder="Anonymous or GitHub handle" value="Anonymous">
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Rating</label>
+                            <div class="flex gap-1">
+                                <button onclick="setRating(1)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(2)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(3)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(4)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(5)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Review Comment</label>
+                            <textarea id="review-comment" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-brand-cyan" placeholder="What do you think of this proposal?"></textarea>
+                        </div>
+
+                        <button onclick="submitReview()" class="w-full bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-sm py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-cyan/20">
+                            <i data-lucide="git-pull-request" class="w-4 h-4"></i> Sign & Submit via GitHub PR
+                        </button>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="space-y-4">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Verified Reviews</span>
+                        <div id="reviews-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-2">
+                            <!-- Dynamically loaded reviews will go here -->
+                            <div class="text-center py-8 text-slate-600 text-xs">
+                                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-slate-700"></i>
+                                Loading verified reviews...
+                            </div>
                         </div>
                     </div>
                 </div>
