@@ -16,17 +16,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 const PRESETS = {
     auth: {
         text: "I would be happy to help you implement the authentication system with OAuth2. Let me write the code for the passport middleware. We will require the client ID and client secret in the .env file.",
-        pruned: "I would be happy to help you [Evicted] implement the authentication system with OAuth2 [Safety Floor]. Let me write [Evicted] the code for the passport [Safety Floor] middleware. We will require the client ID [Evicted] and client secret in the .env [Safety Floor] file [Evicted].",
+        pruned: "I would be happy to help you <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> implement the authentication system with OAuth2 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. Let me write <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> the code for the passport <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> middleware. We will require the client ID <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> and client secret in the .env <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> file <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span>.",
         compressed: "implement authentication system OAuth2 write code passport middleware require client secret .env"
     },
     error: {
         text: "Looking at the logs, it seems we got an error: Process exited with status code 1. The stack trace shows a NullReferenceException in src/auth.rs at line 125.",
-        pruned: "Looking at the logs, it seems [Evicted] we got an error: Process exited with status code 1 [Safety Floor]. The stack trace [Evicted] shows a NullReferenceException [Safety Floor] in src/auth.rs [Safety Floor] at line 125 [Safety Floor].",
+        pruned: "Looking at the logs, it seems <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> we got an error: Process exited with status code 1 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. The stack trace <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> shows a NullReferenceException <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> in src/auth.rs <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> at line 125 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>.",
         compressed: "error Process exited status code 1 NullReferenceException src/auth.rs line 125"
     },
     bash: {
         text: "I ran the bash command: cargo test --test integration_tests. It failed because the database port 5432 was already in use by another process.",
-        pruned: "I ran the bash [Evicted] command: cargo test --test integration_tests [Safety Floor]. It failed because [Evicted] the database port 5432 [Safety Floor] was already in use [Evicted] by another process.",
+        pruned: "I ran the bash <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> command: cargo test --test integration_tests <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. It failed because <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> the database port 5432 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> was already in use <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> by another process.",
         compressed: "command cargo test --test integration_tests failed database port 5432 use"
     }
 };
@@ -59,11 +59,11 @@ function triggerCompression() {
         
         const prunedWords = words.map(w => {
             if (mustKeepRegex.test(w)) {
-                return `<span class="text-brand-cyan font-bold">${w} [Safety Floor]</span>`;
+                return `<span class="text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded">${w} [Safety Floor]</span>`;
             } else if (w.length > 5 && Math.random() > 0.4) {
                 return w;
             } else {
-                return `<span class="text-slate-700 line-through">${w} [Evicted]</span>`;
+                return `<span class="text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded">${w} [Evicted]</span>`;
             }
         });
         
@@ -358,14 +358,18 @@ async function fetchAndRenderReviews() {
     
     try {
         const response = await fetch('reviews.json');
-        if (!response.ok) {
+        
+        // Defensive check: If the hosting provider serves index.html instead of a 404 (e.g. for Single Page App routing), 
+        // we check the Content-Type header to make sure it's valid JSON before parsing.
+        const contentType = response.headers.get('content-type');
+        if (!response.ok || !contentType || !contentType.includes('application/json')) {
             listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
             return;
         }
         
         const reviews = await response.json();
         
-        if (reviews.length === 0) {
+        if (!Array.isArray(reviews) || reviews.length === 0) {
             listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
             return;
         }
@@ -389,8 +393,8 @@ async function fetchAndRenderReviews() {
                     <div class="text-right">
                         <div class="text-brand-cyan text-xs font-mono">${starsHtml}</div>
                         ${isValid 
-                            ? `<span class="inline-flex items-center gap-1 text-[9px] text-brand-emerald bg-brand-emerald/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-check" class="w-3 h-3"></i> Verified Sig</span>`
-                            : `<span class="inline-flex items-center gap-1 text-[9px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-alert" class="w-3 h-3"></i> Tampered / Invalid</span>`
+                            ? `<span class="inline-flex items-center gap-1 text-[9px] text-brand-emerald bg-brand-emerald/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified Sig</span>`
+                            : `<span class="inline-flex items-center gap-1 text-[9px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Tampered / Invalid</span>`
                         }
                     </div>
                 </div>
@@ -403,6 +407,7 @@ async function fetchAndRenderReviews() {
         lucide.createIcons(); // Initialize icons on new elements
         
     } catch (e) {
+        console.error("Failed to fetch or render reviews:", e);
         listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
     }
 }

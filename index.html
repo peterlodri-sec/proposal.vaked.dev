@@ -91,6 +91,35 @@
             color: #00f2fe;
             text-decoration: underline;
         }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border: 1px solid #1e293b;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            font-weight: normal;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased">
@@ -112,7 +141,9 @@
                     <i data-lucide="file-text" class="w-4 h-4"></i> Read Paper
                 </a>
                 <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15">
-                    <i data-lucide="github" class="w-4 h-4"></i> View Substrate
+                    <!-- Inline SVG to replace Lucide github icon and eliminate console errors -->
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    View Substrate
                 </a>
             </div>
         </div>
@@ -185,6 +216,9 @@
                 <a href="#telemetry" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="activity" class="w-4 h-4"></i> Academic Telemetry
                 </a>
+                <a href="#glossary" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i> Glossary
+                </a>
                 <a href="#ecosystem" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="database" class="w-4 h-4"></i> Ecosystem Artifacts
                 </a>
@@ -203,7 +237,7 @@
                             Interactive Kompress-Ultra Playground
                         </h2>
                         <p class="text-sm text-slate-400 mb-6">
-                            See how the 4-role pipeline compresses chat history while preserving the critical-syntactic safety floor ($T_{\text{crit}}$).
+                            Type or select a preset below. Watch the pruner and rewriter compress your prompt in real-time as you type.
                         </p>
 
                         <div class="space-y-6">
@@ -238,15 +272,24 @@
                                 </div>
                             </div>
 
-                            <!-- Steps Display -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
-                                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
-                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">1. Pruner & Safety Floor</span>
-                                    <div id="pruner-output" class="text-xs font-mono h-24 overflow-y-auto bg-slate-950 p-3 rounded border border-slate-900 leading-relaxed"></div>
+                            <!-- Chat-Bubble Comparison Display -->
+                            <div class="space-y-4 pt-4 border-t border-slate-900">
+                                <!-- Verbose Chat Bubble (Before) -->
+                                <div class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0">V</div>
+                                    <div class="bg-slate-900/60 p-4 rounded-2xl rounded-tl-none border border-slate-800/80 max-w-[85%]">
+                                        <span class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold block mb-1.5">Verbose Input (Prior Turns + Context)</span>
+                                        <div id="pruner-output" class="text-xs font-sans leading-relaxed text-slate-300"></div>
+                                    </div>
                                 </div>
-                                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
-                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">2. Rewriter Output (Ultra Mode)</span>
-                                    <div id="rewriter-output" class="text-xs font-mono h-24 overflow-y-auto bg-slate-950 p-3 rounded border border-slate-900 leading-relaxed text-brand-cyan"></div>
+
+                                <!-- Compressed Chat Bubble (After) -->
+                                <div class="flex items-start gap-3 justify-end">
+                                    <div class="bg-brand-cyan/5 p-4 rounded-2xl rounded-tr-none border border-brand-cyan/20 max-w-[85%] text-left">
+                                        <span class="text-[9px] uppercase tracking-wider text-brand-cyan font-semibold block mb-1.5">Optimized Prompt (Passed to LLM)</span>
+                                        <div id="rewriter-output" class="text-xs font-mono leading-relaxed text-brand-cyan"></div>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-xs font-bold text-dark shrink-0 font-title">K</div>
                                 </div>
                             </div>
                         </div>
@@ -346,11 +389,30 @@
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
                 <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
                     <p>
-                        Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
+                        Learned context pruning improves long-context agent efficiency but introduces the **Voting Ensemble Paradox**. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
                     </p>
-                    <div class="my-4">
-                        $$I_{\text{ens}}(x) = \bigvee_{i=1}^N I_i(x) = I_{i^*_k}(x)$$
+                    
+                    <!-- Interactive Formula Explainer -->
+                    <div class="bg-slate-950 p-6 rounded-xl border border-slate-900 my-6">
+                        <div class="text-center text-xl font-mono text-white mb-6">
+                            $$I_{\text{ens}}(x) = \bigvee_{i=1}^N I_i(x) = I_{i^*_k}(x)$$
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[11px] leading-relaxed">
+                            <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-cyan transition-all cursor-help">
+                                <span class="font-mono text-brand-cyan font-bold block mb-1">1. Group Decision: I_ens(x)</span>
+                                The final output of the ensemble. Represents whether the collective group decides to evict or keep token $x$.
+                            </div>
+                            <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-blue transition-all cursor-help">
+                                <span class="font-mono text-brand-blue font-bold block mb-1">2. Veto Vote: \bigvee</span>
+                                Logical OR operator. If even a single expert votes to evict ($\text{indicator} = 1$), the entire group evicts.
+                            </div>
+                            <div class="p-3.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-emerald transition-all cursor-help">
+                                <span class="font-mono text-brand-emerald font-bold block mb-1">3. Weakest Link: I_i*_k(x)</span>
+                                The weakest expert's decision. The entire group's performance is dragged down to the level of the least capable member on that topic.
+                            </div>
+                        </div>
                     </div>
+
                     <p>
                         This yields a stratum-wise Pareto collapse where the ensemble's recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:
                     </p>
@@ -420,8 +482,8 @@
             <!-- Vaked Capability & Context -->
             <section id="vakedc" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
-                    The **Vaked** framework governs how context and compute capabilities are shared across heterogeneous nodes. Vaked Capability Context (`vakedc`) models the interaction between active memory floors, target hardware resources, and execution sandboxes.<a href="https://kompress.vaked.dev/paper/main.pdf#page=2" target="_blank" class="cite-link" title="See Section 1.1 on Page 2">[Paper p.2]</a>
+                <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+                    A decentralized routing and verification matrix: <code>vaked-base</code> defines node capacities, <code>vaked</code> orchestrates active routing, and <code>vakedc</code> signs context proofs.
                 </p>
 
                 <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900">
@@ -459,9 +521,6 @@
                         <text x="300" y="247" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Execution</text>
                         <text x="300" y="257" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">Bun / Nu</text>
                     </svg>
-                    <div class="text-xs text-slate-400 mt-4 leading-relaxed">
-                        In this topology, the **Vaked Router** evaluates the request, matches it against available node **Capabilities** (e.g., local CUDA vs. edge CPU), retrieves **Passive Memory** blocks, and formats the **Active Context** window before dispatching it to the **Execution** sandboxes.
-                    </div>
                 </div>
             </section>
 
@@ -472,20 +531,20 @@
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            `kompress-v8` uses a 149M-parameter <strong>ModernBERT</strong> backbone<a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="cite-link" title="See Section 3.4 on Page 8">[Paper p.8]</a> with LoRA fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
+                            `kompress-v8` uses a 149M-parameter <a href="https://en.wikipedia.org/wiki/BERT_(language_model)" target="_blank" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
                         </p>
                         <ul class="space-y-3 text-sm text-slate-400">
                             <li class="flex items-start gap-2.5">
                                 <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
-                                <span><strong>Token Classifier Head:</strong> Produces per-token eviction logits.</span>
+                                <span><strong><a href="https://en.wikipedia.org/wiki/Token_classification" target="_blank" class="text-white hover:text-brand-cyan hover:underline">Token Classifier Head</a>:</strong> Produces per-token eviction logits.</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
-                                <span><strong>Span-CNN Head:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
+                                <span><strong><a href="https://en.wikipedia.org/wiki/Convolutional_neural_network" target="_blank" class="text-white hover:text-brand-cyan hover:underline">Span-CNN Head</a>:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
                             </li>
                         </ul>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans:<a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="cite-link" title="See Section 3.4 on Page 8">[Paper p.8]</a>
+                            An <strong><a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="text-brand-cyan hover:underline">Asymmetric Modulation Gate</a></strong> scales the token logits to suppress eviction in high-coherence spans:
                         </p>
                         <div class="my-4">
                             $$\tilde{I}_i(x) = \sigma\left(\text{logits}_{\text{tok}}(x) - \gamma g(\text{logits}_{\text{span}}(x))\right)$$
@@ -522,7 +581,7 @@
             <section id="benchmarks" class="scroll-mt-24">
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
                 <p class="text-slate-400 mb-6 leading-relaxed">
-                    Evaluated on the <strong>Heretic</strong> adversarial benchmark, `kompress-v8` dominates traditional prompt compression models on exact-keep rates of critical syntactic tokens.<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a>
+                    Evaluated on the **Heretic** adversarial benchmark, `kompress-v8` dominates traditional prompt compression models.
                 </p>
 
                 <div class="overflow-x-auto">
@@ -530,15 +589,27 @@
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500 font-semibold uppercase tracking-wider text-xs">
                                 <th class="py-3 px-4">Method</th>
-                                <th class="py-3 px-4">Exact Keep % ($T_{\text{crit}}$)</th>
-                                <th class="py-3 px-4">Keep Rate (Tokens)</th>
-                                <th class="py-3 px-4">Avg. Latency</th>
+                                <th class="py-3 px-4">
+                                    <div class="tooltip">Exact Keep % ($T_{\text{crit}}$) <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                        <span class="tooltiptext">Percentage of critical syntactic tokens (paths, errors, code) successfully preserved after pruning.</span>
+                                    </div>
+                                </th>
+                                <th class="py-3 px-4">
+                                    <div class="tooltip">Keep Rate (Tokens) <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                        <span class="tooltiptext">The ratio of output tokens divided by input tokens. Lower means more compression.</span>
+                                    </div>
+                                </th>
+                                <th class="py-3 px-4">
+                                    <div class="tooltip">Avg. Latency <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                        <span class="tooltiptext">Average processing time in milliseconds for the context pruner to run.</span>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-900">
                             <tr class="text-white bg-brand-cyan/5">
                                 <td class="py-4 px-4 font-semibold flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-brand-cyan"></span>
+                                    <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
                                     kompress-v8 (Ours, Production)
                                 </td>
                                 <td class="py-4 px-4 font-bold text-brand-cyan">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
@@ -549,7 +620,11 @@
                                 <td class="py-4 px-4 font-medium">kompress-v8 (Ours, `v4` SSL)</td>
                                 <td class="py-4 px-4 font-semibold">0.967<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.823</td>
-                                <td class="py-4 px-4 font-mono">—</td>
+                                <td class="py-4 px-4 font-mono text-slate-500">
+                                    <span class="tooltip">—
+                                        <span class="tooltiptext">Offline Checkpoint: Not evaluated for active inference latency.</span>
+                                    </span>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4 text-slate-500">Random Eviction (Floor)</td>
@@ -560,7 +635,11 @@
                             <tr>
                                 <td class="py-4 px-4">LLMLingua-2</td>
                                 <td class="py-4 px-4">0.867<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
-                                <td class="py-4 px-4 font-mono">1.550</td>
+                                <td class="py-4 px-4 font-mono text-amber-500">
+                                    <span class="tooltip">1.550
+                                        <span class="tooltiptext">Context Expansion: Kept 155% of original tokens (caused context bloat).</span>
+                                    </span>
+                                </td>
                                 <td class="py-4 px-4 font-mono">238.9 ms</td>
                             </tr>
                             <tr>
@@ -723,6 +802,63 @@
                         <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
                             <span class="text-[10px] text-slate-500 block">Token Savings Rate</span>
                             <span class="text-sm font-mono font-bold text-brand-emerald">78.5%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Glossary Section -->
+            <section id="glossary" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-6">Glossary</h2>
+                <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-xs font-mono text-slate-400">
+                        <div>
+                            <span class="text-white font-bold block mb-1">Context</span>
+                            Raw conversation history, code, and tool outputs fed into an LLM.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">Compression</span>
+                            Reducing prompt length to save tokens and speed up inference.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">learned context-pruning</span>
+                            Using a machine learning model to select which tokens to keep.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">token savings</span>
+                            The percentage of prompt tokens removed by the pruner.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">latency</span>
+                            Time taken for the LLM to generate a response.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">critical-syntactic safety floor</span>
+                            Tokens (like code, errors) that must never be pruned.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">chat history</span>
+                            The back-and-forth log of messages in an agent session.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">Voting Ensemble Paradox</span>
+                            When voting makes an ensemble worse than its individual models.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">stratum-wise Pareto collapse</span>
+                            Recall collapsing to the weakest model's level on each topic.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">training floors</span>
+                            Baselines of performance guaranteed during model training.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">multi-checkpoint voting ensemble</span>
+                            Grouping multiple model checkpoints to make decisions.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">unanimity-to-keep (AND)</span>
+                            Keeping a token only if every single model votes to keep it.
                         </div>
                     </div>
                 </div>
