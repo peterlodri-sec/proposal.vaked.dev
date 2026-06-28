@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal: Kompress-Ultra for Headroom</title>
+    <meta name="description" content="Integrating kompress-ultra context management into Headroom. Solve context bloat with asymmetric loss modulation.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Tailwind CSS (via Play CDN for rapid, highly customized styling) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        title: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#080c14',
+                        card: '#0f172a',
+                        brand: {
+                            cyan: '#00f2fe',
+                            blue: '#4facfe',
+                            emerald: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and glassmorphism styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 1px;
+        }
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0,242,254,0.2) 0%, rgba(79,172,254,0.2) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-900 bg-[#080c14]/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-dark font-bold text-xl shadow-lg shadow-brand-cyan/20 font-title">
+                    K
+                </div>
+                <div>
+                    <span class="font-bold text-white tracking-tight font-title text-lg">kompress-ultra</span>
+                    <span class="text-xs text-slate-500 block">for Headroom</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-slate-900/50 hover:bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> Read Paper
+                </a>
+                <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15">
+                    <i data-lucide="github" class="w-4 h-4"></i> View Repository
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 py-20 relative overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-60 -left-40 w-96 h-96 bg-brand-cyan/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-3xl text-center mx-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-cyan/20 bg-brand-cyan/5 text-brand-cyan text-xs font-semibold mb-6">
+                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                Headroom RFC / Proposal
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white font-title tracking-tight leading-tight mb-6">
+                Asymmetric Loss Modulation for <span class="gradient-text">Context Compression</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 font-light mb-10 leading-relaxed">
+                Integrating learned context-pruning into Headroom. Achieve <strong class="text-white">~78% token savings</strong> and <strong class="text-white">~75% latency reduction</strong> while maintaining a near-perfect <strong class="text-brand-cyan">0.993 exact-keep rate</strong> on critical reasoning tokens.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 pb-32 grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+        <!-- Sidebar / Navigation -->
+        <aside class="lg:col-span-3 lg:sticky lg:top-24 h-fit hidden lg:block">
+            <nav class="space-y-2">
+                <a href="#playground" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="play" class="w-4 h-4"></i> Playground
+                </a>
+                <a href="#paradox" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="shuffle" class="w-4 h-4"></i> Voting Paradox
+                </a>
+                <a href="#theory" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> Theoretical Core
+                </a>
+                <a href="#architecture" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="cpu" class="w-4 h-4"></i> Model Architecture
+                </a>
+                <a href="#benchmarks" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Benchmarks
+                </a>
+                <a href="#proposal" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="send" class="w-4 h-4"></i> Headroom Integration
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Document Sections -->
+        <div class="lg:col-span-9 space-y-24">
+
+            <!-- Interactive Playground -->
+            <section id="playground" class="scroll-mt-24">
+                <div class="gradient-border">
+                    <div class="p-8 bg-slate-950/40 rounded-[15px]">
+                        <h2 class="text-2xl font-bold text-white font-title mb-2 flex items-center gap-3">
+                            <i data-lucide="sparkles" class="text-brand-cyan w-6 h-6"></i>
+                            Interactive Kompress-Ultra Playground
+                        </h2>
+                        <p class="text-sm text-slate-400 mb-6">
+                            See how the 4-role pipeline compresses chat history while preserving the critical-syntactic safety floor ($T_{\text{crit}}$).
+                        </p>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">Select a Preset or Type Below</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+                                    <button onclick="loadPreset('auth')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
+                                        <strong class="text-white block mb-1">OAuth2 Setup</strong>
+                                        "I would be happy to help you implement..."
+                                    </button>
+                                    <button onclick="loadPreset('error')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
+                                        <strong class="text-white block mb-1">Compiler Error</strong>
+                                        "Looking at the logs, it seems we got..."
+                                    </button>
+                                    <button onclick="loadPreset('bash')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
+                                        <strong class="text-white block mb-1">Tool Output</strong>
+                                        "I ran the bash command and got exit code..."
+                                    </button>
+                                </div>
+                                <textarea id="playground-input" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..."></textarea>
+                            </div>
+
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-6 text-xs text-slate-400">
+                                    <div>Original: <span id="original-tokens" class="text-white font-semibold">0</span> tokens</div>
+                                    <div>Compressed: <span id="compressed-tokens" class="text-brand-cyan font-semibold">0</span> tokens</div>
+                                    <div class="bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded-full font-semibold"><span id="savings-pct">0</span>% Saved</div>
+                                </div>
+                                <button onclick="triggerCompression()" class="bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-sm px-6 py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-brand-cyan/20">
+                                    <i data-lucide="bolt" class="w-4 h-4 animate-spin"></i> Compress Message
+                                </button>
+                            </div>
+
+                            <!-- Steps Display -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-900">
+                                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">1. Pruner & Safety Floor</span>
+                                    <div id="pruner-output" class="text-xs font-mono h-24 overflow-y-auto bg-slate-950 p-3 rounded border border-slate-900 leading-relaxed"></div>
+                                </div>
+                                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">2. Rewriter Output (Ultra Mode)</span>
+                                    <div id="rewriter-output" class="text-xs font-mono h-24 overflow-y-auto bg-slate-950 p-3 rounded border border-slate-900 leading-relaxed text-brand-cyan"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Paradox Simulator -->
+            <section id="paradox" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-4">The Voting Ensemble Paradox</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    A multi-checkpoint voting ensemble is meant to be conservative, but under asymmetric training floors, the intuition inverts. Weak checkpoints veto correct keeps on their weakest strata, causing a <strong>stratum-wise Pareto collapse</strong>.
+                </p>
+
+                <div class="bg-slate-950/50 p-6 rounded-xl border border-slate-900 space-y-6">
+                    <div class="flex justify-between items-center flex-wrap gap-4">
+                        <span class="text-sm font-semibold text-white">Interactive Paradox Simulator</span>
+                        <div class="flex gap-2">
+                            <button onclick="setVotingRule('and')" id="btn-rule-and" class="text-xs px-3 py-1.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-medium">AND (k=1 drop)</button>
+                            <button onclick="setVotingRule('majority')" id="btn-rule-majority" class="text-xs px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-400 font-medium">Majority (2/3)</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Voter 1 -->
+                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-800/80">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold text-slate-400">Voter 1 (v3 - Noisy Floor)</span>
+                                <span class="text-xs bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full">Weak: Paths</span>
+                            </div>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1"><span>Recall (Identifiers)</span><span class="text-white">92%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-brand-emerald h-1.5 rounded-full" style="width: 92%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1"><span class="text-red-400">Recall (File Paths)</span><span class="text-red-400 font-semibold">68%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-red-500 h-1.5 rounded-full" style="width: 68%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Voter 2 -->
+                        <div class="bg-slate-900/40 p-4 rounded-lg border border-slate-800/80">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold text-slate-400">Voter 2 (v5 - Domain-specific)</span>
+                                <span class="text-xs bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full">Weak: Identifiers</span>
+                            </div>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1"><span class="text-red-400">Recall (Identifiers)</span><span class="text-red-400 font-semibold">70%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-red-500 h-1.5 rounded-full" style="width: 70%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1"><span>Recall (File Paths)</span><span class="text-white">95%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div class="bg-brand-emerald h-1.5 rounded-full" style="width: 95%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resulting Ensemble -->
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-brand-cyan/20 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full blur-xl pointer-events-none"></div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-semibold text-brand-cyan">Ensemble Result</span>
+                                <span class="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold">Paradox Collapse</span>
+                            </div>
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <div class="flex justify-between mb-1"><span>Ensemble Recall (Identifiers)</span><span id="ensemble-recall-ids" class="text-red-400 font-bold">70%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div id="bar-ensemble-ids" class="bg-red-500 h-1.5 rounded-full" style="width: 70%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1"><span>Ensemble Recall (File Paths)</span><span id="ensemble-recall-paths" class="text-red-400 font-bold">68%</span></div>
+                                    <div class="w-full bg-slate-850 h-1.5 rounded-full"><div id="bar-ensemble-paths" class="bg-red-500 h-1.5 rounded-full" style="width: 68%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-900/30 rounded-lg border border-slate-900 text-xs text-slate-400">
+                        <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom"></i>
+                        <span id="paradox-explanation">Under AND voting, the ensemble's recall collapses to the weakest voter on each stratum (70% for Identifiers, 68% for File Paths), Pareto-dominated by any single strong model.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Theoretical Core -->
+            <section id="theory" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-6">Theoretical Core</h2>
+                <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
+                    <p>
+                        Learned context pruning improves long-context agent efficiency but introduces the <strong>Voting Ensemble Paradox</strong>. Under unanimity-to-keep (AND) voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:
+                    </p>
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-900 text-center font-mono text-white text-sm my-4">
+                        I<sub>ens</sub>(x) = &bigvee;<sub>i=1..N</sub> I<sub>i</sub>(x) = I<sub>i<sup>*</sup><sub>k</sub></sub>(x)
+                    </div>
+                    <p>
+                        This yields a stratum-wise Pareto collapse where the ensemble's recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:
+                    </p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Mechanism A (Asymmetric Loss Modulation):</strong> Adds a $3.0\times$ weighted cross-entropy penalty on critical-syntactic tokens ($T_{\text{crit}}$) during fine-tuning, concentrating gradients on the weakest strata.</li>
+                        <li><strong>Mechanism B (Post-Inference Regex Override):</strong> A surgical safety net applied after model scoring to force-keep critical tokens (paths, hex addresses, identifiers).</li>
+                        <li><strong>Mechanism C (Self-Labeling Loop):</strong> Closes the training loop by using $A+B$ as an oracle to relabel the training data, internalizing the safety net directly into the model weights.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Model Architecture -->
+            <section id="architecture" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-6">Model Architecture</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            `kompress-v8` uses a 149M-parameter <strong>ModernBERT</strong> backbone with LoRA fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
+                        </p>
+                        <ul class="space-y-3 text-sm text-slate-400">
+                            <li class="flex items-start gap-2.5">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
+                                <span><strong>Token Classifier Head:</strong> Produces per-token eviction logits.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
+                                <span><strong>Span-CNN Head:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
+                            </li>
+                        </ul>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans:
+                        </p>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-900 font-mono text-white text-xs text-center">
+                            &Iuml;<sub>i</sub>(x) = &sigma;(logits<sub>tok</sub>(x) - &gamma; g(logits<sub>span</sub>(x)))
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/50 p-6 rounded-xl border border-slate-900 flex justify-center">
+                        <!-- Custom CSS/SVG diagram of the Dual-Head architecture -->
+                        <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[280px]">
+                            <rect x="20" y="210" width="240" height="40" rx="8" fill="#0f172a" stroke="#334155"/>
+                            <text x="140" y="235" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">ModernBERT Encoder</text>
+                            
+                            <path d="M140 210 V145" stroke="#334155" stroke-dasharray="4 4"/>
+                            
+                            <rect x="20" y="95" width="100" height="50" rx="8" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
+                            <text x="70" y="120" fill="white" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Token Head</text>
+                            <text x="70" y="134" fill="#64748b" font-family="monospace" font-size="9" text-anchor="middle">h_tok</text>
+
+                            <rect x="160" y="95" width="100" height="50" rx="8" fill="#0f172a" stroke="#4facfe" stroke-width="1.5"/>
+                            <text x="210" y="120" fill="white" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Span-CNN</text>
+                            <text x="210" y="134" fill="#64748b" font-family="monospace" font-size="9" text-anchor="middle">h_span</text>
+
+                            <circle cx="140" cy="30" r="18" fill="#080c14" stroke="#00f2fe" stroke-width="2"/>
+                            <text x="140" y="34" fill="#00f2fe" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">&sigma;</text>
+
+                            <path d="M70 95 V30 H122" stroke="#00f2fe" stroke-width="1.5" fill="none"/>
+                            <path d="M210 95 V55 H140 V48" stroke="#4facfe" stroke-width="1.5" fill="none"/>
+                            
+                            <text x="175" y="72" fill="#4facfe" font-family="monospace" font-size="9">Gate g</text>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benchmarks -->
+            <section id="benchmarks" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    Evaluated on the <strong>Heretic</strong> adversarial benchmark, `kompress-v8` dominates traditional prompt compression models on exact-keep rates of critical syntactic tokens.
+                </p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-500 font-semibold uppercase tracking-wider text-xs">
+                                <th class="py-3 px-4">Method</th>
+                                <th class="py-3 px-4">Exact Keep % ($T_{\text{crit}}$)</th>
+                                <th class="py-3 px-4">Keep Rate (Tokens)</th>
+                                <th class="py-3 px-4">Avg. Latency</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-900">
+                            <tr class="text-white bg-brand-cyan/5">
+                                <td class="py-4 px-4 font-semibold flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-brand-cyan"></span>
+                                    kompress-v8 (Ours, Production)
+                                </td>
+                                <td class="py-4 px-4 font-bold text-brand-cyan">0.993</td>
+                                <td class="py-4 px-4 font-mono">0.936</td>
+                                <td class="py-4 px-4 font-mono">97.0 ms</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-medium">kompress-v8 (Ours, `v4` SSL)</td>
+                                <td class="py-4 px-4 font-semibold">0.967</td>
+                                <td class="py-4 px-4 font-mono">0.823</td>
+                                <td class="py-4 px-4 font-mono">—</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 text-slate-500">Random Eviction (Floor)</td>
+                                <td class="py-4 px-4 text-slate-500">0.910</td>
+                                <td class="py-4 px-4 font-mono text-slate-500">0.835</td>
+                                <td class="py-4 px-4 font-mono text-slate-500">0.0 ms</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4">LLMLingua-2</td>
+                                <td class="py-4 px-4">0.867</td>
+                                <td class="py-4 px-4 font-mono">1.550</td>
+                                <td class="py-4 px-4 font-mono">238.9 ms</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4">TextRank (Extractive)</td>
+                                <td class="py-4 px-4">0.599</td>
+                                <td class="py-4 px-4 font-mono">0.543</td>
+                                <td class="py-4 px-4 font-mono">23.1 ms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Headroom Integration -->
+            <section id="proposal" class="scroll-mt-24">
+                <h2 class="text-3xl font-bold text-white font-title mb-6">Headroom Integration Proposal</h2>
+                <div class="space-y-6 text-slate-400 leading-relaxed">
+                    <p>
+                        We propose integrating `kompress-ultra` directly into Headroom (referencing <strong>Headroom PR #1419</strong>) as a core context-management middleware:
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
+                            <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                                <i data-lucide="layers" class="w-4 h-4 text-brand-cyan"></i>
+                                1. Middleware Chain Integration
+                            </h4>
+                            <p class="text-xs">
+                                Intercept outgoing LLM payload payloads in Headroom and run token-level classification via a local ONNX runtime of `kompress-v8`.
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
+                            <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                                <i data-lucide="shield" class="w-4 h-4 text-brand-cyan"></i>
+                                2. Configurable Safety Floors
+                            </h4>
+                            <p class="text-xs">
+                                Provide pre-configured regex patterns matching $T_{\text{crit}}$ class tokens to ensure 100% survival rates on critical system outputs.
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
+                            <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
+                                <i data-lucide="database" class="w-4 h-4 text-brand-cyan"></i>
+                                3. Passive Memory Offloading
+                            </h4>
+                            <p class="text-xs">
+                                Seamlessly write evicted tokens to Headroom's memory spine (e.g. SQLite/Milvus) for semantic recall in future turns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-12 text-center text-xs text-slate-600">
+        <div class="max-w-6xl mx-auto px-6">
+            <p class="mb-2">&copy; 2026 Peter Lodri & the Headroom / UltrameshAI Community.</p>
+            <p>Released under the Apache 2.0 License. Funded via decentralized open-source grants.</p>
+        </div>
+    </footer>
+
+    <!-- JS Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
