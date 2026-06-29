@@ -902,8 +902,10 @@ Vaked.BenchmarkChart = {
             const val = d[config.key];
             if (val === null) return '';
             const pct = Math.max(8, Math.min(100, (val / config.max) * 100));
-            const isBest = this.currentMetric === 'keep' && val === Math.max(...items.map(i => i[config.key]));
-            const isWorst = this.currentMetric === 'keep' && val === Math.min(...items.map(i => i[config.key]));
+            const bestVal = config.higher === 'better' ? Math.max(...items.map(i => i[config.key])) : Math.min(...items.map(i => i[config.key]));
+            const worstVal = config.higher === 'better' ? Math.min(...items.map(i => i[config.key])) : Math.max(...items.map(i => i[config.key]));
+            const isBest = val === bestVal;
+            const isWorst = val === worstVal && !isBest;
 
             let barColor = 'bg-slate-700';
             if (d.color === 'brand-cyan') barColor = 'bg-gradient-to-r from-brand-cyan to-brand-blue';
