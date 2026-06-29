@@ -48,7 +48,7 @@ const TRANSLATIONS = {
         proposal_title: 'Headroom Integration Proposal',
         proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">We<span class="tooltiptext">Peter and the swarm of autonomous coding agents + inference loops that built this project.</span></span> propose integrating `kompress-ultra` directly into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (referencing <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) as a core context-management middleware:',
         reviews_title: 'Reviews & Feedback',
-        reviews_desc: 'Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a **GitHub Pull Request**, guaranteeing they are **provably immutable** (the author cannot modify them without breaking the signature).',
+        reviews_desc: 'Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a <strong>GitHub Pull Request</strong>, guaranteeing they are <strong>provably immutable</strong> (the author cannot modify them without breaking the signature).',
         telemetry_title: 'Academic Telemetry & Verification',
         telemetry_desc: 'This site is dedicated strictly to academic research. There are no tracking scripts, Google Ads, or third-party cookies. The connection is proxied and secured solely through <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a>.',
         glossary_title: 'Glossary',
@@ -75,7 +75,7 @@ const TRANSLATIONS = {
         proposal_title: 'Propuesta de Integración en Headroom',
         proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Nosotros<span class="tooltiptext">Peter y el enjambre de agentes de codificación autónomos + bucles de inferencia que construyeron este proyecto.</span></span> proponemos integrar `kompress-ultra` directamente en <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (haciendo referencia a <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) como middleware central de gestión de contexto:',
         reviews_title: 'Reseñas y Comentarios',
-        reviews_desc: 'Envíe una reseña de esta propuesta. Las reseñas son firmadas criptográficamente por su navegador y enviadas a través de una **Pull Request de GitHub**, lo que garantiza que son **provocadamente inmutables** (el autor no puede modificarlas sin romper la firma).',
+        reviews_desc: 'Envíe una reseña de esta propuesta. Las reseñas son firmadas criptográficamente por su navegador y enviadas a través de una <strong>Pull Request de GitHub</strong>, lo que garantiza que son <strong>provocadamente inmutables</strong> (el autor no puede modificarlas sin romper la firma).',
         telemetry_title: 'Telemetría Académica y Verificación',
         telemetry_desc: 'Este sitio está dedicado estrictamente a la investigación académica. No hay scripts de seguimiento, anuncios de Google ni cookies de terceros. La conexión se realiza a través de un proxy y se protege únicamente mediante <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a>.',
         glossary_title: 'Glosario',
@@ -102,7 +102,7 @@ const TRANSLATIONS = {
         proposal_title: 'Integrationsvorschlag für Headroom',
         proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Wir<span class="tooltiptext">Peter und der Schwarm autonomer Codierungsagenten + Inferenzschleifen, die dieses Projekt aufgebaut haben.</span></span> schlagen vor, `kompress-ultra` direkt in <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (unter Bezugnahme auf <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) als zentrales Kontextmanagement-Middleware zu integrieren:',
         reviews_title: 'Bewertungen & Feedback',
-        reviews_desc: 'Geben Sie eine Bewertung zu diesem Vorschlag ab. Bewertungen werden von Ihrem Browser kryptografisch signiert und über einen **GitHub Pull Request** eingereicht, was garantiert, dass sie **nachweisbar unveränderlich** sind (der Autor kann sie nicht ändern, ohne die Signatur zu verletzen).',
+        reviews_desc: 'Geben Sie eine Bewertung zu diesem Vorschlag ab. Bewertungen werden von Ihrem Browser kryptografisch signiert und über einen <strong>GitHub Pull Request</strong> eingereicht, was garantiert, dass sie <strong>nachweisbar unveränderlich</strong> sind (der Autor kann sie nicht ändern, ohne die Signatur zu verletzen).',
         telemetry_title: 'Akademische Telemetrie & Verifizierung',
         telemetry_desc: 'Diese Website dient ausschließlich der akademischen Forschung. Es gibt keine Tracking-Skripte, Google-Anzeigen oder Drittanbieter-Cookies. Die Verbindung wird ausschließlich über das <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a> vermittelt und gesichert.',
         glossary_title: 'Glossar',
@@ -129,7 +129,7 @@ const TRANSLATIONS = {
         proposal_title: 'Proposition d\'Intégration de Headroom',
         proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Nous<span class="tooltiptext">Peter et l\'essaim d\'agents de codage autonomes + boucles d\'inférence qui ont construit ce projet.</span></span> proposons d\'intégrer `kompress-ultra` directement dans <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (en référence au <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) en tant que middleware central de gestion de contexte :',
         reviews_title: 'Avis & Commentaires',
-        reviews_desc: 'Soumettez un avis sur cette proposition. Les avis sont signés cryptographiquement par votre navigateur et soumis via une **Pull Request GitHub**, garantissant qu\'ils sont **prouvables immuables** (l\'auteur ne peut pas les modifier sans rompre la signature).',
+        reviews_desc: 'Soumettez un avis sur cette proposition. Les avis sont signés cryptographiquement par votre navigateur et soumis via une <strong>Pull Request GitHub</strong>, garantissant qu\'ils sont <strong>prouvables immuables</strong> (l\'auteur ne peut pas les modifier sans rompre la signature).',
         telemetry_title: 'Télémétrie Académique & Vérification',
         telemetry_desc: 'Ce site est strictement dédié à la recherche académique. Il n\'y a pas de scripts de suivi, de publicités Google ou de cookies tiers. La connexion est relayée par proxy et sécurisée uniquement via le <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">CDN Cloudflare</a>.',
         glossary_title: 'Glossaire',
@@ -156,7 +156,7 @@ const TRANSLATIONS = {
         proposal_title: 'Headroom 集成提议',
         proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">我们<span class="tooltiptext">彼得和构建该项目的自主编码智能体群 + 推理循环。</span></span> 提议将 `kompress-ultra` 直接集成到 <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a>（参考 <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>）作为核心上下文管理中间件：',
         reviews_title: '评估与反馈',
-        reviews_desc: '提交对此提案的评估。评估由您的浏览器进行加密签署，并通过 **GitHub Pull Request** 提交，以确保它们是 **可证实的不可变性**（作者在不破坏签名的情况下无法修改它们）。',
+        reviews_desc: '提交对此提案的评估。评估由您的浏览器进行加密签署，并通过 <strong>GitHub Pull Request</strong> 提交，以确保它们是 <strong>可证实的不可变性</strong>（作者在不破坏签名的情况下无法修改它们）。',
         telemetry_title: '学术遥测与验证',
         telemetry_desc: '本网站严格致力于学术研究。没有跟踪脚本、Google 广告或第三方 Cookie。连接已代理并仅通过 <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a> 进行保护。',
         glossary_title: '词汇表',
@@ -562,6 +562,42 @@ function hexToBuf(hex) {
     return bytes.buffer;
 }
 
+function validateReviewComment(comment) {
+    // 1. PII Regex patterns
+    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    const phoneRegex = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/;
+    const ipv4Regex = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+    const ipv6Regex = /\b(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}\b/i;
+    const ccRegex = /\b(?:\d[ -]*?){13,16}\b/; // Simple credit card check
+
+    if (emailRegex.test(comment)) {
+        return { valid: false, error: "PII Detected: Your comment contains an email address. For your privacy, reviews containing PII are rejected." };
+    }
+    if (phoneRegex.test(comment)) {
+        return { valid: false, error: "PII Detected: Your comment contains a phone number. For your privacy, reviews containing PII are rejected." };
+    }
+    if (ipv4Regex.test(comment) || ipv6Regex.test(comment)) {
+        return { valid: false, error: "PII Detected: Your comment contains an IP address. Reviews containing network identifiers are rejected." };
+    }
+    if (ccRegex.test(comment)) {
+        return { valid: false, error: "PII Detected: Your comment contains a potential credit card or sensitive number. Reviews containing sensitive data are rejected." };
+    }
+
+    // 2. Harmful / Profanity / Abuse keywords (straight-deny)
+    const harmfulKeywords = [
+        "abuse", "exploit", "hack", "bypass", "malware", "ddos", "ransomware", "trojan", "keylogger",
+        "asshole", "bitch", "bastard", "cunt", "fuck", "shit", "nigger", "faggot"
+    ]; // Common abusive/harmful terms in this context
+    const lowerComment = comment.toLowerCase();
+    for (const keyword of harmfulKeywords) {
+        if (lowerComment.includes(keyword)) {
+            return { valid: false, error: `Harmful Content Detected: Your comment contains restricted terms or potential abuse flags ("${keyword}"). Please keep reviews constructive.` };
+        }
+    }
+
+    return { valid: true };
+}
+
 async function submitReview() {
     if (!localKeyPair) {
         alert("Cryptographic keys not initialized. Please try again.");
@@ -573,6 +609,13 @@ async function submitReview() {
     
     if (!comment) {
         alert("Please write a comment before submitting.");
+        return;
+    }
+
+    // Perform PII and Harmful Content validation
+    const validation = validateReviewComment(comment);
+    if (!validation.valid) {
+        alert(validation.error);
         return;
     }
 

@@ -744,7 +744,7 @@
             <section id="reviews" class="scroll-mt-24">
                 <h2 data-i18n="reviews_title" class="text-3xl font-bold text-white font-title mb-4">Reviews & Feedback</h2>
                 <p data-i18n="reviews_desc" class="text-slate-400 mb-6 leading-relaxed">
-                    Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a **GitHub Pull Request**, guaranteeing they are **provably immutable** (the author cannot modify them without breaking the signature).
+                    Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a <strong>GitHub Pull Request</strong>, guaranteeing they are <strong>provably immutable</strong> (the author cannot modify them without breaking the signature).
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -821,9 +821,9 @@
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">TLS Root Certificate Verifier</span>
                         <div class="space-y-2 text-[10px] font-mono text-slate-400">
                             <div class="flex justify-between border-b border-slate-900 py-1"><span>Common Name (CN)</span><span class="text-white">proposal.vaked.dev</span></div>
-                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Issuer</span><span class="text-brand-cyan">Google Trust Services (WE1)</span></div>
-                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Protocol</span><span class="text-white">TLSv1.3</span></div>
-                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Cipher Suite</span><span class="text-white">AEAD-CHACHA20-POLY1305-SHA256</span></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Issuer</span><a href="https://pki.goog/" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Google Trust Services (WE1)</a></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Protocol</span><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3" target="_blank" rel="noopener noreferrer" class="text-white hover:underline">TLSv1.3</a></div>
+                            <div class="flex justify-between border-b border-slate-900 py-1"><span>Cipher Suite</span><a href="https://en.wikipedia.org/wiki/ChaCha20-Poly1305" target="_blank" rel="noopener noreferrer" class="text-white hover:underline">AEAD-CHACHA20-POLY1305-SHA256</a></div>
                             <div class="flex justify-between border-b border-slate-900 py-1"><span>Root Cert Authority</span><span class="text-brand-emerald">GTS Root R1 (Verified)</span></div>
                         </div>
                     </div>
@@ -1130,8 +1130,8 @@
         </div>
         <div class="max-w-6xl mx-auto px-6 border-t border-slate-900/60 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
             <div>
-                <p class="text-[11px] text-slate-400">&copy; 2026 <a href="https://peterl.dev" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors font-semibold">Peter Lodri</a> & the Headroom / UltrameshAI Community.</p>
-                <p class="text-[10px] text-slate-600 mt-1">Released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Apache 2.0 License</a>. Funded via decentralized open-source grants.</p>
+                <p class="text-[11px] text-slate-400">&copy; 2026 <a href="https://peterl.dev" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors font-semibold">Peter Lodri</a> & the <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors font-semibold">Headroom</a> / <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors font-semibold">UltrameshAI</a> Community.</p>
+                <p class="text-[10px] text-slate-600 mt-1">Released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Apache 2.0 License</a>. Funded via <span class="tooltip border-b border-slate-600 border-dashed cursor-help">decentralized open-source grants<span class="tooltiptext font-sans">ELI5: Funding provided by community-driven networks (like Gitcoin or web3 DAOs) rather than a single company or government.</span></span>.</p>
             </div>
             <div class="flex items-center gap-3">
                 <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" aria-hidden="true"></span>
