@@ -1908,6 +1908,9 @@
                     This research is part of a broader ecosystem. All source code, dataset distributions, and experiment logs are open-source and publicly available for replication:
                 </p>
 
+                <div id="ultrawhale-stats" class="mb-6 flex flex-wrap gap-3 text-xs font-mono text-slate-400">
+                    <span>⋯ loading HF dataset stats</span>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Research Paper -->
                     <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
@@ -2083,5 +2086,25 @@
     <script src="app.js"></script>
     <script src="badge.js"></script>
     <script defer src="telemetry.js"></script>
+    <script>
+      // Live HF dataset stats — no auth required for basic info
+      fetch('https://huggingface.co/api/datasets/PeetPedro/ultrawhale-dogfood')
+        .then(r => r.json())
+        .then(d => {
+          const files = (d.siblings || d.cardData?.siblings || []).filter(
+            s => s.rfilename && s.rfilename.endsWith('.jsonl') && s.rfilename.includes('dogfeed-loop')
+          );
+          const dates = [...new Set(files.map(f => f.rfilename.match(/(\d{8})/)?.[1]).filter(Boolean))].sort();
+          document.getElementById('ultrawhale-stats').innerHTML = [
+            `<span class="text-brand-cyan font-semibold">▸</span> <span>${files.length} files</span>`,
+            `<span class="text-slate-600">·</span> <span>${dates.length} days</span>`,
+            `<span class="text-slate-600">·</span> <span>~${Math.round(files.length * 2.5 / 10) * 10}K pairs</span>`,
+            dates.length >= 2 ? `<span class="text-slate-600">·</span> <span>${dates[0]} → ${dates[dates.length-1]}</span>` : '',
+          ].join(' ');
+        })
+        .catch(() => {
+          document.getElementById('ultrawhale-stats').innerHTML = '<span class="text-slate-500">HF dataset stats unavailable</span>';
+        });
+    </script>
 </body>
 </html>
