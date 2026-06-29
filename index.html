@@ -398,6 +398,60 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- How it Works Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-slate-900/60 text-xs">
+                            <!-- Column 1: Critical Floor -->
+                            <div class="bg-slate-900/30 p-4 rounded-xl border border-slate-900 space-y-2">
+                                <div class="flex items-center gap-2 text-brand-emerald">
+                                    <i data-lucide="shield-check" class="w-4 h-4" aria-hidden="true"></i>
+                                    <span class="font-bold uppercase tracking-wider text-[10px] font-title">What is Kept (Critical Floor)</span>
+                                </div>
+                                <p class="text-[11px] text-slate-450 leading-relaxed">
+                                    Our asymmetric loss penalty guarantees retention of vital reasoning context:
+                                </p>
+                                <ul class="list-disc list-inside text-[10px] text-slate-500 space-y-1 font-mono">
+                                    <li>File Paths (e.g. <code class="text-slate-400">src/main.rs</code>)</li>
+                                    <li>Terminal Commands (<code class="text-slate-400">cargo</code>, <code class="text-slate-400">git</code>)</li>
+                                    <li>API Keys & Tokens (<code class="text-slate-400">env.TOKEN</code>)</li>
+                                    <li>IP Addresses & Hex Hashes</li>
+                                    <li>Numbers & Error Codes</li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 2: Evicted Fluff -->
+                            <div class="bg-slate-900/30 p-4 rounded-xl border border-slate-900 space-y-2">
+                                <div class="flex items-center gap-2 text-orange-400">
+                                    <i data-lucide="trash-2" class="w-4 h-4" aria-hidden="true"></i>
+                                    <span class="font-bold uppercase tracking-wider text-[10px] font-title">What is Pruned (Evicted Fluff)</span>
+                                </div>
+                                <p class="text-[11px] text-slate-455 leading-relaxed">
+                                    Redundant conversational tokens are stripped to maximize token savings:
+                                </p>
+                                <ul class="list-disc list-inside text-[10px] text-slate-500 space-y-1">
+                                    <li>Polite filler (<span class="italic text-slate-400">"please"</span>, <span class="italic text-slate-400">"kindly"</span>)</li>
+                                    <li>Repetitive adverbs (<span class="italic text-slate-450">"basically"</span>, <span class="italic text-slate-450">"really"</span>)</li>
+                                    <li>Unnecessary modal verbs</li>
+                                    <li>Punctuation padding</li>
+                                    <li>Common conversational pronouns</li>
+                                </ul>
+                            </div>
+
+                            <!-- Column 3: Dual-Engine Pipeline -->
+                            <div class="bg-slate-900/30 p-4 rounded-xl border border-slate-900 space-y-2">
+                                <div class="flex items-center gap-2 text-brand-cyan">
+                                    <i data-lucide="cpu" class="w-4 h-4" aria-hidden="true"></i>
+                                    <span class="font-bold uppercase tracking-wider text-[10px] font-title">Dual-Engine Routing</span>
+                                </div>
+                                <p class="text-[11px] text-slate-455 leading-relaxed">
+                                    The pipeline dynamically routes based on execution context:
+                                </p>
+                                <ul class="list-disc list-inside text-[10px] text-slate-500 space-y-1">
+                                    <li><strong class="text-slate-400">Local Dev:</strong> Routes to the Rust <code class="text-brand-cyan">portail</code> gateway (port 8787) using cached <code class="text-slate-450">OnceLock</code> regex.</li>
+                                    <li><strong class="text-slate-400">Production Edge:</strong> Bypasses gateway fetches to avoid 405 CORS blocks, running a SOTA client-side JS regex engine.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
