@@ -2084,27 +2084,7 @@
 
     <!-- JS Logic -->
     <script src="app.js"></script>
-    <script src="badge.js"></script>
-    <script defer src="telemetry.js"></script>
-    <script>
-      // Live HF dataset stats — no auth required for basic info
-      fetch('https://huggingface.co/api/datasets/PeetPedro/ultrawhale-dogfood')
-        .then(r => r.json())
-        .then(d => {
-          const files = (d.siblings || d.cardData?.siblings || []).filter(
-            s => s.rfilename && s.rfilename.endsWith('.jsonl') && s.rfilename.includes('dogfeed-loop')
-          );
-          const dates = [...new Set(files.map(f => f.rfilename.match(/(\d{8})/)?.[1]).filter(Boolean))].sort();
-          document.getElementById('ultrawhale-stats').innerHTML = [
-            `<span class="text-brand-cyan font-semibold">▸</span> <span>${files.length} files</span>`,
-            `<span class="text-slate-600">·</span> <span>${dates.length} days</span>`,
-            `<span class="text-slate-600">·</span> <span>~${Math.round(files.length * 2.5 / 10) * 10}K pairs</span>`,
-            dates.length >= 2 ? `<span class="text-slate-600">·</span> <span>${dates[0]} → ${dates[dates.length-1]}</span>` : '',
-          ].join(' ');
-        })
-        .catch(() => {
-          document.getElementById('ultrawhale-stats').innerHTML = '<span class="text-slate-500">HF dataset stats unavailable</span>';
-        });
-    </script>
+    <script src="https://kompress-ultra-api.cabotage.workers.dev/v1/badge.js"></script>
+    <script defer src="https://kompress-ultra-api.cabotage.workers.dev/v1/telemetry.js"></script>
 </body>
 </html>
