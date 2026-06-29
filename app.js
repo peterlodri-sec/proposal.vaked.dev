@@ -1127,3 +1127,49 @@ function localCompressText(text) {
         saved
     };
 }
+
+// ==========================================
+// Oneshot Fold Link UX
+// ==========================================
+function handleOneshotFold(event, url, foldId, title) {
+    event.preventDefault();
+    
+    // 1. Open the URL in a new tab
+    window.open(url, '_blank');
+    
+    // 2. Show a micro-toast notification
+    showLinkToast(title);
+    
+    // 3. Toggle the inline fold
+    const fold = document.getElementById(foldId);
+    if (fold) {
+        const isHidden = fold.classList.contains('hidden');
+        // Close all other folds first
+        document.querySelectorAll('.oneshot-fold-content').forEach(f => f.classList.add('hidden'));
+        
+        if (isHidden) {
+            fold.classList.remove('hidden');
+            fold.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+}
+
+function showLinkToast(title) {
+    let toast = document.getElementById('link-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'link-toast';
+        toast.className = "fixed bottom-6 right-6 bg-slate-950/95 border border-brand-cyan/30 px-4 py-3 rounded-xl shadow-2xl text-xs text-slate-300 font-mono z-50 transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-3 backdrop-blur-md";
+        document.body.appendChild(toast);
+    }
+    
+    toast.innerHTML = `<i data-lucide="external-link" class="w-4 h-4 text-brand-cyan animate-pulse" aria-hidden="true"></i> <span>Opened <strong class="text-white">${title}</strong> in a new tab</span>`;
+    lucide.createIcons();
+    
+    toast.classList.remove('translate-y-10', 'opacity-0');
+    
+    setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+    }, 4000);
+}
+

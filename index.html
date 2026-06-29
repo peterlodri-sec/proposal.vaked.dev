@@ -560,50 +560,109 @@
                         </svg>
                     </div>
                 </div>
-            </section>
-
-            <!-- Vaked Capability & Context -->
+            </section>            <!-- Vaked Capability & Context -->
             <section id="vakedc" class="scroll-mt-24">
                 <h2 data-i18n="vakedc_title" class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
-                <p data-i18n="vakedc_desc" class="text-sm text-slate-400 mb-6 leading-relaxed">
+                <p data-i18n="vakedc_desc" class="text-sm text-slate-400 mb-8 leading-relaxed">
                     A decentralized routing and verification matrix designed to coordinate context-pruning workloads across heterogeneous nodes (cloud VMs and local Raspberry Pis). By separating capacity detection, routing, and cryptographic verification, the system ensures zero-trust execution.
                 </p>
 
-                <!-- SVG Diagram -->
-                <div class="bg-slate-955/40 p-6 rounded-xl border border-slate-900 mb-6">
-                    <svg viewBox="0 0 600 300" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Decentralized Vaked Capability and Context Mapping">
-                        <!-- Central Core Router -->
-                        <circle cx="300" cy="150" r="40" fill="#090d16" stroke="#00f2fe" stroke-width="2"/>
-                        <text x="300" y="148" fill="white" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Vaked</text>
-                        <text x="300" y="160" fill="#00f2fe" font-family="monospace" font-size="9" text-anchor="middle">Router</text>
+                <!-- Interactive HTML/CSS Mesh Node Cluster Map -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch mb-8">
+                    <!-- Cloud VM Node -->
+                    <div class="relative group overflow-hidden bg-slate-950/40 border border-slate-900 hover:border-brand-cyan/30 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full filter blur-xl group-hover:bg-brand-cyan/10 transition-all" aria-hidden="true"></div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded font-mono font-semibold uppercase tracking-wider">Node: Cloud VM</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-pulse" aria-hidden="true"></span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white font-title flex items-center gap-2">
+                                <i data-lucide="server" class="w-5 h-5 text-brand-cyan" aria-hidden="true"></i>
+                                High-Capacity Core
+                            </h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                GPU-accelerated cloud virtual machines. Runs the primary <code>kompress-v8</code> encoder and processes complex attention matrices.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-900/80 grid grid-cols-2 gap-4 text-[10px] font-mono">
+                            <div>
+                                <span class="text-slate-500 block">Capacity</span>
+                                <span class="text-white font-semibold">80 TFLOPS (FP16)</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-550 block">Latency</span>
+                                <span class="text-brand-cyan font-semibold">&lt; 0.2ms (Intra-DC)</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">VRAM / RAM</span>
+                                <span class="text-white font-semibold">80GB HBM3</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">Workload</span>
+                                <span class="text-white font-semibold">Dense Encoding</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Central Vaked Router Hub -->
+                    <div class="bg-slate-955/20 border border-slate-900 rounded-xl p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[220px]">
+                        <!-- Grid Background -->
+                        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" aria-hidden="true"></div>
                         
-                        <!-- Orbits / Connectors -->
-                        <circle cx="300" cy="150" r="100" stroke="#1e293b" stroke-dasharray="6 6" />
+                        <!-- Connecting Line/Pulses -->
+                        <div class="absolute inset-x-0 h-0.5 bg-slate-900 top-1/2 -translate-y-1/2" aria-hidden="true">
+                            <div class="absolute h-full w-20 bg-gradient-to-r from-transparent via-brand-cyan to-transparent animate-pulse left-1/4"></div>
+                            <div class="absolute h-full w-20 bg-gradient-to-r from-transparent via-brand-blue to-transparent animate-pulse right-1/4"></div>
+                        </div>
+
+                        <!-- Central Sphere -->
+                        <div class="relative z-10 w-20 h-20 rounded-full bg-slate-950 border border-brand-cyan/40 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(0,242,254,0.15)] group hover:scale-105 transition-all duration-300">
+                            <div class="absolute inset-0.5 rounded-full border border-dashed border-brand-cyan/25 animate-[spin_20s_linear_infinite]" aria-hidden="true"></div>
+                            <span class="text-xs font-bold text-white font-mono uppercase tracking-wider">Vaked</span>
+                            <span class="text-[8px] text-brand-cyan font-mono font-semibold">Router</span>
+                        </div>
                         
-                        <!-- Node 1: Active Context -->
-                        <line x1="300" y1="150" x2="300" y2="50" stroke="#4facfe" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        <circle cx="300" cy="50" r="24" fill="#0f172a" stroke="#4facfe" stroke-width="1.5"/>
-                        <text x="300" y="47" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Active Context</text>
-                        <text x="300" y="57" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">T_crit Floor</text>
-                        
-                        <!-- Node 2: Passive Memory -->
-                        <line x1="300" y1="150" x2="400" y2="150" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        <circle cx="400" cy="150" r="24" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
-                        <text x="400" y="147" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Passive Memory</text>
-                        <text x="400" y="157" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">Milvus DB</text>
-                        
-                        <!-- Node 3: Capabilities -->
-                        <line x1="300" y1="150" x2="200" y2="150" stroke="#00f2fe" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        <circle cx="200" cy="150" r="24" fill="#0f172a" stroke="#00f2fe" stroke-width="1.5"/>
-                        <text x="200" y="147" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Capabilities</text>
-                        <text x="200" y="157" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">CUDA / CPU</text>
-                        
-                        <!-- Node 4: Execution -->
-                        <line x1="300" y1="150" x2="300" y2="250" stroke="#ffb020" stroke-width="1.5" stroke-dasharray="4 4"/>
-                        <circle cx="300" cy="250" r="24" fill="#0f172a" stroke="#ffb020" stroke-width="1.5"/>
-                        <text x="300" y="247" fill="white" font-family="sans-serif" font-size="8" font-weight="bold" text-anchor="middle">Execution</text>
-                        <text x="300" y="257" fill="#64748b" font-family="monospace" font-size="7" text-anchor="middle">Bun / Nu</text>
-                    </svg>
+                        <div class="mt-4 text-center z-10">
+                            <span class="text-[10px] text-slate-550 font-mono">Dynamic Workload Partitioning</span>
+                        </div>
+                    </div>
+
+                    <!-- Pi Edge Node -->
+                    <div class="relative group overflow-hidden bg-slate-955/40 border border-slate-900 hover:border-brand-emerald/30 rounded-xl p-6 transition-all duration-300 flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-emerald/5 rounded-bl-full filter blur-xl group-hover:bg-brand-emerald/10 transition-all" aria-hidden="true"></div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] bg-brand-emerald/10 text-brand-emerald px-2 py-0.5 rounded font-mono font-semibold uppercase tracking-wider">Node: Pi Edge</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-emerald animate-pulse" aria-hidden="true"></span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white font-title flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-5 h-5 text-brand-emerald" aria-hidden="true"></i>
+                                Resource-Constrained Edge
+                            </h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Local Raspberry Pi (or similar ARM devices). Runs lightweight heuristic filters and verifies context integrity signatures.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-900/80 grid grid-cols-2 gap-4 text-[10px] font-mono">
+                            <div>
+                                <span class="text-slate-500 block">Capacity</span>
+                                <span class="text-white font-semibold">0.5 TFLOPS (FP32)</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-550 block">Latency</span>
+                                <span class="text-brand-emerald font-semibold">~12ms (LAN)</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">VRAM / RAM</span>
+                                <span class="text-white font-semibold">4GB LPDDR4</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">Workload</span>
+                                <span class="text-white font-semibold">Heuristic Veto</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 3 Pillars Grid -->
@@ -614,7 +673,7 @@
                             <h4 class="font-semibold text-white text-sm">Capability Profiling</h4>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            Managed by <a href="https://github.com/peterlodri-sec/vaked-base" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">vaked-base</a>. Nodes continuously benchmark their local execution speed (token/sec), VRAM, and RAM capacity to broadcast standardized hardware capability profiles.
+                            Managed by <a href="#" onclick="handleOneshotFold(event, 'https://github.com/peterlodri-sec/vaked-base', 'fold-vaked-base', 'vaked-base')" class="text-brand-cyan hover:underline font-semibold inline-flex items-center gap-0.5">vaked-base <i data-lucide="chevron-down" class="w-3 h-3" aria-hidden="true"></i></a>. Nodes continuously benchmark their local execution speed (token/sec), VRAM, and RAM capacity to broadcast standardized hardware capability profiles.
                         </p>
                     </div>
                     
@@ -624,7 +683,7 @@
                             <h4 class="font-semibold text-white text-sm">Active Routing</h4>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            Orchestrated by the core <code>vaked</code> router. Dynamically partitions and schedules incoming compression payloads, routing intensive ModernBERT encoding to GPU-backed VMs while offloading lightweight verification tasks to edge nodes.
+                            Orchestrated by the <a href="#" onclick="handleOneshotFold(event, 'https://github.com/peterlodri-sec/vaked-base/blob/main/gateway/gw_v3.zig', 'fold-vaked-router', 'gateway/gw_v3.zig')" class="text-brand-cyan hover:underline font-semibold inline-flex items-center gap-0.5">core vaked router <i data-lucide="chevron-down" class="w-3 h-3" aria-hidden="true"></i></a>. <a href="#" onclick="handleOneshotFold(event, 'https://github.com/peterlodri-sec/vaked-base/blob/main/gateway/gw.zig', 'fold-vaked-partition', 'gateway/gw.zig')" class="text-brand-cyan hover:underline font-semibold inline-flex items-center gap-0.5">Dynamically partitions <i data-lucide="chevron-down" class="w-3 h-3" aria-hidden="true"></i></a> and schedules incoming compression payloads, routing intensive ModernBERT encoding to GPU-backed VMs.
                         </p>
                     </div>
 
@@ -634,11 +693,157 @@
                             <h4 class="font-semibold text-white text-sm">Context Attestation</h4>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed">
-                            Handled by the <code>vakedc</code> protocol. Generates cryptographic signatures (ECDSA P-256) of the pruned context. This guarantees that the compressed prompt has not been tampered with or corrupted during mesh transit.
+                            Handled by the <a href="#" onclick="handleOneshotFold(event, 'https://github.com/peterlodri-sec/vaked-base/tree/main/vakedc', 'fold-vakedc-protocol', 'vaked-base/vakedc')" class="text-brand-cyan hover:underline font-semibold inline-flex items-center gap-0.5">vakedc protocol <i data-lucide="chevron-down" class="w-3 h-3" aria-hidden="true"></i></a>. <a href="#" onclick="handleOneshotFold(event, 'https://github.com/peterlodri-sec/vaked-base/blob/main/vakedc/emit.py', 'fold-vakedc-sig', 'vakedc/emit.py')" class="text-brand-cyan hover:underline font-semibold inline-flex items-center gap-0.5">Generates cryptographic signatures (ECDSA P-256) <i data-lucide="chevron-down" class="w-3 h-3" aria-hidden="true"></i></a> of the pruned context.
                         </p>
                     </div>
                 </div>
-            </section>
+
+                <!-- Oneshot Fold Container -->
+                <div class="mt-4 space-y-3">
+                    <!-- fold-vaked-base -->
+                    <div id="fold-vaked-base" class="hidden oneshot-fold-content p-5 rounded-lg bg-slate-950/80 border border-brand-cyan/20 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-cyan font-bold">Source Code: vaked-base</span>
+                            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-slate-500 hover:text-white cursor-pointer" aria-label="Close fold"><i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="font-sans text-slate-400">
+                            <strong>vaked-base</strong> is the foundation layer. It handles node capacity detection, benchmarking local prompt processing speeds, and broadcasting node telemetry across the mesh VPN.
+                        </p>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800 text-[11px] text-slate-450">
+                            Workspace Location: <span class="text-white select-all">/Users/lodripeter/workspace/peterlodri-sec/vaked-base</span>
+                        </div>
+                    </div>
+
+                    <!-- fold-vaked-router -->
+                    <div id="fold-vaked-router" class="hidden oneshot-fold-content p-5 rounded-lg bg-slate-955/80 border border-brand-cyan/20 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-cyan font-bold">Source Code: gateway/gw_v3.zig</span>
+                            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-slate-500 hover:text-white cursor-pointer" aria-label="Close fold"><i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="font-sans text-slate-400">
+                            The <strong>core vaked router</strong> is implemented in high-performance Zig. It acts as a zero-copy proxy, reading incoming HTTP/gRPC prompt streams and matching them against the active node table.
+                        </p>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800 text-[11px] text-slate-450">
+                            Workspace Location: <span class="text-white select-all">/Users/lodripeter/workspace/peterlodri-sec/vaked-base/gateway/gw_v3.zig</span>
+                        </div>
+                    </div>
+
+                    <!-- fold-vaked-partition -->
+                    <div id="fold-vaked-partition" class="hidden oneshot-fold-content p-5 rounded-lg bg-slate-955/80 border border-brand-cyan/20 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-cyan font-bold">Source Code: gateway/gw.zig</span>
+                            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-slate-500 hover:text-white cursor-pointer" aria-label="Close fold"><i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="font-sans text-slate-400">
+                            <strong>Dynamic Partitioning</strong> is handled by the Zig-based load balancer. It splits long contexts into segments, routing dense attention computation to GPU VMs while offloading sparse token validation to edge nodes.
+                        </p>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800 text-[11px] text-slate-450">
+                            Workspace Location: <span class="text-white select-all">/Users/lodripeter/workspace/peterlodri-sec/vaked-base/gateway/gw.zig</span>
+                        </div>
+                    </div>
+
+                    <!-- fold-vakedc-protocol -->
+                    <div id="fold-vakedc-protocol" class="hidden oneshot-fold-content p-5 rounded-lg bg-slate-955/80 border border-brand-cyan/20 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-cyan font-bold">Source Code: vaked-base/vakedc</span>
+                            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-slate-500 hover:text-white cursor-pointer" aria-label="Close fold"><i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="font-sans text-slate-400">
+                            The <strong>vakedc protocol</strong> is the compiler and signing daemon. It translates high-level context requirements into a localized Intermediate Representation (IR), verifies the AST for safety violations, and outputs signed context blocks.
+                        </p>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800 text-[11px] text-slate-450">
+                            Workspace Location: <span class="text-white select-all">/Users/lodripeter/workspace/peterlodri-sec/vaked-base/vakedc</span>
+                        </div>
+                    </div>
+
+                    <!-- fold-vakedc-sig -->
+                    <div id="fold-vakedc-sig" class="hidden oneshot-fold-content p-5 rounded-lg bg-slate-955/80 border border-brand-cyan/20 text-xs font-mono text-slate-300 space-y-2 animate-fadeIn">
+                        <div class="flex justify-between items-center">
+                            <span class="text-brand-cyan font-bold">Source Code: vakedc/emit.py</span>
+                            <button onclick="this.parentElement.parentElement.classList.add('hidden')" class="text-slate-500 hover:text-white cursor-pointer" aria-label="Close fold"><i data-lucide="x" class="w-4 h-4" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="font-sans text-slate-400">
+                            <strong>ECDSA P-256 Signer:</strong> This module signs the SHA-256 digest of the pruned prompt using an SECP256r1 (P-256) private key. The resulting signature is appended as a binary header to the prompt, allowing downstream LLM hosts to verify context integrity.
+                        </p>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800 text-[11px] text-slate-450">
+                            Workspace Location: <span class="text-white select-all">/Users/lodripeter/workspace/peterlodri-sec/vaked-base/vakedc/emit.py</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Production Cloud Stack Deployments -->
+                <div class="mt-8 space-y-4">
+                    <h3 class="text-lg font-bold text-white font-title flex items-center gap-2">
+                        <i data-lucide="cloud" class="w-5 h-5 text-brand-cyan" aria-hidden="true"></i>
+                        Production Cloud Stack Deployments (VakedC Integration)
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Below are the top three enterprise SWE-team cloud stacks integrated with <code>vakedc</code> context attestation. Click each stack to inspect its cryptographic signature payload.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Stack 1 -->
+                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-bold text-brand-cyan uppercase tracking-wider font-mono">Stack A: Serverless Edge</span>
+                                <span class="text-[9px] text-slate-500 font-mono">Vercel + Supabase</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Runs <code>vakedc</code> as a WebAssembly module inside Vercel Edge Functions, pruning chat histories before querying Supabase pgvector.
+                            </p>
+                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                {<br>
+                                &nbsp;&nbsp;"origin": "vercel-edge-us-east",<br>
+                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                &nbsp;&nbsp;"digest": "0x4e5a...f3a2",<br>
+                                &nbsp;&nbsp;"signature": "3045022100e1...a8f2"<br>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Stack 2 -->
+                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-bold text-brand-blue uppercase tracking-wider font-mono">Stack B: Enterprise Fargate</span>
+                                <span class="text-[9px] text-slate-500 font-mono">AWS ECS + Bedrock</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Runs <code>vaked</code> in a sidecar container on ECS Fargate (GPU-backed), pruning long context windows before forwarding to Claude.
+                            </p>
+                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                {<br>
+                                &nbsp;&nbsp;"origin": "aws-ecs-fargate-gpu",<br>
+                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                &nbsp;&nbsp;"digest": "0x8f2c...e9b1",<br>
+                                &nbsp;&nbsp;"signature": "3045022100fa...c4d3"<br>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Stack 3 -->
+                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-bold text-brand-emerald uppercase tracking-wider font-mono">Stack C: Hybrid Cloud/Edge</span>
+                                <span class="text-[9px] text-slate-500 font-mono">GCP + Local Pi Edge</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                GCP Cloud Run processes high-throughput API gateway requests, Vertex AI processes embeddings, and local Pis run veto-filters.
+                            </p>
+                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                {<br>
+                                &nbsp;&nbsp;"origin": "gcp-cloudrun-pi-edge",<br>
+                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                &nbsp;&nbsp;"digest": "0x3d7a...b8c2",<br>
+                                &nbsp;&nbsp;"signature": "3045022100ab...d7e1"<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>n>
 
             <!-- Model Architecture -->
             <section id="architecture" class="scroll-mt-24">
