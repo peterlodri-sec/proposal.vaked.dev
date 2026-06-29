@@ -167,7 +167,7 @@ function calculateParadoxOutcome() {
     const decisionBadge = document.getElementById('decision-badge');
     const explanationText = document.getElementById('p-explanation-text');
     
-    explanationText.innerHTML = explanation + ` <a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a>`;
+    explanationText.innerHTML = explanation + ` <a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a>`;
     
     if (finalDecision === 'evicted') {
         decisionBox.className = "p-4 rounded-xl border border-red-500/25 bg-red-500/5 flex items-center justify-between transition-all";
@@ -209,15 +209,47 @@ function updateVoteUI(voterId, keep) {
 let localKeyPair = null;
 let currentRating = 5;
 
+const NICKNAME_ADJECTIVES = ["Quantum", "Decentral", "Asymmetric", "Neural", "Pruned", "Cryptic", "Adaptive", "Hyper", "Sleek", "Vector", "Active", "Passive", "Dense", "Encoded", "Modulated", "Coherent"];
+const NICKNAME_NOUNS = ["Whale", "Octopus", "Manta", "Dolphin", "Orca", "Shark", "Nautilus", "Stingray", "Seahorse", "Walrus", "Penguin", "Seal", "Otter", "Anemone", "Coral", "Crab"];
+
+async function generateAnonymousNickname(publicKeyJwk) {
+    try {
+        // Compute SHA-256 hash of the public key JWK string representation
+        const jwkStr = JSON.stringify(publicKeyJwk);
+        const encoder = new TextEncoder();
+        const data = encoder.encode(jwkStr);
+        const hashBuf = await window.crypto.subtle.digest("SHA-256", data);
+        const hashArray = new Uint8Array(hashBuf);
+        
+        // Map hash bytes to indices
+        const adjIdx = hashArray[0] % NICKNAME_ADJECTIVES.length;
+        const nounIdx = hashArray[1] % NICKNAME_NOUNS.length;
+        
+        // Take 4 hex characters from the end of the hash
+        const suffix = bufToHex(hashBuf).substring(0, 4);
+        
+        const nickname = `${NICKNAME_ADJECTIVES[adjIdx]}-${NICKNAME_NOUNS[nounIdx]}-${suffix}`;
+        
+        const nameInput = document.getElementById('review-name');
+        if (nameInput) {
+            nameInput.value = nickname;
+        }
+    } catch (e) {
+        console.error("Failed to generate cryptographic nickname:", e);
+    }
+}
+
 async function initCryptoKeys() {
     try {
         const storedPub = localStorage.getItem('review_pub_key');
         const storedPriv = localStorage.getItem('review_priv_key');
+        let pubKeyJwk = null;
         
         if (storedPub && storedPriv) {
             // Keys already exist
+            pubKeyJwk = JSON.parse(storedPub);
             localKeyPair = {
-                publicKey: await window.crypto.subtle.importKey("jwk", JSON.parse(storedPub), { name: "ECDSA", namedCurve: "P-256" }, true, ["verify"]),
+                publicKey: await window.crypto.subtle.importKey("jwk", pubKeyJwk, { name: "ECDSA", namedCurve: "P-256" }, true, ["verify"]),
                 privateKey: await window.crypto.subtle.importKey("jwk", JSON.parse(storedPriv), { name: "ECDSA", namedCurve: "P-256" }, true, ["sign"])
             };
         } else {
@@ -228,12 +260,17 @@ async function initCryptoKeys() {
                 ["sign", "verify"]
             );
             
-            const pubJwk = await window.crypto.subtle.exportKey("jwk", keyPair.publicKey);
+            pubKeyJwk = await window.crypto.subtle.exportKey("jwk", keyPair.publicKey);
             const privJwk = await window.crypto.subtle.exportKey("jwk", keyPair.privateKey);
             
-            localStorage.setItem('review_pub_key', JSON.stringify(pubJwk));
+            localStorage.setItem('review_pub_key', JSON.stringify(pubKeyJwk));
             localStorage.setItem('review_priv_key', JSON.stringify(privJwk));
             localKeyPair = keyPair;
+        }
+        
+        // Generate and set nickname based on the public key
+        if (pubKeyJwk) {
+            await generateAnonymousNickname(pubKeyJwk);
         }
     } catch (e) {
         console.error("Failed to initialize cryptographic keys", e);

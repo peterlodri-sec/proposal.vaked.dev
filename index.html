@@ -15,6 +15,41 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Compiled Tailwind CSS -->
     <link href="index.css" rel="stylesheet">
+    <!-- KaTeX for LaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });"></script>
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border: 1px solid #1e293b;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            font-weight: normal;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased">
 
@@ -31,11 +66,10 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-slate-900/50 hover:bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
+                <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-slate-900/50 hover:bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Read Paper
                 </a>
-                <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15">
-                    <!-- Inline SVG to replace Lucide github icon and eliminate console errors -->
+                <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                     View Substrate
                 </a>
@@ -57,21 +91,21 @@
                 Asymmetric Loss Modulation for <span class="gradient-text">Context Compression</span>
             </h1>
             <p class="text-lg md:text-xl text-slate-400 font-light mb-8 leading-relaxed">
-                Integrating learned context-pruning into Headroom. Achieve <strong class="text-white">~78% token savings</strong> and <strong class="text-white">~75% latency reduction</strong> while maintaining a near-perfect <strong class="text-brand-cyan">0.993 exact-keep rate</strong> on critical reasoning tokens.
+                Integrating learned context-pruning into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Achieve <strong class="text-white">~78% token savings</strong> and <strong class="text-white">~75% latency reduction</strong> while maintaining a near-perfect <strong class="text-brand-cyan">0.993 exact-keep rate</strong> on critical reasoning tokens.
             </p>
             
             <div class="flex justify-center gap-4 flex-wrap">
                 <div class="bg-slate-900/50 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Token Savings</span>
-                    <span class="text-lg font-bold text-brand-cyan">78%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 / Table 7 on Page 14">[Paper p.14]</a></span>
+                    <span class="text-lg font-bold text-brand-cyan">78%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Section 4.8 / Table 7 on Page 14">[Paper p.14]</a></span>
                 </div>
                 <div class="bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Latency Delta</span>
-                    <span class="text-lg font-bold text-brand-blue">-75%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" class="cite-link" title="See Section 4.8 on Page 14">[Paper p.14]</a></span>
+                    <span class="text-lg font-bold text-brand-blue">-75%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Section 4.8 on Page 14">[Paper p.14]</a></span>
                 </div>
                 <div class="bg-slate-905 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Exact Keep Rate</span>
-                    <span class="text-lg font-bold text-brand-emerald">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></span>
+                    <span class="text-lg font-bold text-brand-emerald">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></span>
                 </div>
             </div>
         </div>
@@ -193,7 +227,7 @@
 
             <!-- Paradox Simulator -->
             <section id="paradox" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">The Voting Ensemble Paradox</h2>
+                <h2 class="text-3xl font-bold text-white font-title mb-4">The *Voting Ensemble Paradox*</h2>
                 
                 <div class="bg-slate-950/50 p-6 rounded-xl border border-slate-900 space-y-6">
                     <!-- ELI5 Explanation -->
@@ -223,7 +257,7 @@
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase tracking-wider text-slate-500 block">1. Select a Critical Token to Inspect:</label>
                             <div class="grid grid-cols-3 gap-2">
-                                <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/5 text-white font-mono hover:border-brand-cyan transition-all">src/auth.rs<span class="block text-[8px] text-slate-500 mt-1">File Path</span></button>
+                                <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all">src/auth.rs<span class="block text-[8px] text-slate-500 mt-1">File Path</span></button>
                                 <button onclick="inspectToken('cmd')" id="btn-tok-cmd" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">cargo test<span class="block text-[8px] text-slate-500 mt-1">Command</span></button>
                                 <button onclick="inspectToken('ip')" id="btn-tok-ip" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">100.64.0.1<span class="block text-[8px] text-slate-500 mt-1">IP Address</span></button>
                             </div>
@@ -273,7 +307,7 @@
 
                     <div class="p-4 bg-slate-900/30 rounded-lg border border-slate-900 text-xs text-slate-400">
                         <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom"></i>
-                        <span id="p-explanation-text">Under the AND veto rule, Expert 1 doesn't understand file paths and votes to delete it. Even though the other two experts voted to keep it, the item is evicted. The ensemble's recall collapses.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
+                        <span id="p-explanation-text">Under the AND veto rule, Expert 1 doesn't understand file paths and votes to delete it. Even though the other two experts voted to keep it, the item is evicted. The ensemble's recall collapses.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
                     </div>
                 </div>
             </section>
@@ -283,7 +317,7 @@
                 <h2 class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
                 <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
                     <p>
-                        Learned <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">context-pruning</a> improves long-context agent efficiency but introduces the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">Voting Ensemble Paradox</a>. Under <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">unanimity-to-keep (AND)</a> voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
+                        Learned <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">context-pruning</a> improves long-context agent efficiency but introduces the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">Voting Ensemble Paradox</a>. Under <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">unanimity-to-keep (AND)</a> voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
                     </p>
                     
                     <!-- Interactive Formula Explainer -->
@@ -425,20 +459,20 @@
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            `kompress-v8` uses a 149M-parameter <a href="https://en.wikipedia.org/wiki/BERT_(language_model)" target="_blank" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
+                            `kompress-v8` uses a 149M-parameter <a href="https://en.wikipedia.org/wiki/BERT_(language_model)" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
                         </p>
                         <ul class="space-y-3 text-sm text-slate-400">
                             <li class="flex items-start gap-2.5">
                                 <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
-                                <span><strong><a href="https://en.wikipedia.org/wiki/Token_classification" target="_blank" class="text-white hover:text-brand-cyan hover:underline">Token Classifier Head</a>:</strong> Produces per-token eviction logits.</span>
+                                <span><strong><a href="https://en.wikipedia.org/wiki/Token_classification" target="_blank" rel="noopener noreferrer" class="text-white hover:text-brand-cyan hover:underline">Token Classifier Head</a>:</strong> Produces per-token eviction logits.</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
-                                <span><strong><a href="https://en.wikipedia.org/wiki/Convolutional_neural_network" target="_blank" class="text-white hover:text-brand-cyan hover:underline">Span-CNN Head</a>:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
+                                <span><strong><a href="https://en.wikipedia.org/wiki/Convolutional_neural_network" target="_blank" rel="noopener noreferrer" class="text-white hover:text-brand-cyan hover:underline">Span-CNN Head</a>:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
                             </li>
                         </ul>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            An <strong><a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" class="text-brand-cyan hover:underline">Asymmetric Modulation Gate</a></strong> scales the token logits to suppress eviction in high-coherence spans:
+                            An <strong><a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Asymmetric Modulation Gate</a></strong> scales the token logits to suppress eviction in high-coherence spans:
                         </p>
                         <div class="my-4">
                             $$\tilde{I}_i(x) = \sigma\left(\text{logits}_{\text{tok}}(x) - \gamma g(\text{logits}_{\text{span}}(x))\right)$$
@@ -506,13 +540,13 @@
                                     <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
                                     kompress-v8 (Ours, Production)
                                 </td>
-                                <td class="py-4 px-4 font-bold text-brand-cyan">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
+                                <td class="py-4 px-4 font-bold text-brand-cyan">0.993<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.936</td>
                                 <td class="py-4 px-4 font-mono">97.0 ms</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4 font-medium">kompress-v8 (Ours, `v4` SSL)</td>
-                                <td class="py-4 px-4 font-semibold">0.967<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
+                                <td class="py-4 px-4 font-semibold">0.967<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.823</td>
                                 <td class="py-4 px-4 font-mono text-slate-500">
                                     <span class="tooltip">—
@@ -522,13 +556,13 @@
                             </tr>
                             <tr>
                                 <td class="py-4 px-4 text-slate-500">Random Eviction (Floor)</td>
-                                <td class="py-4 px-4 text-slate-500">0.910<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
+                                <td class="py-4 px-4 text-slate-500">0.910<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono text-slate-500">0.835</td>
                                 <td class="py-4 px-4 font-mono text-slate-500">0.0 ms</td>
                             </tr>
                             <tr>
                                 <td class="py-4 px-4">LLMLingua-2</td>
-                                <td class="py-4 px-4">0.867<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
+                                <td class="py-4 px-4">0.867<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono text-amber-500">
                                     <span class="tooltip">1.550
                                         <span class="tooltiptext">Context Expansion: Kept 155% of original tokens (caused context bloat).</span>
@@ -538,7 +572,7 @@
                             </tr>
                             <tr>
                                 <td class="py-4 px-4">TextRank (Extractive)</td>
-                                <td class="py-4 px-4">0.599<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
+                                <td class="py-4 px-4">0.599<a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 10 on Page 16">[Paper p.16]</a></td>
                                 <td class="py-4 px-4 font-mono">0.543</td>
                                 <td class="py-4 px-4 font-mono">23.1 ms</td>
                             </tr>
@@ -552,7 +586,7 @@
                 <h2 class="text-3xl font-bold text-white font-title mb-6">Headroom Integration Proposal</h2>
                 <div class="space-y-6 text-slate-400 leading-relaxed">
                     <p>
-                        We propose integrating `kompress-ultra` directly into Headroom (referencing <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) as a core context-management middleware:
+                        We propose integrating `kompress-ultra` directly into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (referencing <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) as a core context-management middleware:
                     </p>
                     
                     <div class="space-y-4">
@@ -562,7 +596,7 @@
                                 1. Middleware Chain Integration
                             </h4>
                             <p class="text-xs">
-                                Intercept outgoing LLM payload payloads in Headroom and run token-level classification via a local ONNX runtime of `kompress-v8`.
+                                Intercept outgoing LLM payload payloads in <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> and run token-level classification via a local ONNX runtime of `kompress-v8`.
                             </p>
                         </div>
 
@@ -582,7 +616,7 @@
                                 3. Passive Memory Offloading
                             </h4>
                             <p class="text-xs">
-                                Seamlessly write evicted tokens to Headroom's memory spine (e.g. SQLite/Milvus) for semantic recall in future turns.
+                                Seamlessly write evicted tokens to <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a>'s memory spine (e.g. SQLite/Milvus) for semantic recall in future turns.
                             </p>
                         </div>
                     </div>
@@ -599,11 +633,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Submit Form -->
                     <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900 space-y-4">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Submit a Review</span>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Submit a Review</span>
+                            <span class="text-[10px] bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded font-mono">P-256 Signed</span>
+                        </div>
                         
                         <div>
-                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Name / Pseudonym</label>
-                            <input type="text" id="review-name" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-brand-cyan" placeholder="Anonymous or GitHub handle" value="Anonymous">
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">
+                                Generated Nickname 
+                                <span class="tooltip text-[9px] text-brand-cyan ml-1 cursor-help">[ELI5: How it works]
+                                    <span class="tooltiptext">Your name is generated by hashing your browser's unique session public key. It is 100% anonymous but mathematically proves you are a unique reviewer.</span>
+                                </span>
+                            </label>
+                            <input type="text" id="review-name" class="w-full bg-slate-905 border border-slate-800 rounded-lg p-2 text-sm text-brand-cyan focus:outline-none focus:border-brand-cyan font-mono" readonly>
                         </div>
 
                         <div>
@@ -759,6 +801,22 @@
                             <span class="text-white font-bold block mb-1">unanimity-to-keep (AND)</span>
                             Keeping a token only if every single model votes to keep it.
                         </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">ModernBERT</span>
+                            A state-of-the-art encoder model optimized for speed and long-context processing.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">LoRA</span>
+                            Low-Rank Adaptation; fine-tunes large models by training a fraction of parameters.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">Span-CNN</span>
+                            A neural head that evaluates context coherence across multi-word token sequences.
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block mb-1">Asymmetric Modulation Gate</span>
+                            Task head that dynamically protects critical tokens based on CNN span scores.
+                        </div>
                     </div>
                 </div>
             </section>
@@ -772,7 +830,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Research Paper -->
-                    <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Research Manuscript</span>
@@ -785,7 +843,7 @@
                     </a>
 
                     <!-- LoopKit -->
-                    <a href="https://github.com/peterlodri-sec/loopkit" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://github.com/peterlodri-sec/loopkit" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Orchestration Engine</span>
@@ -798,7 +856,7 @@
                     </a>
 
                     <!-- Log Registry -->
-                    <a href="https://pocoo.vaked.dev" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://pocoo.vaked.dev" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Experiment Log Vault</span>
@@ -811,7 +869,7 @@
                     </a>
 
                     <!-- Dataset -->
-                    <a href="https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Silver-Label Corpus</span>
@@ -824,7 +882,7 @@
                     </a>
 
                     <!-- Hugging Face Profile -->
-                    <a href="https://huggingface.co/PeetPedro" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://huggingface.co/PeetPedro" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Model & Code Hub</span>
@@ -837,7 +895,7 @@
                     </a>
 
                     <!-- UltrameshAI -->
-                    <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                    <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Decentralized Substrate</span>
@@ -860,25 +918,25 @@
             <div>
                 <span class="font-bold text-white uppercase tracking-wider block mb-4 font-title text-[10px]">Substrate</span>
                 <ul class="space-y-2 font-mono text-[11px]">
-                    <li><a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" class="hover:text-brand-cyan transition-colors">ultrameshai</a></li>
-                    <li><a href="https://github.com/peterlodri-sec/loopkit" target="_blank" class="hover:text-brand-cyan transition-colors">loopkit</a></li>
-                    <li><a href="https://pocoo.vaked.dev" target="_blank" class="hover:text-brand-cyan transition-colors">pocoo.vaked.dev</a></li>
+                    <li><a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">ultrameshai</a></li>
+                    <li><a href="https://github.com/peterlodri-sec/loopkit" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">loopkit</a></li>
+                    <li><a href="https://pocoo.vaked.dev" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">pocoo.vaked.dev</a></li>
                 </ul>
             </div>
             <div>
                 <span class="font-bold text-white uppercase tracking-wider block mb-4 font-title text-[10px]">Research</span>
                 <ul class="space-y-2 font-mono text-[11px]">
-                    <li><a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" class="hover:text-brand-cyan transition-colors">Academic Paper</a></li>
-                    <li><a href="https://huggingface.co/PeetPedro" target="_blank" class="hover:text-brand-cyan transition-colors">HF Profile</a></li>
-                    <li><a href="https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood" target="_blank" class="hover:text-brand-cyan transition-colors">Dataset Card</a></li>
+                    <li><a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Academic Paper</a></li>
+                    <li><a href="https://huggingface.co/PeetPedro" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">HF Profile</a></li>
+                    <li><a href="https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Dataset Card</a></li>
                 </ul>
             </div>
             <div>
                 <span class="font-bold text-white uppercase tracking-wider block mb-4 font-title text-[10px]">Community</span>
                 <ul class="space-y-2 font-mono text-[11px]">
-                    <li><a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" class="hover:text-brand-cyan transition-colors">Headroom PR #1419</a></li>
-                    <li><a href="https://github.com/headroomlabs-ai/headroom" target="_blank" class="hover:text-brand-cyan transition-colors">Headroom Repo</a></li>
-                    <li><a href="https://huggingface.co/spaces/PeetPedro/kompress-playground" target="_blank" class="hover:text-brand-cyan transition-colors">HF Space Playground</a></li>
+                    <li><a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Headroom PR #1419</a></li>
+                    <li><a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Headroom Repo</a></li>
+                    <li><a href="https://huggingface.co/spaces/PeetPedro/kompress-playground" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">HF Space Playground</a></li>
                 </ul>
             </div>
             <div>
