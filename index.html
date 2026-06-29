@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proposal: Kompress-Ultra for Headroom</title>
-    <meta name="description" content="Integrating kompress-ultra context management into Headroom. Solve context bloat with asymmetric loss modulation.">
+    <meta name="theme-color" content="#080c14">
+    <meta name="description" content="Integrating kompress-ultra context management into Headroom. Solve context bloat with asymmetric loss modulation. 78% token savings, 0.993 exact-keep rate.">
+    <meta name="author" content="Peter Lodri">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://proposal.vaked.dev/">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Kompress-Ultra for Headroom — Asymmetric Loss Modulation">
+    <meta property="og:description" content="78% token savings, 75% latency reduction, 0.993 exact-keep rate. Provably built in public by autonomous agent loops.">
+    <meta property="og:url" content="https://proposal.vaked.dev/">
+    <meta property="og:site_name" content="proposal.vaked.dev">
+    <meta property="og:image" content="https://proposal.vaked.dev/favicon.svg">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kompress-Ultra for Headroom">
+    <meta name="twitter:description" content="78% token savings. 0.993 exact-keep rate. Provably built in public.">
+    <meta name="twitter:image" content="https://proposal.vaked.dev/favicon.svg">
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Google Fonts -->
@@ -24,17 +40,51 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "TechArticle",
-      "headline": "Asymmetric Loss Modulation for Context Compression",
-      "description": "Integrating learned context-pruning into Headroom. Achieve ~78% token savings and ~75% latency reduction.",
-      "author": {
-        "@type": "Person",
-        "name": "Peter Lodri",
-        "url": "https://peterl.dev"
-      },
-      "inLanguage": "en",
-      "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "mainEntityOfPage": "https://proposal.vaked.dev"
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "headline": "Asymmetric Loss Modulation for Context Compression",
+          "description": "Integrating learned context-pruning into Headroom. Achieve ~78% token savings and ~75% latency reduction with a 0.993 exact-keep rate on critical reasoning tokens.",
+          "author": {
+            "@type": "Person",
+            "name": "Peter Lodri",
+            "url": "https://peterl.dev"
+          },
+          "inLanguage": "en",
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
+          "mainEntityOfPage": "https://proposal.vaked.dev",
+          "datePublished": "2026-06-29",
+          "dateModified": "2026-06-29",
+          "keywords": ["context compression", "prompt pruning", "ModernBERT", "asymmetric loss", "LLM optimization"],
+          "citation": {
+            "@type": "ScholarlyArticle",
+            "name": "Asymmetric Loss Modulation for Context Compression",
+            "url": "https://kompress.vaked.dev/paper/main.pdf"
+          }
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "name": "kompress-ultra",
+          "description": "4-role context compression middleware with asymmetric loss modulation for LLM agent loops.",
+          "codeRepository": "https://github.com/peterlodri-sec/ultrameshai",
+          "programmingLanguage": "TypeScript",
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
+          "runtimePlatform": "Node.js / Bun",
+          "isPartOf": {
+            "@type": "SoftwareSourceCode",
+            "name": "ultrameshai",
+            "url": "https://github.com/peterlodri-sec/ultrameshai"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "kompress-v8",
+          "applicationCategory": "MachineLearningModel",
+          "url": "https://huggingface.co/PeetPedro/kompress-v8",
+          "operatingSystem": "Cross-platform",
+          "description": "149M-parameter ModernBERT model fine-tuned with asymmetric loss modulation for context compression."
+        }
+      ]
     }
     </script>
 
@@ -81,6 +131,9 @@
     </style>
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased relative">
+
+    <!-- Skip to content for accessibility -->
+    <a href="#playground" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-brand-cyan focus:text-dark focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:text-sm">Skip to main content</a>
 
     <!-- Fluid Ambient Background Canvas -->
     <canvas id="fluid-bg" class="fixed inset-0 w-full h-full -z-10 pointer-events-none" aria-hidden="true"></canvas>
@@ -158,6 +211,157 @@
         </div>
     </section>
 
+    <!-- Provenance & Build Transparency -->
+    <section id="provenance" class="max-w-6xl mx-auto px-6 pb-16 scroll-mt-24">
+        <div class="bg-slate-955/40 border border-slate-900 rounded-2xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-brand-emerald/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-brand-cyan/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-emerald/20 bg-brand-emerald/5 text-brand-emerald text-xs font-bold font-mono">
+                    <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" aria-hidden="true"></span>
+                    BUILT IN PUBLIC
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono">Last verified: 2026-06-29</span>
+            </div>
+
+            <h2 class="text-xl font-bold text-white font-title mb-2">Provenance & Build Transparency</h2>
+            <p class="text-sm text-slate-400 mb-8 leading-relaxed max-w-3xl">
+                This proposal was autonomously generated and iterated by a swarm of coding agent loops.
+                Every training run, evaluation metric, and code artifact is publicly verifiable.
+                Nothing is claimed that cannot be traced to an on-repo artifact.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Build Pipeline -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-brand-cyan">
+                        <i data-lucide="git-commit" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Build Pipeline</span>
+                    </div>
+                    <div class="space-y-2.5 text-[11px] font-mono">
+                        <div class="flex items-start gap-2.5">
+                            <span class="text-brand-cyan mt-0.5">1.</span>
+                            <div>
+                                <span class="text-white font-semibold">loopkit</span> orchestrates 4-phase autonomous training runs<br>
+                                <a href="https://github.com/peterlodri-sec/loopkit" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-brand-cyan transition-colors">github.com/peterlodri-sec/loopkit</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="text-brand-cyan mt-0.5">2.</span>
+                            <div>
+                                <span class="text-white font-semibold">kompress-v8</span> trained on ModernBERT-149M with LoRA (last 4 attn layers)<br>
+                                <a href="https://huggingface.co/PeetPedro/kompress-v8" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-brand-cyan transition-colors">huggingface.co/PeetPedro/kompress-v8</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="text-brand-cyan mt-0.5">3.</span>
+                            <div>
+                                <span class="text-white font-semibold">ultrawhale-dogfood</span> dataset curated from real agent sessions<br>
+                                <a href="https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood/viewer" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-brand-cyan transition-colors">huggingface.co/datasets/PeetPedro/ultrawhale-dogfood</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="text-brand-cyan mt-0.5">4.</span>
+                            <div>
+                                <span class="text-white font-semibold">evaluation</span> on Heretic adversarial benchmark<br>
+                                <a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="text-slate-500 hover:text-brand-cyan transition-colors">Paper Table 10, p.16</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Cost Transparency -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-brand-blue">
+                        <i data-lucide="coins" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Training Transparency</span>
+                    </div>
+                    <div class="space-y-2.5 text-[11px]">
+                        <div class="flex justify-between items-center py-1.5 border-b border-slate-900/60">
+                            <span class="text-slate-400 font-mono">Backbone</span>
+                            <span class="text-white font-mono font-semibold">ModernBERT-149M</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 border-b border-slate-900/60">
+                            <span class="text-slate-400 font-mono">Fine-tuning</span>
+                            <span class="text-white font-mono font-semibold">LoRA r=16, 4 layers</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 border-b border-slate-900/60">
+                            <span class="text-slate-400 font-mono">Asymmetric Penalty</span>
+                            <span class="text-brand-cyan font-mono font-semibold">λ = 3.0</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 border-b border-slate-900/60">
+                            <span class="text-slate-400 font-mono">Modulation Gate</span>
+                            <span class="text-brand-blue font-mono font-semibold">γ = 1.0</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5 border-b border-slate-900/60">
+                            <span class="text-slate-400 font-mono">Inference Latency</span>
+                            <span class="text-brand-cyan font-mono font-semibold">97ms (CPU)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1.5">
+                            <span class="text-slate-400 font-mono">License</span>
+                            <span class="text-white font-mono font-semibold">Apache 2.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artifact Verification -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-brand-emerald">
+                        <i data-lucide="shield-check" class="w-4 h-4" aria-hidden="true"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">Verified Artifacts</span>
+                    </div>
+                    <div class="space-y-2 text-[11px] font-mono">
+                        <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-brand-emerald/30 transition-all group">
+                            <i data-lucide="git-branch" class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-emerald transition-colors" aria-hidden="true"></i>
+                            <div>
+                                <span class="text-white group-hover:text-brand-emerald transition-colors font-semibold block">Source Code</span>
+                                <span class="text-slate-500 text-[10px]">ultrameshai repo (public)</span>
+                            </div>
+                        </a>
+                        <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-brand-emerald/30 transition-all group">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-emerald transition-colors" aria-hidden="true"></i>
+                            <div>
+                                <span class="text-white group-hover:text-brand-emerald transition-colors font-semibold block">Research Paper</span>
+                                <span class="text-slate-500 text-[10px]">PDF with full proofs</span>
+                            </div>
+                        </a>
+                        <a href="https://huggingface.co/PeetPedro/kompress-v8" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-brand-emerald/30 transition-all group">
+                            <i data-lucide="brain" class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-emerald transition-colors" aria-hidden="true"></i>
+                            <div>
+                                <span class="text-white group-hover:text-brand-emerald transition-colors font-semibold block">Model Weights</span>
+                                <span class="text-slate-500 text-[10px]">HuggingFace (public)</span>
+                            </div>
+                        </a>
+                        <a href="https://pocoo.vaked.dev" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-brand-emerald/30 transition-all group">
+                            <i data-lucide="activity" class="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-emerald transition-colors" aria-hidden="true"></i>
+                            <div>
+                                <span class="text-white group-hover:text-brand-emerald transition-colors font-semibold block">Experiment Logs</span>
+                                <span class="text-slate-500 text-[10px]">pocoo.vaked.dev (public)</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Attribution -->
+            <div class="mt-8 pt-6 border-t border-slate-900/60 flex flex-wrap items-center gap-4 text-[10px] text-slate-500 font-mono">
+                <span class="flex items-center gap-1.5">
+                    <i data-lucide="bot" class="w-3.5 h-3.5 text-slate-600" aria-hidden="true"></i>
+                    Built by: <span class="text-slate-400">Crush + OpenCode agent loops</span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-600" aria-hidden="true"></i>
+                    <span class="text-slate-400">15 min, 3 rounds, fully autonomous</span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-600" aria-hidden="true"></i>
+                    <span class="text-slate-400">No tracking, no cookies, no ads</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-6 pb-32 grid grid-cols-1 lg:grid-cols-12 gap-10">
 
@@ -193,6 +397,9 @@
                 </a>
                 <a href="#telemetry" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="activity" class="w-4 h-4" aria-hidden="true"></i> Academic Telemetry
+                </a>
+                <a href="#provenance" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
+                    <i data-lucide="shield-check" class="w-4 h-4" aria-hidden="true"></i> Provenance
                 </a>
                 <a href="#glossary" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
                     <i data-lucide="help-circle" class="w-4 h-4" aria-hidden="true"></i> Glossary
@@ -1216,9 +1423,23 @@
                         </tbody>
                     </table>
                 </div>
-            </section>
 
-            <!-- Interactive Loss & Attention Dashboard -->
+                <!-- Interactive Benchmark Chart -->
+                <div class="mt-8 bg-slate-955/40 p-6 rounded-xl border border-slate-900">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-xs font-bold text-white uppercase tracking-wider">Visual Comparison</span>
+                        <div class="flex gap-2 text-[9px] font-mono" role="group" aria-label="Chart metric selector">
+                            <button onclick="switchBenchmarkMetric('keep')" id="bm-btn-keep" class="px-2.5 py-1 rounded border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-bold transition-all">Exact Keep %</button>
+                            <button onclick="switchBenchmarkMetric('latency')" id="bm-btn-latency" class="px-2.5 py-1 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold transition-all">Latency (ms)</button>
+                            <button onclick="switchBenchmarkMetric('ratio')" id="bm-btn-ratio" class="px-2.5 py-1 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold transition-all">Keep Ratio</button>
+                        </div>
+                    </div>
+                    <div class="space-y-3" id="benchmark-bars" role="img" aria-label="Benchmark comparison bar chart">
+                        <!-- Bars rendered by JS -->
+                    </div>
+                    <p class="text-[9px] text-slate-600 font-mono mt-4 text-right">Source: Heretic adversarial benchmark &middot; <a href="https://kompress.vaked.dev/paper/main.pdf#page=16" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan">Paper Table 10</a></p>
+                </div>
+            </section>
             <section id="data-dashboard" class="scroll-mt-24">
                 <h2 data-i18n="dashboard_title" class="text-3xl font-bold text-white font-title mb-4">Live Loss & Attention Dashboard</h2>
                 <p data-i18n="dashboard_desc" class="text-slate-400 mb-6 leading-relaxed text-sm">
@@ -1740,6 +1961,32 @@
                             <p class="text-xs text-slate-400 mt-1">Host profile containing the kompress-v8 model weights and research datasets.</p>
                         </div>
                         <span class="text-[10px] text-slate-500 font-mono">huggingface.co/PeetPedro</span>
+                    </a>
+
+                    <!-- Hugging Face Model -->
+                    <a href="https://huggingface.co/PeetPedro/kompress-v8" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Trained Model</span>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
+                            </div>
+                            <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">kompress-v8 on HuggingFace</h4>
+                            <p class="text-xs text-slate-400 mt-1">149M-parameter ModernBERT model with LoRA fine-tuning. Ready for ONNX export.</p>
+                        </div>
+                        <span class="text-[10px] text-slate-500 font-mono">huggingface.co/PeetPedro/kompress-v8</span>
+                    </a>
+
+                    <!-- kompress-ultra standalone -->
+                    <a href="https://github.com/peterlodri-sec/kompress-ultra" target="_blank" rel="noopener noreferrer" class="p-5 bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800 hover:border-brand-cyan/30 rounded-xl transition-all group flex flex-col justify-between h-36">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Compression Middleware</span>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
+                            </div>
+                            <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">kompress-ultra (Standalone)</h4>
+                            <p class="text-xs text-slate-400 mt-1">4-role context compression middleware. TypeScript, zero dependencies, plug into any agent framework.</p>
+                        </div>
+                        <span class="text-[10px] text-slate-500 font-mono">github.com/peterlodri-sec/kompress-ultra</span>
                     </a>
 
                     <!-- UltrameshAI -->

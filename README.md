@@ -26,8 +26,8 @@ bunx serve .
 Open [http://localhost:8000](http://localhost:8000) in your browser.
 
 ### 2. Project Structure
-* [index.html](index.html) - The main webpage layout, styled with Tailwind CSS, including the Hero, Paradox Simulator, and Benchmarks.
-* [app.js](app.js) - Contains the interactive logic for the **Context Compressor Playground** and the **Voting Ensemble Paradox Simulator**.
+* [index.html](index.html) - The main webpage layout, styled with Tailwind CSS, including the Hero, Provenance section, Paradox Simulator, Benchmarks, and Interactive Benchmark Chart.
+* [app.js](app.js) - Contains the interactive logic for the **Context Compressor Playground**, **Voting Ensemble Paradox Simulator**, and **Benchmark Visualization**.
 
 ---
 
