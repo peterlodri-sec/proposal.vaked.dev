@@ -312,6 +312,25 @@
                             </span>
                         </div>
 
+                        <!-- Live Dogfood Presets -->
+                        <div class="flex flex-wrap items-center gap-3 bg-slate-950/40 p-4 rounded-xl border border-slate-900">
+                            <span class="text-[10px] font-mono text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="database" class="w-3.5 h-3.5 text-brand-cyan" aria-hidden="true"></i>
+                                Live Dogfood Presets (PeetPedro/ultrawhale-dogfood)
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="loadDogfoodPreset('cli')" class="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-cyan/40 text-slate-300 transition-all cursor-pointer">
+                                    Agent CLI Log
+                                </button>
+                                <button onclick="loadDogfoodPreset('a2a')" class="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-cyan/40 text-slate-300 transition-all cursor-pointer">
+                                    A2A Chat Trace
+                                </button>
+                                <button onclick="loadDogfoodPreset('compiler')" class="text-[10px] font-mono px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-brand-cyan/40 text-slate-300 transition-all cursor-pointer">
+                                    Rust Compiler Output
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Input Area -->
                             <div class="space-y-2">

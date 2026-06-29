@@ -1191,11 +1191,46 @@ function toggleStackPayload(stackId) {
             payload.classList.add('max-h-0', 'opacity-0');
             payload.classList.remove('max-h-48', 'opacity-100', 'mt-3', 'p-3', 'border', 'border-slate-900');
             if (indicator) {
-                indicator.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5 text-slate-505"></i> <span class="text-slate-505">Click to inspect payload</span>`;
+                indicator.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5 text-slate-555"></i> <span class="text-slate-555">Click to inspect payload</span>`;
             }
         }
         lucide.createIcons();
     }
 }
+
+// ==========================================
+// Live Dogfood Presets Loader
+// ==========================================
+const DOGFOOD_PRESETS = {
+    cli: `nu -c "git status"
+On branch main
+Your branch is up to date with 'origin/main'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/proxy.rs
+	modified:   crates/portail-agents/src/ci/runner.rs
+no changes added to commit (use "git add" and/or "git commit -a")`,
+
+    a2a: `Hey agent-unit-3, would you please be so kind as to check on the latest task in the queue? Basically, I think there is a compilation error in the spec verify module. Let's really make sure we fix it. Here is the API token: env.API_KEY_SECURE = "sk-proj-4e5af3a2" and the target task ID is 837. Please check it as soon as possible. Thanks!`,
+
+    compiler: `error: unused variable: \`e\`
+   --> crates/portail-agents/src/ci/spec_verify.rs:222:77
+    |
+222 |                     let report = check_routes(&golden_path).unwrap_or_else(|e| {
+    |                                                                             ^ help: if this is intentional, prefix it with an underscore: \`_e\`
+    = note: \`-D unused-variables\` implied by \`-D warnings\`
+error: could not compile \`portail-agents\` (lib) due to 1 previous error`
+};
+
+function loadDogfoodPreset(presetType) {
+    const input = document.getElementById('compressor-input');
+    if (input && DOGFOOD_PRESETS[presetType]) {
+        input.value = DOGFOOD_PRESETS[presetType];
+        updateCompressorCharCount();
+        runContextCompression();
+    }
+}
+
 
 
