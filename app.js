@@ -54,7 +54,26 @@ function countTokens(text) {
 }
 
 function triggerCompression() {
-    const inputVal = document.getElementById('playground-input').value;
+    let inputVal = document.getElementById('playground-input').value;
+    
+    const MAX_CHARS = 1000;
+    const errorDiv = document.getElementById('playground-error');
+    const errorText = document.getElementById('playground-error-text');
+    
+    if (inputVal.length > MAX_CHARS) {
+        errorDiv.classList.remove('hidden');
+        const funnyMessages = [
+            "Whoa, Tolstoy! That's too much context. The pruner is sweating. (Max 1,000 chars)",
+            "Context bloat overload! Our target Raspberry Pi node has started smoking. (Max 1,000 chars)",
+            "Warning: Extreme verbosity! The Asymmetric Modulation Gate has collapsed under the weight of your essay. (Max 1,000 chars)",
+            "Whoops! You're trying to feed me the entire Wikipedia. My 97ms latency is crying. (Max 1,000 chars)"
+        ];
+        const msgIndex = inputVal.length % funnyMessages.length;
+        errorText.innerText = funnyMessages[msgIndex];
+        inputVal = inputVal.substring(0, MAX_CHARS);
+    } else {
+        errorDiv.classList.add('hidden');
+    }
     
     let prunedText = "";
     let compressedText = "";
