@@ -1051,33 +1051,47 @@ async function runContextCompression() {
     
     const start = performance.now();
     
-    try {
-        // Try local gateway API first (relative or absolute)
-        const response = await fetch('/v1/compress', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text })
-        });
-        
-        if (!response.ok) throw new Error('API error');
-        
-        const data = await response.json();
-        output.innerText = data.compressed_text;
-        beforeVal.innerText = data.original_tokens.toLocaleString();
-        afterVal.innerText = data.compressed_tokens.toLocaleString();
-        savedVal.innerText = `${data.savings_percent}%`;
-        latencyVal.innerText = `${Math.round(performance.now() - start)}ms`;
-    } catch (err) {
-        // Fallback to client-side SOTA compression
-        const result = localCompressText(text);
-        const latency = Math.round(performance.now() - start);
-        
-        output.innerText = result.text;
-        beforeVal.innerText = result.before.toLocaleString();
-        afterVal.innerText = result.after.toLocaleString();
-        savedVal.innerText = `${result.saved}%`;
-        latencyVal.innerText = `${latency}ms (client-side)`;
+    // Determine if we should attempt local gateway fetch
+    const isLocalhost = window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1' ||
+                        window.location.protocol === 'file:';
+    
+    if (isLocalhost) {
+        try {
+            // If served on a dev port (e.g. 5173), point to the gateway port 8787
+            const gatewayUrl = (window.location.port && window.location.port !== '8787') 
+                ? 'http://localhost:8787/v1/compress' 
+                : '/v1/compress';
+                
+            const response = await fetch(gatewayUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                output.innerText = data.compressed_text;
+                beforeVal.innerText = data.original_tokens.toLocaleString();
+                afterVal.innerText = data.compressed_tokens.toLocaleString();
+                savedVal.innerText = `${data.savings_percent}%`;
+                latencyVal.innerText = `${Math.round(performance.now() - start)}ms (local gateway)`;
+                return;
+            }
+        } catch (err) {
+            console.warn("Local gateway unreachable, falling back to client-side compression.", err);
+        }
     }
+    
+    // Fallback/Production mode: client-side SOTA compression
+    const result = localCompressText(text);
+    const latency = Math.round(performance.now() - start);
+    
+    output.innerText = result.text;
+    beforeVal.innerText = result.before.toLocaleString();
+    afterVal.innerText = result.after.toLocaleString();
+    savedVal.innerText = `${result.saved}%`;
+    latencyVal.innerText = `${latency}ms (client-side)`;
 }
 
 function localCompressText(text) {
