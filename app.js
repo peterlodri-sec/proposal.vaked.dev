@@ -3,6 +3,15 @@
 
 // Initialize Lucide icons
 document.addEventListener('DOMContentLoaded', async () => {
+    // Render LaTeX math using KaTeX auto-render
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ]
+        });
+    }
     lucide.createIcons();
     loadPreset('auth');
     await initCryptoKeys();
