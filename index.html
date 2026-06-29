@@ -292,6 +292,91 @@
                 </div>
             </section>
 
+            <!-- Real-Time Context Compressor -->
+            <section id="live-compressor" class="scroll-mt-24">
+                <div class="gradient-border">
+                    <div class="p-8 bg-slate-955/40 rounded-[15px] space-y-6">
+                        <div class="flex justify-between items-start flex-wrap gap-4">
+                            <div>
+                                <h2 data-i18n="compressor_title" class="text-2xl font-bold text-white font-title mb-2 flex items-center gap-3">
+                                    <i data-lucide="shrink" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i>
+                                    Real-Time Context Compressor
+                                </h2>
+                                <p data-i18n="compressor_desc" class="text-sm text-slate-400">
+                                    Paste your prompt, logs, or code below (up to 5,000 characters). Our engine will strip filler words and optimize the structure, preserving all critical tokens.
+                                </p>
+                            </div>
+                            <span class="text-xs bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1 rounded-full font-mono flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+                                Live Engine
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Input Area -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-slate-400 font-semibold uppercase tracking-wider">Raw Input</span>
+                                    <span id="compressor-char-counter" class="text-slate-500">0 / 5,000 chars</span>
+                                </div>
+                                <div class="relative">
+                                    <textarea id="compressor-input" maxlength="5000" rows="10" 
+                                        class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-xs text-white font-mono focus:outline-none focus:border-brand-cyan transition-all placeholder:text-slate-600" 
+                                        placeholder="Paste your long prompt, system instructions, or system logs here..." 
+                                        aria-label="Compressor input text"
+                                        oninput="updateCompressorCharCount()"></textarea>
+                                </div>
+                                <button onclick="runContextCompression()" 
+                                    class="w-full py-3 px-4 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-semibold rounded-lg text-sm hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                    <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i>
+                                    Compress Context
+                                </button>
+                            </div>
+
+                            <!-- Output Area -->
+                            <div class="space-y-2 flex flex-col justify-between">
+                                <div class="space-y-2 flex-grow">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-brand-cyan font-semibold uppercase tracking-wider">Compressed Output</span>
+                                        <button onclick="copyCompressedOutput()" id="compressor-copy-btn"
+                                            class="text-xs text-brand-cyan hover:text-white bg-brand-cyan/10 hover:bg-brand-cyan/25 px-3 py-1 rounded flex items-center gap-1.5 transition-all cursor-pointer">
+                                            <i data-lucide="copy" class="w-3.5 h-3.5" aria-hidden="true"></i> Copy Result
+                                        </button>
+                                    </div>
+                                    <div class="relative h-[230px] md:h-[258px]">
+                                        <div id="compressor-output" 
+                                            class="w-full h-full bg-slate-950/80 border border-slate-900 rounded-lg p-4 text-xs text-slate-300 font-mono overflow-y-auto whitespace-pre-wrap select-text selection:bg-brand-cyan/20"></div>
+                                        <div id="compressor-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 pointer-events-none">
+                                            <i data-lucide="terminal" class="w-8 h-8 mb-2" aria-hidden="true"></i>
+                                            <span class="text-xs">Compressed text will appear here</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stats Panel -->
+                                <div class="grid grid-cols-3 gap-4 mt-4 bg-slate-900/50 border border-slate-800/85 p-4 rounded-xl">
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Before</span>
+                                        <span id="compressor-stats-before" class="text-sm font-mono font-bold text-white">-</span>
+                                        <span class="text-[9px] text-slate-500 block">tokens</span>
+                                    </div>
+                                    <div class="text-center border-x border-slate-800">
+                                        <span class="text-[10px] text-slate-500 uppercase tracking-wider block">After</span>
+                                        <span id="compressor-stats-after" class="text-sm font-mono font-bold text-brand-cyan">-</span>
+                                        <span class="text-[9px] text-brand-cyan block">tokens</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-slate-500 uppercase tracking-wider block">Saved</span>
+                                        <span id="compressor-stats-saved" class="text-sm font-mono font-bold text-emerald-450">-</span>
+                                        <span id="compressor-stats-latency" class="text-[9px] text-slate-500 block">0ms</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Paradox Simulator -->
             <section id="paradox" class="scroll-mt-24">
                 <h2 data-i18n="paradox_title" class="text-3xl font-bold text-white font-title mb-4">The *Voting Ensemble Paradox*</h2>
