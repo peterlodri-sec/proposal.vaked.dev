@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initTelemetryLoop();
     initFluidBackground();
     initFooterPreviews();
+    initInteractiveMath();
     // Initialize the paradox simulator
     inspectToken('path');
 });
@@ -39,6 +40,16 @@ const PRESETS = {
         text: "I ran the bash command: cargo test --test integration_tests. It failed because the database port 5432 was already in use by another process.",
         pruned: "I ran the bash <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> command: cargo test --test integration_tests <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. It failed because <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> the database port 5432 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> was already in use <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> by another process.",
         compressed: "command cargo test --test integration_tests failed database port 5432 use"
+    },
+    git: {
+        text: "git diff show changes in package.json. We upgraded tailwindcss from 3.4 to 4.0.0. This fixes the warning about the production build.",
+        pruned: "git diff <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> show changes in package.json <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. We upgraded tailwindcss from 3.4 to 4.0.0 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. This fixes <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> the warning about the production <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> build.",
+        compressed: "git diff package.json upgraded tailwindcss 4.0.0 warning"
+    },
+    docker: {
+        text: "docker build -t vaked-node:latest . --build-arg NODE_ENV=production. The build failed on step 5 because of a network timeout.",
+        pruned: "docker build -t vaked-node:latest <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> . --build-arg NODE_ENV=production <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span>. The build failed <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span> on step 5 <span class='text-brand-cyan font-bold bg-brand-cyan/10 px-1 py-0.5 rounded'>[Safety Floor]</span> because of a network timeout <span class='text-slate-500 line-through bg-slate-900/40 px-1 py-0.5 rounded'>[Evicted]</span>.",
+        compressed: "docker build -t vaked-node:latest --build-arg NODE_ENV=production step 5"
     }
 };
 
@@ -85,7 +96,7 @@ function triggerCompression() {
         compressedText = PRESETS[currentPreset].compressed;
     } else {
         const words = inputVal.split(/\s+/);
-        const mustKeepRegex = /(OAuth2|\.env|src\/[a-zA-Z0-9_\-\.]+|\d+|NullReferenceException|cargo|test|status|code)/i;
+        const mustKeepRegex = /(OAuth2|\.env|src\/[a-zA-Z0-9_\-\.]+|\d+|NullReferenceException|cargo|test|status|code|git|diff|package\.json|tailwindcss|docker|build|latest|NODE_ENV)/i;
         
         const prunedWords = words.map(w => {
             if (mustKeepRegex.test(w)) {
@@ -117,22 +128,38 @@ function triggerCompression() {
     document.getElementById('savings-pct').innerText = savings;
 }
 
+function copyOptimizedPrompt() {
+    const text = document.getElementById('rewriter-output').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('[onclick="copyOptimizedPrompt()"]');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-brand-emerald"></i> Copied!`;
+        lucide.createIcons();
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            lucide.createIcons();
+        }, 1500);
+    });
+}
+
 // ==========================================
 // Veto Committee Paradox Simulator
 // ==========================================
 let pSelectedToken = 'path';
 let pSelectedRule = 'and';
 
+const SIM_TOKENS = ['path', 'cmd', 'ip', 'docker_hash', 'secret', 'address'];
+
 function inspectToken(tokenType) {
     pSelectedToken = tokenType;
     
     // Toggle active styles on token buttons
-    ['path', 'cmd', 'ip'].forEach(t => {
+    SIM_TOKENS.forEach(t => {
         const btn = document.getElementById(`btn-tok-${t}`);
         if (t === tokenType) {
-            btn.className = "text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all";
+            btn.className = "text-xs p-2.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all text-center";
         } else {
-            btn.className = "text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan/50 transition-all";
+            btn.className = "text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-955 text-slate-400 font-mono hover:border-brand-cyan/50 transition-all text-center";
         }
     });
     
@@ -157,12 +184,12 @@ function setParadoxRule(ruleType) {
 
 function calculateParadoxOutcome() {
     // 1. Calculate individual votes
-    // Voter 1 is blind to paths
-    const v1Keep = pSelectedToken !== 'path';
-    // Voter 2 is blind to commands
-    const v2Keep = pSelectedToken !== 'cmd';
-    // Voter 3 is blind to IPs
-    const v3Keep = pSelectedToken !== 'ip';
+    // Expert 1 is blind to paths and docker hashes
+    const v1Keep = !(pSelectedToken === 'path' || pSelectedToken === 'docker_hash');
+    // Expert 2 is blind to commands and secrets
+    const v2Keep = !(pSelectedToken === 'cmd' || pSelectedToken === 'secret');
+    // Expert 3 is blind to IPs and memory addresses
+    const v3Keep = !(pSelectedToken === 'ip' || pSelectedToken === 'address');
     
     // Update individual vote UI
     updateVoteUI('v1', v1Keep);
@@ -177,8 +204,20 @@ function calculateParadoxOutcome() {
         // Unanimity to keep (any Evict causes eviction)
         finalDecision = (v1Keep && v2Keep && v3Keep) ? 'kept' : 'evicted';
         
-        const blindExpert = pSelectedToken === 'path' ? 'Expert 1' : pSelectedToken === 'cmd' ? 'Expert 2' : 'Expert 3';
-        explanation = `Under the <strong>AND Veto Rule</strong>, ${blindExpert} doesn't understand this token type and votes to delete it. Even though the other two experts voted to keep it, <strong>the item is evicted</strong>. The ensemble collapses.`;
+        let blindExpert = "";
+        let blindReason = "";
+        if (!v1Keep) {
+            blindExpert = "Expert 1";
+            blindReason = pSelectedToken === 'path' ? "file paths" : "Docker hashes";
+        } else if (!v2Keep) {
+            blindExpert = "Expert 2";
+            blindReason = pSelectedToken === 'cmd' ? "terminal commands" : "secrets";
+        } else {
+            blindExpert = "Expert 3";
+            blindReason = pSelectedToken === 'ip' ? "IP addresses" : "memory addresses";
+        }
+        
+        explanation = `Under the <strong>AND Veto Rule</strong>, ${blindExpert} doesn't understand ${blindReason} and votes to delete it. Even though the other two experts voted to keep it, <strong>the item is evicted (Committee Decision: Evicted!)</strong>. The ensemble collapses.`;
     } else if (pSelectedRule === 'majority') {
         // Needs 2/3 to keep
         const keepCount = (v1Keep ? 1 : 0) + (v2Keep ? 1 : 0) + (v3Keep ? 1 : 0);
@@ -244,18 +283,14 @@ const NICKNAME_NOUNS = ["Whale", "Octopus", "Manta", "Dolphin", "Orca", "Shark",
 
 async function generateAnonymousNickname(publicKeyJwk) {
     try {
-        // Compute SHA-256 hash of the public key JWK string representation
         const jwkStr = JSON.stringify(publicKeyJwk);
         const encoder = new TextEncoder();
         const data = encoder.encode(jwkStr);
         const hashBuf = await window.crypto.subtle.digest("SHA-256", data);
         const hashArray = new Uint8Array(hashBuf);
         
-        // Map hash bytes to indices
         const adjIdx = hashArray[0] % NICKNAME_ADJECTIVES.length;
         const nounIdx = hashArray[1] % NICKNAME_NOUNS.length;
-        
-        // Take 4 hex characters from the end of the hash
         const suffix = bufToHex(hashBuf).substring(0, 4);
         
         const nickname = `${NICKNAME_ADJECTIVES[adjIdx]}-${NICKNAME_NOUNS[nounIdx]}-${suffix}`;
@@ -276,14 +311,12 @@ async function initCryptoKeys() {
         let pubKeyJwk = null;
         
         if (storedPub && storedPriv) {
-            // Keys already exist
             pubKeyJwk = JSON.parse(storedPub);
             localKeyPair = {
                 publicKey: await window.crypto.subtle.importKey("jwk", pubKeyJwk, { name: "ECDSA", namedCurve: "P-256" }, true, ["verify"]),
                 privateKey: await window.crypto.subtle.importKey("jwk", JSON.parse(storedPriv), { name: "ECDSA", namedCurve: "P-256" }, true, ["sign"])
             };
         } else {
-            // Generate P-256 keypair
             const keyPair = await window.crypto.subtle.generateKey(
                 { name: "ECDSA", namedCurve: "P-256" },
                 true,
@@ -298,7 +331,6 @@ async function initCryptoKeys() {
             localKeyPair = keyPair;
         }
         
-        // Generate and set nickname based on the public key
         if (pubKeyJwk) {
             await generateAnonymousNickname(pubKeyJwk);
         }
@@ -322,14 +354,12 @@ function setRating(rating) {
     });
 }
 
-// Convert ArrayBuffer to Hex String
 function bufToHex(buffer) {
     return Array.from(new Uint8Array(buffer))
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 }
 
-// Convert Hex String to ArrayBuffer
 function hexToBuf(hex) {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
@@ -355,12 +385,10 @@ async function submitReview() {
     const timestamp = new Date().toISOString();
     const pubKeyJwk = JSON.parse(localStorage.getItem('review_pub_key'));
     
-    // Construct the signable payload
     const signable = { reviewer, rating: currentRating, comment, timestamp };
     const encoder = new TextEncoder();
     const data = encoder.encode(JSON.stringify(signable));
     
-    // Sign the data
     const signatureBuffer = await window.crypto.subtle.sign(
         { name: "ECDSA", hash: { name: "SHA-256" } },
         localKeyPair.privateKey,
@@ -369,14 +397,12 @@ async function submitReview() {
     
     const signatureHex = bufToHex(signatureBuffer);
     
-    // Final JSON Payload
     const payload = {
         ...signable,
         publicKey: pubKeyJwk,
         signature: signatureHex
     };
 
-    // Redirect to GitHub File Creation
     const filename = `reviews/review-${Date.now()}.json`;
     const fileContent = JSON.stringify(payload, null, 2);
     const githubUrl = `https://github.com/peterlodri-sec/proposal.vaked.dev/new/main?filename=${filename}&value=${encodeURIComponent(fileContent)}`;
@@ -396,7 +422,6 @@ async function verifySignature(review) {
         const encoder = new TextEncoder();
         const data = encoder.encode(JSON.stringify(signable));
         
-        // Import the public key from the JWK in the review
         const pubKey = await window.crypto.subtle.importKey(
             "jwk",
             review.publicKey,
@@ -405,7 +430,6 @@ async function verifySignature(review) {
             ["verify"]
         );
         
-        // Verify the signature
         const isValid = await window.crypto.subtle.verify(
             { name: "ECDSA", hash: { name: "SHA-256" } },
             pubKey,
@@ -425,9 +449,6 @@ async function fetchAndRenderReviews() {
     
     try {
         const response = await fetch('reviews.json');
-        
-        // Defensive check: If the hosting provider serves index.html instead of a 404 (e.g. for Single Page App routing), 
-        // we check the Content-Type header to make sure it's valid JSON before parsing.
         const contentType = response.headers.get('content-type');
         if (!response.ok || !contentType || !contentType.includes('application/json')) {
             listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
@@ -441,15 +462,14 @@ async function fetchAndRenderReviews() {
             return;
         }
         
-        listContainer.innerHTML = ''; // Clear loader
+        listContainer.innerHTML = '';
         
-        // Render each review
         for (const review of reviews) {
             const isValid = await verifySignature(review);
             const starsHtml = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
             
             const reviewCard = document.createElement('div');
-            reviewCard.className = `p-4 rounded-lg border bg-slate-950/50 ${isValid ? 'border-slate-900' : 'border-red-900/50'}`;
+            reviewCard.className = `p-4 rounded-lg border bg-slate-955/50 ${isValid ? 'border-slate-900' : 'border-red-900/50'}`;
             
             reviewCard.innerHTML = `
                 <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
@@ -471,7 +491,7 @@ async function fetchAndRenderReviews() {
             listContainer.appendChild(reviewCard);
         }
         
-        lucide.createIcons(); // Initialize icons on new elements
+        lucide.createIcons();
         
     } catch (e) {
         console.error("Failed to fetch or render reviews:", e);
@@ -493,14 +513,12 @@ function escapeHtml(str) {
 function initTelemetryLoop() {
     let telemetrySlices = 14820;
     setInterval(() => {
-        // Slices processed increases slowly (simulating real training)
         telemetrySlices += Math.floor(Math.random() * 3);
         const slicesEl = document.getElementById('telemetry-slices');
         if (slicesEl) {
             slicesEl.innerText = telemetrySlices.toLocaleString();
         }
         
-        // Latency fluctuates slightly around 97ms
         const latencyVal = (96.5 + Math.random() * 2.0).toFixed(1);
         const latencyEl = document.getElementById('telemetry-latency');
         if (latencyEl) {
@@ -540,7 +558,6 @@ function initFluidBackground() {
             blob.x += blob.vx;
             blob.y += blob.vy;
             
-            // Bounce off boundaries including radii padding
             if (blob.x < -blob.rx || blob.x > width + blob.rx) blob.vx *= -1;
             if (blob.y < -blob.ry || blob.y > height + blob.ry) blob.vy *= -1;
             
@@ -565,7 +582,6 @@ function initFluidBackground() {
 // ==========================================
 function initFooterPreviews() {
     const previewCard = document.createElement('div');
-    // Styling the hover card to look premium and match the site UI
     previewCard.className = "fixed pointer-events-none opacity-0 bg-slate-955/95 border border-brand-cyan/20 p-3 rounded-lg shadow-xl text-[10px] text-slate-300 max-w-[220px] z-50 font-mono transition-opacity duration-200 backdrop-blur-md leading-relaxed";
     document.body.appendChild(previewCard);
     
@@ -575,12 +591,41 @@ function initFooterPreviews() {
             previewCard.style.opacity = '1';
         });
         el.addEventListener('mousemove', (e) => {
-            // Keep card offset from cursor
             previewCard.style.left = `${e.clientX + 15}px`;
             previewCard.style.top = `${e.clientY + 15}px`;
         });
         el.addEventListener('mouseleave', () => {
             previewCard.style.opacity = '0';
+        });
+    });
+}
+
+// ==========================================
+// Interactive Math Hover Explanations
+// ==========================================
+function initInteractiveMath() {
+    const MATH_EXPLAINERS = {
+        itilde: "<strong>Modulated Indicator (&Iuml;̃):</strong> The final decision to keep (0) or evict (1) token x.",
+        sigmoid: "<strong>Sigmoid function (&sigma;):</strong> Maps the modulated output to a probability between 0 and 1.",
+        toklogits: "<strong>Token Logits (logits_tok):</strong> The raw eviction score from the Token Classifier Head.",
+        gamma: "<strong>Modulation Factor (&gamma;):</strong> Controls how strongly span coherence protects tokens.",
+        spangate: "<strong>Span Gate (g):</strong> Evaluates if the token is part of a structurally cohesive sequence.",
+        spanlogits: "<strong>Span Logits (logits_span):</strong> Coherence scores from the Span-CNN Head."
+    };
+    
+    document.querySelectorAll('[data-math-target]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            const target = el.getAttribute('data-math-target');
+            const explainer = document.getElementById('math-explainer-text');
+            explainer.innerHTML = MATH_EXPLAINERS[target];
+            explainer.className = "mt-4 border-t border-slate-900 pt-4 text-left text-[11px] text-brand-cyan transition-all";
+            el.classList.add('scale-105', 'text-brand-cyan', 'transition-all');
+        });
+        el.addEventListener('mouseleave', () => {
+            const explainer = document.getElementById('math-explainer-text');
+            explainer.innerHTML = "Hover over any part of the formula to see its role in the Asymmetric Loss Modulation.";
+            explainer.className = "mt-4 border-t border-slate-900 pt-4 text-left text-[11px] text-slate-500 transition-all";
+            el.classList.remove('scale-105', 'text-brand-cyan');
         });
     });
 }

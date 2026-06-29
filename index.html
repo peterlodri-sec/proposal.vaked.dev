@@ -102,7 +102,7 @@
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Token Savings</span>
                     <span class="text-lg font-bold text-brand-cyan">78%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Section 4.8 / Table 7 on Page 14">[Paper p.14]</a></span>
                 </div>
-                <div class="bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
+                <div class="bg-slate-955 border border-slate-800 px-4 py-2.5 rounded-xl text-center">
                     <span class="text-xs text-slate-500 block uppercase tracking-wider">Latency Delta</span>
                     <span class="text-lg font-bold text-brand-blue">-75%<a href="https://kompress.vaked.dev/paper/main.pdf#page=14" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Section 4.8 on Page 14">[Paper p.14]</a></span>
                 </div>
@@ -174,18 +174,26 @@
                         <div class="space-y-6">
                             <div>
                                 <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">Select a Preset or Type Below</label>
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-                                    <button onclick="loadPreset('auth')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
-                                        <strong class="text-white block mb-1">OAuth2 Setup</strong>
-                                        "I would be happy to help you implement..."
+                                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
+                                    <button onclick="loadPreset('auth')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
+                                        <strong class="text-white block mb-0.5">OAuth2 Setup</strong>
+                                        "I would be happy..."
                                     </button>
-                                    <button onclick="loadPreset('error')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
-                                        <strong class="text-white block mb-1">Compiler Error</strong>
-                                        "Looking at the logs, it seems we got..."
+                                    <button onclick="loadPreset('error')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
+                                        <strong class="text-white block mb-0.5">Compiler Error</strong>
+                                        "Looking at the logs..."
                                     </button>
-                                    <button onclick="loadPreset('bash')" class="text-left text-xs bg-slate-900 hover:bg-slate-800 p-3 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all">
-                                        <strong class="text-white block mb-1">Tool Output</strong>
-                                        "I ran the bash command and got exit code..."
+                                    <button onclick="loadPreset('bash')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
+                                        <strong class="text-white block mb-0.5">Tool Output</strong>
+                                        "I ran the bash..."
+                                    </button>
+                                    <button onclick="loadPreset('git')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
+                                        <strong class="text-white block mb-0.5">Git Diff</strong>
+                                        "git diff show..."
+                                    </button>
+                                    <button onclick="loadPreset('docker')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
+                                        <strong class="text-white block mb-0.5">Docker Build</strong>
+                                        "docker build -t..."
                                     </button>
                                 </div>
                                 <textarea id="playground-input" oninput="triggerCompression()" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..."></textarea>
@@ -220,9 +228,14 @@
 
                                 <!-- Compressed Chat Bubble (After) -->
                                 <div class="flex items-start gap-3 justify-end">
-                                    <div class="bg-brand-cyan/5 p-4 rounded-2xl rounded-tr-none border border-brand-cyan/20 max-w-[85%] text-left">
-                                        <span class="text-[9px] uppercase tracking-wider text-brand-cyan font-semibold block mb-1.5">Optimized Prompt (Passed to LLM)</span>
-                                        <div id="rewriter-output" class="text-xs font-mono leading-relaxed text-brand-cyan"></div>
+                                    <div class="bg-brand-cyan/5 p-4 rounded-2xl rounded-tr-none border border-brand-cyan/20 max-w-[85%] text-left w-full">
+                                        <div class="flex justify-between items-center mb-1.5">
+                                            <span class="text-[9px] uppercase tracking-wider text-brand-cyan font-semibold">Optimized Prompt (Passed to LLM)</span>
+                                            <button onclick="copyOptimizedPrompt()" class="text-[9px] text-brand-cyan hover:text-white bg-brand-cyan/10 hover:bg-brand-cyan/25 px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-all">
+                                                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                                            </button>
+                                        </div>
+                                        <div id="rewriter-output" class="text-xs font-mono leading-relaxed text-brand-cyan break-all"></div>
                                     </div>
                                     <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-xs font-bold text-dark shrink-0 font-title">K</div>
                                 </div>
@@ -263,37 +276,40 @@
                         <!-- Step 1: Select Token -->
                         <div class="space-y-2">
                             <label class="text-[10px] uppercase tracking-wider text-slate-500 block">1. Select a Critical Token to Inspect:</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-3 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all">src/auth.rs<span class="block text-[8px] text-slate-500 mt-1">File Path</span></button>
-                                <button onclick="inspectToken('cmd')" id="btn-tok-cmd" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">cargo test<span class="block text-[8px] text-slate-500 mt-1">Command</span></button>
-                                <button onclick="inspectToken('ip')" id="btn-tok-ip" class="text-xs p-3 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all">100.64.0.1<span class="block text-[8px] text-slate-500 mt-1">IP Address</span></button>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                                <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-2.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all text-center">src/auth.rs<span class="block text-[8px] text-slate-500 mt-0.5">File Path</span></button>
+                                <button onclick="inspectToken('cmd')" id="btn-tok-cmd" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">cargo test<span class="block text-[8px] text-slate-500 mt-0.5">Command</span></button>
+                                <button onclick="inspectToken('ip')" id="btn-tok-ip" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">100.64.0.1<span class="block text-[8px] text-slate-500 mt-0.5">IP Address</span></button>
+                                <button onclick="inspectToken('docker_hash')" id="btn-tok-docker_hash" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">sha256:d8a5a<span class="block text-[8px] text-slate-500 mt-0.5">Docker Hash</span></button>
+                                <button onclick="inspectToken('secret')" id="btn-tok-secret" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">{{SECRET_KEY}}<span class="block text-[8px] text-slate-500 mt-0.5">Secret Key</span></button>
+                                <button onclick="inspectToken('address')" id="btn-tok-address" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">0x7ffee3<span class="block text-[8px] text-slate-500 mt-0.5">Memory Addr</span></button>
                             </div>
                         </div>
 
                         <!-- Step 2: The Votes -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                             <!-- Expert 1 -->
-                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                            <div class="bg-slate-955/80 p-4 rounded-lg border border-slate-850 text-center">
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 1 (v3)</span>
-                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Paths</strong></span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Paths & Hashes</strong></span>
                                 <div id="vote-v1" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
                                     <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
                                 </div>
                             </div>
 
                             <!-- Expert 2 -->
-                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                            <div class="bg-slate-955/80 p-4 rounded-lg border border-slate-850 text-center">
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 2 (v5)</span>
-                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Commands</strong></span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Cmds & Secrets</strong></span>
                                 <div id="vote-v2" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
                                     <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
                                 </div>
                             </div>
 
                             <!-- Expert 3 -->
-                            <div class="bg-slate-950/80 p-4 rounded-lg border border-slate-850 text-center">
+                            <div class="bg-slate-955/80 p-4 rounded-lg border border-slate-850 text-center">
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 3 (v6)</span>
-                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">IPs</strong></span>
+                                <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">IPs & Addresses</strong></span>
                                 <div id="vote-v3" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
                                     <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
                                 </div>
@@ -466,7 +482,7 @@
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            `kompress-v8` uses a 149M-parameter <a href="https://en.wikipedia.org/wiki/BERT_(language_model)" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
+                            `kompress-v8` uses a 149M-parameter <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
                         </p>
                         <ul class="space-y-3 text-sm text-slate-400">
                             <li class="flex items-start gap-2.5">
@@ -479,11 +495,52 @@
                             </li>
                         </ul>
                         <p class="text-sm text-slate-400 leading-relaxed">
-                            An <strong><a href="https://kompress.vaked.dev/paper/main.pdf#page=8" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Asymmetric Modulation Gate</a></strong> scales the token logits to suppress eviction in high-coherence spans:
+                            An <strong>Asymmetric Modulation Gate</strong> scales the token logits to suppress eviction in high-coherence spans.
                         </p>
-                        <div class="my-4">
-                            $$\tilde{I}_i(x) = \sigma\left(\text{logits}_{\text{tok}}(x) - \gamma g(\text{logits}_{\text{span}}(x))\right)$$
+
+                        <!-- Accessible, Interactive HTML/CSS Math Abstract -->
+                        <div class="bg-slate-950 p-6 rounded-xl border border-slate-900 my-6 font-mono text-center relative overflow-hidden group">
+                            <span class="sr-only">
+                                Modulated Eviction Indicator of token x equals Sigmoid of token logits of x minus gamma times span gate g of span logits of x.
+                            </span>
+                            
+                            <div class="flex items-center justify-center gap-1 text-sm md:text-base text-slate-400 select-none py-4" aria-hidden="true">
+                                <span class="hover:text-brand-cyan transition-colors cursor-help group/itilde" data-math-target="itilde">
+                                    <span class="text-white font-bold">&Iuml;̃</span><sub>i</sub>(x)
+                                </span>
+                                
+                                <span class="text-white mx-1">=</span>
+                                
+                                <span class="text-brand-cyan font-extrabold text-lg md:text-xl hover:text-white transition-colors cursor-help" data-math-target="sigmoid">&sigma;</span>
+                                
+                                <span class="text-white text-lg md:text-xl font-light">(</span>
+                                
+                                <span class="hover:text-brand-blue transition-colors cursor-help" data-math-target="toklogits">
+                                    <span class="text-slate-200">logits</span><sub>tok</sub>(x)
+                                </span>
+                                
+                                <span class="text-red-405 mx-1">-</span>
+                                
+                                <span class="text-brand-emerald font-bold hover:text-white transition-colors cursor-help" data-math-target="gamma">&gamma;</span>
+                                
+                                <span class="text-purple-400 font-bold hover:text-white transition-colors cursor-help" data-math-target="spangate">g</span>
+                                
+                                <span class="text-slate-500 font-light">(</span>
+                                
+                                <span class="hover:text-brand-blue transition-colors cursor-help" data-math-target="spanlogits">
+                                    <span class="text-slate-300">logits</span><sub>span</sub>(x)
+                                </span>
+                                
+                                <span class="text-slate-500 font-light">)</span>
+                                
+                                <span class="text-white text-lg md:text-xl font-light">)</span>
+                            </div>
+                            
+                            <div class="mt-4 border-t border-slate-900 pt-4 text-left text-[11px] text-slate-500 min-h-[40px] transition-all" id="math-explainer-text">
+                                Hover over any part of the formula to see its role in the Asymmetric Loss Modulation.
+                            </div>
                         </div>
+
                     </div>
                     <div class="bg-slate-955/50 p-6 rounded-xl border border-slate-900 flex justify-center">
                         <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-[280px]">
