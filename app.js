@@ -1173,3 +1173,29 @@ function showLinkToast(title) {
     }, 4000);
 }
 
+// ==========================================
+// Cloud Stack Payload Toggle
+// ==========================================
+function toggleStackPayload(stackId) {
+    const payload = document.getElementById(`stack-payload-${stackId}`);
+    const indicator = document.getElementById(`stack-indicator-${stackId}`);
+    if (payload) {
+        const isCollapsed = payload.classList.contains('max-h-0');
+        if (isCollapsed) {
+            payload.classList.remove('max-h-0', 'opacity-0');
+            payload.classList.add('max-h-48', 'opacity-100', 'mt-3', 'p-3', 'border', 'border-slate-900');
+            if (indicator) {
+                indicator.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 text-brand-emerald animate-pulse"></i> <span class="text-brand-emerald font-semibold">Payload Attestation Verified</span>`;
+            }
+        } else {
+            payload.classList.add('max-h-0', 'opacity-0');
+            payload.classList.remove('max-h-48', 'opacity-100', 'mt-3', 'p-3', 'border', 'border-slate-900');
+            if (indicator) {
+                indicator.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5 text-slate-505"></i> <span class="text-slate-505">Click to inspect payload</span>`;
+            }
+        }
+        lucide.createIcons();
+    }
+}
+
+

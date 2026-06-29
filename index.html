@@ -802,68 +802,89 @@
                     </p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Stack 1 -->
-                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-brand-cyan uppercase tracking-wider font-mono">Stack A: Serverless Edge</span>
-                                <span class="text-[9px] text-slate-500 font-mono">Vercel + Supabase</span>
+                        <!-- Stack A -->
+                        <div onclick="toggleStackPayload('A')" class="bg-slate-955/30 border border-slate-900 hover:border-brand-cyan/40 rounded-xl p-5 flex flex-col justify-between transition-all cursor-pointer group">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold text-brand-cyan uppercase tracking-wider font-mono">Stack A: Serverless Edge</span>
+                                    <span class="text-[9px] text-slate-500 font-mono">Vercel + Supabase</span>
+                                </div>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Runs <code>vakedc</code> as a WebAssembly module inside Vercel Edge Functions, pruning chat histories before querying Supabase pgvector.
+                                </p>
                             </div>
-                            <p class="text-xs text-slate-400 leading-relaxed">
-                                Runs <code>vakedc</code> as a WebAssembly module inside Vercel Edge Functions, pruning chat histories before querying Supabase pgvector.
-                            </p>
-                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
-                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
-                                {<br>
-                                &nbsp;&nbsp;"origin": "vercel-edge-us-east",<br>
-                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
-                                &nbsp;&nbsp;"digest": "0x4e5a...f3a2",<br>
-                                &nbsp;&nbsp;"signature": "3045022100e1...a8f2"<br>
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Stack 2 -->
-                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-brand-blue uppercase tracking-wider font-mono">Stack B: Enterprise Fargate</span>
-                                <span class="text-[9px] text-slate-500 font-mono">AWS ECS + Bedrock</span>
-                            </div>
-                            <p class="text-xs text-slate-400 leading-relaxed">
-                                Runs <code>vaked</code> in a sidecar container on ECS Fargate (GPU-backed), pruning long context windows before forwarding to Claude.
-                            </p>
-                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
-                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
-                                {<br>
-                                &nbsp;&nbsp;"origin": "aws-ecs-fargate-gpu",<br>
-                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
-                                &nbsp;&nbsp;"digest": "0x8f2c...e9b1",<br>
-                                &nbsp;&nbsp;"signature": "3045022100fa...c4d3"<br>
-                                }
+                            <div class="mt-4">
+                                <div id="stack-indicator-A" class="text-[9px] font-mono flex items-center gap-1 text-slate-505 transition-colors mb-1">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> Click to inspect payload
+                                </div>
+                                <div id="stack-payload-A" class="max-h-0 opacity-0 overflow-hidden transition-all duration-500 bg-slate-955/50 rounded text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                    <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                    {<br>
+                                    &nbsp;&nbsp;"origin": "vercel-edge-us-east",<br>
+                                    &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                    &nbsp;&nbsp;"digest": "0x4e5a...f3a2",<br>
+                                    &nbsp;&nbsp;"signature": "3045022100e1...a8f2"<br>
+                                    }
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Stack 3 -->
-                        <div class="bg-slate-955/30 border border-slate-900 hover:border-slate-800/80 rounded-xl p-5 space-y-4 transition-all">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-brand-emerald uppercase tracking-wider font-mono">Stack C: Hybrid Cloud/Edge</span>
-                                <span class="text-[9px] text-slate-500 font-mono">GCP + Local Pi Edge</span>
+                        <!-- Stack B -->
+                        <div onclick="toggleStackPayload('B')" class="bg-slate-955/30 border border-slate-900 hover:border-brand-blue/40 rounded-xl p-5 flex flex-col justify-between transition-all cursor-pointer group">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold text-brand-blue uppercase tracking-wider font-mono">Stack B: Enterprise Fargate</span>
+                                    <span class="text-[9px] text-slate-500 font-mono">AWS ECS + Bedrock</span>
+                                </div>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Runs <code>vaked</code> in a sidecar container on ECS Fargate (GPU-backed), pruning long context windows before forwarding to Claude.
+                                </p>
                             </div>
-                            <p class="text-xs text-slate-400 leading-relaxed">
-                                GCP Cloud Run processes high-throughput API gateway requests, Vertex AI processes embeddings, and local Pis run veto-filters.
-                            </p>
-                            <div class="bg-slate-950/80 p-3 rounded border border-slate-900 text-[9px] font-mono text-slate-400 overflow-x-auto">
-                                <span class="text-slate-600 block">// VakedC Attestation Payload</span>
-                                {<br>
-                                &nbsp;&nbsp;"origin": "gcp-cloudrun-pi-edge",<br>
-                                &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
-                                &nbsp;&nbsp;"digest": "0x3d7a...b8c2",<br>
-                                &nbsp;&nbsp;"signature": "3045022100ab...d7e1"<br>
-                                }
+                            <div class="mt-4">
+                                <div id="stack-indicator-B" class="text-[9px] font-mono flex items-center gap-1 text-slate-505 transition-colors mb-1">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> Click to inspect payload
+                                </div>
+                                <div id="stack-payload-B" class="max-h-0 opacity-0 overflow-hidden transition-all duration-500 bg-slate-955/50 rounded text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                    <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                    {<br>
+                                    &nbsp;&nbsp;"origin": "aws-ecs-fargate-gpu",<br>
+                                    &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                    &nbsp;&nbsp;"digest": "0x8f2c...e9b1",<br>
+                                    &nbsp;&nbsp;"signature": "3045022100fa...c4d3"<br>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stack C -->
+                        <div onclick="toggleStackPayload('C')" class="bg-slate-955/30 border border-slate-900 hover:border-brand-emerald/40 rounded-xl p-5 flex flex-col justify-between transition-all cursor-pointer group">
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] font-bold text-brand-emerald uppercase tracking-wider font-mono">Stack C: Hybrid Cloud/Edge</span>
+                                    <span class="text-[9px] text-slate-500 font-mono">GCP + Local Pi Edge</span>
+                                </div>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    GCP Cloud Run processes high-throughput API gateway requests, Vertex AI processes embeddings, and local Pis run veto-filters.
+                                </p>
+                            </div>
+                            <div class="mt-4">
+                                <div id="stack-indicator-C" class="text-[9px] font-mono flex items-center gap-1 text-slate-505 transition-colors mb-1">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> Click to inspect payload
+                                </div>
+                                <div id="stack-payload-C" class="max-h-0 opacity-0 overflow-hidden transition-all duration-500 bg-slate-955/50 rounded text-[9px] font-mono text-slate-400 overflow-x-auto">
+                                    <span class="text-slate-600 block">// VakedC Attestation Payload</span>
+                                    {<br>
+                                    &nbsp;&nbsp;"origin": "gcp-cloudrun-pi-edge",<br>
+                                    &nbsp;&nbsp;"algorithm": "ECDSA-P256-SHA256",<br>
+                                    &nbsp;&nbsp;"digest": "0x3d7a...b8c2",<br>
+                                    &nbsp;&nbsp;"signature": "3045022100ab...d7e1"<br>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>n>
+            </section>
 
             <!-- Model Architecture -->
             <section id="architecture" class="scroll-mt-24">
