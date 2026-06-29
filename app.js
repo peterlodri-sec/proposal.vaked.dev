@@ -185,6 +185,35 @@ Vaked.Translation = {
             glossary_title: '词汇表',
             ecosystem_title: 'Ecosystem与相关工作',
             ecosystem_desc: '这项研究是一个更广泛生态系统的一部分。所有的源代码、数据集分发和实验日志都是开源的，可公开用于复制：'
+        },
+        hu: {
+            hero_title: 'Aszimmetrikus veszteségmoduláció a <span class="gradient-text">kontextuskomprimáláshoz</span>',
+            hero_desc: 'Tanult kontextus-kivágás integrálása a <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a> rendszerbe. <strong class="text-white">~78% token-megtakarítás</strong> és <strong class="text-white">~75% késleltetéscsökkentés</strong> elérése közel tökéletes, <strong class="text-brand-cyan">0,993-as pontos-megtartási aránnyal</strong> a kritikus érvelési tokeneken.',
+            playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> Interaktív Kompress-Ultra Játszótér',
+            playground_desc: 'Írj be szöveget vagy válassz egy presetet alább. Nézd, ahogy a pruner és a rewriter valós időben tömöríti a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">csevegési előzményeket</a>, megőrizve a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">kritikus-szintaktikai biztonsági padlót ($T_{\\text{crit}}$)</a>.',
+            compressor_title: 'Valós Idejű Kontextuskompresszor',
+            compressor_desc: 'Illeszd be a promptod, naplóid vagy kódod alább (legfeljebb 5 000 karakter). Motorunk eltávolítja a töltelékszavakat és optimalizálja a szerkezetet, megőrizve minden kritikus tokent.',
+            paradox_title: 'A *Szavazó Ensembles Paradoxon*',
+            paradox_eli5_1: 'Képzelj el egy három szakértőből álló bizottságot, akik eldöntik, mely szavakat tartsák meg egy dokumentumban a helytakarékosság érdekében. A rendkívül konzervatív szabály: <strong>"Ha még csak egyetlen szakértő is a törlésre szavaz, töröljük."</strong>',
+            paradox_eli5_2: 'Minden szakértő okos, de van egy vakfoltja, ahol mindig a törlésre szavaz. A vétójog szabálya miatt <strong>minden egyes kritikus elem törlésre kerül</strong>, mert az a szakértő, aki nem érti, vétójogot gyakorol. Ez a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Szavazó Ensembles Paradoxon*</a> — a csoport rosszabbá válik, mint bármelyik egyedi szakértő!',
+            theory_title: 'Elméleti Mag',
+            theory_desc: 'A tanult <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">kontextus-kivágás</a> javítja a hosszú kontextusú ügynökök hatékonyságát, de bevezeti a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Szavazó Ensembles Paradoxont*</a>. A <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">konszenzusos megtartás (AND)</a> szavazás alatt ($k=1$ ha bármelyiket elutasítjuk), az ensemble kilakoltatási mutatója egyenlő az egyes szavazók mutatóinak pontonkénti maximumával:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="Lásd: 1. Tétel a 6. oldalon">[Paper p.6]</a>',
+            theory_para_2: 'Ez egy <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">rétegenkénti Pareto-összeomlást</a> eredményez, ahol az ensemble visszahívási aránya egyenlő a leggyengébb szavazóéval minden rétegen. Javításként a `kompress-ultra` három alapmechanizmust alkalmaz:',
+            vakedc_title: 'Vaked Képesség & Kontextus (vakedc)',
+            vakedc_desc: 'Egy decentralizált útválasztási és ellenőrzési mátrix, amely a kontextus-kivágási munkaterhelések koordinálására szolgál heterogén csomópontokon (felhő VM-ek és helyi Raspberry Pi-k). A kapacitásérzékelés, útválasztás és kriptográfiai ellenőrzés szétválasztásával a rendszer zero-trust végrehajtást biztosít.',
+            architecture_title: 'Modell Architektúra',
+            architecture_desc: '`kompress-v8` egy 149M paraméteres <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> gerincet használ <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> finomhangolással az utolsó 4 figyelmeztetési rétegen. Két feladatfej osztozik az encoderen:',
+            benchmarks_title: 'Empirikus Benchmarkok',
+            benchmarks_desc: 'A <strong>Heretic</strong> adversáriális benchmarkon értékelve, a <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> dominálja a hagyományos prompt-komprimáló modelleket.',
+            proposal_title: 'Headroom Integrációs Javaslat',
+            proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Mi<span class="tooltiptext">Peter és az autonóm kódolási ügynökök + következtetési hurkok rajongása, akik felépítették ezt a projektet.</span></span> javasoljuk a `kompress-ultra` közvetlen integrálását a <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a>-ba (hivatkozva a <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>-re) központi kontextuskezelő middleware-ként:',
+            reviews_title: 'Vélemények & Visszajelzés',
+            reviews_desc: 'Küldj be egy véleményt erről a javaslatról. A vélemények kriptográfiailag aláírták a böngésződ által, és egy <strong>GitHub Pull Request</strong> segítségével kerülnek beküldésre, garantálva, hogy <strong>bizonyíthatóan változtathatatlanok</strong> (a szerző nem módosíthatja őket az aláírás megsértése nélkül).',
+            telemetry_title: 'Akadémiai Telemetria & Ellenőrzés',
+            telemetry_desc: 'Ez a weboldal szigorúan az akadémiai kutatásnak szentelt. Nincsenek nyomkövető szkriptek, Google hirdetések vagy harmadik fél sütik. A kapcsolat proxy-n keresztül történik, és kizárólag a <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a> védi.',
+            glossary_title: 'Szószedet',
+            ecosystem_title: 'Ökoszisztéma & Kapcsolódó Munkák',
+            ecosystem_desc: 'Ez a kutatás egy szélesebb ökoszisztéma része. minden forráskód, adatbázis-elosztás és kísérleti napló nyílt forráskódú és nyilvánosan elérhető a reprodukáláshoz:'
         }
     },
     
@@ -444,19 +473,19 @@ Vaked.Paradox = {
         
         if (decisionBox && decisionText && decisionBadge) {
             if (finalDecision === 'evicted') {
-                decisionBox.className = "p-4 rounded-xl border border-red-500/25 bg-red-500/5 flex items-center justify-between transition-all";
+                decisionBox.className = "p-4 rounded-xl border border-red-500/25 bg-red-500/5 flex items-center justify-between transition-opacity";
                 decisionText.innerText = "Evicted! (Item is Lost)";
                 decisionText.className = "text-sm font-bold text-red-400";
                 decisionBadge.className = "px-3 py-1.5 rounded bg-red-500/10 border border-red-500/30 text-xs font-mono font-bold text-red-400 flex items-center gap-1.5";
                 decisionBadge.innerHTML = `<i data-lucide="trash-2" class="w-4 h-4"></i> Evicted`;
             } else if (finalDecision === 'kept') {
-                decisionBox.className = "p-4 rounded-xl border border-brand-emerald/25 bg-brand-emerald/5 flex items-center justify-between transition-all";
+                decisionBox.className = "p-4 rounded-xl border border-brand-emerald/25 bg-brand-emerald/5 flex items-center justify-between transition-opacity";
                 decisionText.innerText = "Kept! (Item is Saved)";
                 decisionText.className = "text-sm font-bold text-brand-emerald";
                 decisionBadge.className = "px-3 py-1.5 rounded bg-brand-emerald/10 border border-brand-emerald/30 text-xs font-mono font-bold text-brand-emerald flex items-center gap-1.5";
                 decisionBadge.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Kept`;
             } else if (finalDecision === 'asymmetric') {
-                decisionBox.className = "p-4 rounded-xl border border-brand-cyan/25 bg-brand-cyan/5 flex items-center justify-between transition-all";
+                decisionBox.className = "p-4 rounded-xl border border-brand-cyan/25 bg-brand-cyan/5 flex items-center justify-between transition-opacity";
                 decisionText.innerText = "Kept! (Overridden by Safety Floor)";
                 decisionText.className = "text-sm font-bold text-brand-cyan";
                 decisionBadge.className = "px-3 py-1.5 rounded bg-brand-cyan/10 border border-brand-cyan/30 text-xs font-mono font-bold text-brand-cyan flex items-center gap-1.5";
@@ -718,33 +747,41 @@ Vaked.Attention = {
         if (!matrix) return;
         matrix.innerHTML = '';
         
-        for (let i = 0; i < 64; i++) {
-            const cell = document.createElement('div');
-            const row = Math.floor(i / 8);
-            const col = i % 8;
-            cell.className = "w-full h-full rounded bg-brand-cyan/20 border border-slate-900 hover:border-brand-cyan/80 transition-all cursor-crosshair";
-            cell.setAttribute('role', 'gridcell');
-            
-            cell.addEventListener('mouseenter', () => {
-                const weight = (0.2 + (Math.sin(row + col + this.simLambda) * 0.3) + (Math.cos(row * col * this.simGamma) * 0.4)).toFixed(3);
-                const clampedWeight = Math.max(0.01, Math.min(0.99, weight));
-                const srcToken = this.mockTokens[row];
-                const dstToken = this.mockTokens[col];
-                const tooltip = document.getElementById('heatmap-tooltip');
-                if (tooltip) {
-                    tooltip.innerHTML = `Attention <strong class="text-brand-cyan">[${srcToken} → ${dstToken}]</strong>: <span class="text-white font-mono">${clampedWeight}</span>`;
-                }
-                cell.classList.add('bg-brand-cyan/60');
-            });
-            
-            cell.addEventListener('mouseleave', () => {
-                const tooltip = document.getElementById('heatmap-tooltip');
-                if (tooltip) {
-                    tooltip.innerHTML = "Hover over cells to inspect token-to-token attention weights.";
-                }
-                cell.classList.remove('bg-brand-cyan/60');
-            });
-            matrix.appendChild(cell);
+        for (let row = 0; row < 8; row++) {
+            const rowDiv = document.createElement('div');
+            rowDiv.setAttribute('role', 'row');
+            rowDiv.className = 'contents';
+            for (let col = 0; col < 8; col++) {
+                const i = row * 8 + col;
+                const cell = document.createElement('div');
+                cell.className = "w-full h-full rounded bg-brand-cyan/20 border border-slate-900 hover:border-brand-cyan/80 transition-opacity cursor-crosshair";
+                cell.setAttribute('role', 'gridcell');
+                cell.setAttribute('aria-rowindex', row + 1);
+                cell.setAttribute('aria-colindex', col + 1);
+                cell.setAttribute('tabindex', '-1');
+                
+                cell.addEventListener('mouseenter', () => {
+                    const weight = (0.2 + (Math.sin(row + col + this.simLambda) * 0.3) + (Math.cos(row * col * this.simGamma) * 0.4)).toFixed(3);
+                    const clampedWeight = Math.max(0.01, Math.min(0.99, weight));
+                    const srcToken = this.mockTokens[row];
+                    const dstToken = this.mockTokens[col];
+                    const tooltip = document.getElementById('heatmap-tooltip');
+                    if (tooltip) {
+                        tooltip.innerHTML = `Attention <strong class="text-brand-cyan">[${srcToken} → ${dstToken}]</strong>: <span class="text-white font-mono">${clampedWeight}</span>`;
+                    }
+                    cell.classList.add('bg-brand-cyan/60');
+                });
+                
+                cell.addEventListener('mouseleave', () => {
+                    const tooltip = document.getElementById('heatmap-tooltip');
+                    if (tooltip) {
+                        tooltip.innerHTML = "Hover over cells to inspect token-to-token attention weights.";
+                    }
+                    cell.classList.remove('bg-brand-cyan/60');
+                });
+                rowDiv.appendChild(cell);
+            }
+            matrix.appendChild(rowDiv);
         }
         this.updateParams();
     },
@@ -774,15 +811,15 @@ Vaked.Attention = {
 
         this.drawLossCurve();
 
-        const cells = document.getElementById('attention-matrix')?.children;
+        const cells = document.getElementById('attention-matrix')?.querySelectorAll('[role="gridcell"]');
         if (cells && cells.length === 64) {
-            for (let i = 0; i < 64; i++) {
+            cells.forEach((cell, i) => {
                 const row = Math.floor(i / 8);
                 const col = i % 8;
                 const weight = 0.1 + (Math.abs(Math.sin(row + col + this.simLambda)) * 0.4) + (Math.abs(Math.cos(row * col * this.simGamma)) * 0.4);
                 const clampedWeight = Math.max(0.1, Math.min(0.9, weight));
-                cells[i].style.opacity = clampedWeight;
-            }
+                cell.style.opacity = clampedWeight;
+            });
         }
     },
     
@@ -864,7 +901,7 @@ Vaked.BenchmarkChart = {
         container.innerHTML = items.map(d => {
             const val = d[config.key];
             if (val === null) return '';
-            const pct = Math.min(100, (val / config.max) * 100);
+            const pct = Math.max(8, Math.min(100, (val / config.max) * 100));
             const isBest = this.currentMetric === 'keep' && val === Math.max(...items.map(i => i[config.key]));
             const isWorst = this.currentMetric === 'keep' && val === Math.min(...items.map(i => i[config.key]));
 
@@ -876,23 +913,23 @@ Vaked.BenchmarkChart = {
             else if (d.color === 'slate-600') barColor = 'bg-slate-700/50';
 
             return `
-                <div class="flex items-center gap-3 group">
-                    <div class="w-36 md:w-44 text-right shrink-0">
-                        <span class="text-[11px] font-mono ${d.highlight ? 'text-brand-cyan font-bold' : 'text-slate-400'}">${d.name}</span>
+                <div class="flex items-center gap-4 group">
+                    <div class="w-40 md:w-48 text-right shrink-0">
+                        <span class="text-xs font-mono ${d.highlight ? 'text-brand-cyan font-bold' : 'text-slate-400'}">${d.name}</span>
                     </div>
-                    <div class="flex-1 h-6 bg-slate-900 rounded overflow-hidden relative border border-slate-800/50">
-                        <div class="h-full ${barColor} rounded transition-all duration-500 flex items-center" style="width: ${pct}%;">
-                            <span class="text-[9px] font-mono font-bold text-white pl-2 whitespace-nowrap">${val}${config.unit}</span>
+                    <div class="flex-1 h-10 bg-slate-900 rounded-lg overflow-hidden relative border border-slate-800/50">
+                        <div class="h-full ${barColor} rounded-lg transition-all duration-500 flex items-center justify-end pr-3" style="width: ${pct}%;">
+                            <span class="text-xs font-mono font-bold text-white whitespace-nowrap drop-shadow-lg">${val}${config.unit}</span>
                         </div>
                     </div>
-                    ${isBest ? '<span class="text-[8px] font-mono text-brand-emerald font-bold shrink-0">BEST</span>' : ''}
-                    ${isWorst ? '<span class="text-[8px] font-mono text-red-400 font-bold shrink-0">LOWEST</span>' : ''}
+                    ${isBest ? '<span class="text-[10px] font-mono text-brand-emerald font-bold shrink-0 bg-brand-emerald/10 px-2 py-0.5 rounded-full">BEST</span>' : ''}
+                    ${isWorst ? '<span class="text-[10px] font-mono text-red-400 font-bold shrink-0 bg-red-500/10 px-2 py-0.5 rounded-full">LOWEST</span>' : ''}
                 </div>
             `;
         }).join('');
 
         if (config.note) {
-            container.innerHTML += `<div class="text-[9px] text-amber-500/70 font-mono mt-2 text-center">${config.note}</div>`;
+            container.innerHTML += `<div class="text-[10px] text-amber-500/70 font-mono mt-3 text-center">${config.note}</div>`;
         }
     }
 };
