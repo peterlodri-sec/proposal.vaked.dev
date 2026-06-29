@@ -19,6 +19,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Asymmetric Loss Modulation for Context Compression",
+      "description": "Integrating learned context-pruning into Headroom. Achieve ~78% token savings and ~75% latency reduction.",
+      "author": {
+        "@type": "Person",
+        "name": "Peter Lodri",
+        "url": "https://peterl.dev"
+      },
+      "inLanguage": "en",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "mainEntityOfPage": "https://proposal.vaked.dev"
+    }
+    </script>
+
     <style>
         .tooltip {
             position: relative;
@@ -49,18 +68,28 @@
             visibility: visible;
             opacity: 1;
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
     </style>
 </head>
 <body class="bg-[#080c14] text-slate-300 font-sans selection:bg-brand-cyan selection:text-dark antialiased relative">
 
     <!-- Fluid Ambient Background Canvas -->
-    <canvas id="fluid-bg" class="fixed inset-0 w-full h-full -z-10 pointer-events-none"></canvas>
+    <canvas id="fluid-bg" class="fixed inset-0 w-full h-full -z-10 pointer-events-none" aria-hidden="true"></canvas>
 
     <!-- Header / Navbar -->
     <header class="border-b border-slate-900 bg-[#080c14]/85 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-dark font-bold text-xl shadow-lg shadow-brand-cyan/20 font-title">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-dark font-bold text-xl shadow-lg shadow-brand-cyan/20 font-title" aria-hidden="true">
                     K
                 </div>
                 <div>
@@ -68,12 +97,27 @@
                     <span class="text-xs text-slate-500 block">for Headroom</span>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-slate-900/50 hover:bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">
-                    <i data-lucide="file-text" class="w-4 h-4"></i> Read Paper
+            <div class="flex items-center gap-3">
+                <!-- i18n Selector -->
+                <div class="flex items-center gap-1.5 bg-slate-900/60 border border-slate-800 rounded-lg px-2 py-1.5" aria-label="Language selection">
+                    <i data-lucide="globe" class="w-3.5 h-3.5 text-slate-500" aria-hidden="true"></i>
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer font-mono" aria-label="Select Language">
+                        <option value="en" class="bg-[#080c14]">EN</option>
+                        <option value="es" class="bg-[#080c14]">ES</option>
+                        <option value="de" class="bg-[#080c14]">DE</option>
+                        <option value="fr" class="bg-[#080c14]">FR</option>
+                        <option value="zh" class="bg-[#080c14]">ZH</option>
+                    </select>
+                    <button onclick="showSelfGenTranslationPrompt()" class="text-[10px] text-brand-cyan hover:text-white transition-colors cursor-pointer ml-1 font-mono" title="Self-Generate Translation Prompt" aria-label="Self-generate translation">
+                        [Self-Gen]
+                    </button>
+                </div>
+
+                <a href="https://kompress.vaked.dev/paper/main.pdf" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors bg-slate-900/50 hover:bg-slate-900 px-4 py-2 rounded-lg border border-slate-800" aria-label="Read academic paper (opens in new tab)">
+                    <i data-lucide="file-text" class="w-4 h-4" aria-hidden="true"></i> Read Paper
                 </a>
-                <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                <a href="https://github.com/peterlodri-sec/ultrameshai" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-dark bg-gradient-to-r from-brand-cyan to-brand-blue hover:opacity-90 font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-brand-cyan/15" aria-label="View substrate repository on GitHub (opens in new tab)">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                     View Substrate
                 </a>
             </div>
@@ -82,18 +126,18 @@
 
     <!-- Hero Section -->
     <section class="max-w-6xl mx-auto px-6 py-16 relative overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute top-60 -left-40 w-96 h-96 bg-brand-cyan/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute top-60 -left-40 w-96 h-96 bg-brand-cyan/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
 
         <div class="max-w-3xl text-center mx-auto">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-cyan/20 bg-brand-cyan/5 text-brand-cyan text-xs font-semibold mb-6">
-                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" aria-hidden="true"></span>
                 Headroom RFC / Proposal
             </div>
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white font-title tracking-tight leading-tight mb-6">
+            <h1 data-i18n="hero_title" class="text-4xl md:text-6xl font-extrabold text-white font-title tracking-tight leading-tight mb-6">
                 Asymmetric Loss Modulation for <span class="gradient-text">Context Compression</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-400 font-light mb-8 leading-relaxed">
+            <p data-i18n="hero_desc" class="text-lg md:text-xl text-slate-400 font-light mb-8 leading-relaxed">
                 Integrating learned context-pruning into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Achieve <strong class="text-white">~78% token savings</strong> and <strong class="text-white">~75% latency reduction</strong> while maintaining a near-perfect <strong class="text-brand-cyan">0.993 exact-keep rate</strong> on critical reasoning tokens.
             </p>
             
@@ -118,40 +162,40 @@
     <main class="max-w-6xl mx-auto px-6 pb-32 grid grid-cols-1 lg:grid-cols-12 gap-10">
 
         <!-- Sidebar / Navigation -->
-        <aside class="lg:col-span-3 lg:sticky lg:top-24 h-fit hidden lg:block">
+        <aside class="lg:col-span-3 lg:sticky lg:top-24 h-fit hidden lg:block" aria-label="Document navigation">
             <nav class="space-y-1">
                 <a href="#playground" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="play" class="w-4 h-4"></i> Playground
+                    <i data-lucide="play" class="w-4 h-4" aria-hidden="true"></i> Playground
                 </a>
                 <a href="#paradox" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="shuffle" class="w-4 h-4"></i> Voting Paradox
+                    <i data-lucide="shuffle" class="w-4 h-4" aria-hidden="true"></i> Voting Paradox
                 </a>
                 <a href="#theory" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="book-open" class="w-4 h-4"></i> Theoretical Core
+                    <i data-lucide="book-open" class="w-4 h-4" aria-hidden="true"></i> Theoretical Core
                 </a>
                 <a href="#vakedc" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="network" class="w-4 h-4"></i> Vaked Capability
+                    <i data-lucide="network" class="w-4 h-4" aria-hidden="true"></i> Vaked Capability
                 </a>
                 <a href="#architecture" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="cpu" class="w-4 h-4"></i> Model Architecture
+                    <i data-lucide="cpu" class="w-4 h-4" aria-hidden="true"></i> Model Architecture
                 </a>
                 <a href="#benchmarks" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Benchmarks
+                    <i data-lucide="bar-chart-2" class="w-4 h-4" aria-hidden="true"></i> Benchmarks
                 </a>
                 <a href="#proposal" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="send" class="w-4 h-4"></i> Headroom Integration
+                    <i data-lucide="send" class="w-4 h-4" aria-hidden="true"></i> Headroom Integration
                 </a>
                 <a href="#reviews" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="message-square" class="w-4 h-4"></i> Reviews & Feedback
+                    <i data-lucide="message-square" class="w-4 h-4" aria-hidden="true"></i> Reviews & Feedback
                 </a>
                 <a href="#telemetry" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="activity" class="w-4 h-4"></i> Academic Telemetry
+                    <i data-lucide="activity" class="w-4 h-4" aria-hidden="true"></i> Academic Telemetry
                 </a>
                 <a href="#glossary" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="help-circle" class="w-4 h-4"></i> Glossary
+                    <i data-lucide="help-circle" class="w-4 h-4" aria-hidden="true"></i> Glossary
                 </a>
                 <a href="#ecosystem" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-900/50 transition-all">
-                    <i data-lucide="database" class="w-4 h-4"></i> Ecosystem Artifacts
+                    <i data-lucide="database" class="w-4 h-4" aria-hidden="true"></i> Ecosystem Artifacts
                 </a>
             </nav>
         </aside>
@@ -162,19 +206,19 @@
             <!-- Interactive Playground -->
             <section id="playground" class="scroll-mt-24">
                 <div class="gradient-border">
-                    <div class="p-8 bg-slate-950/40 rounded-[15px]">
-                        <h2 class="text-2xl font-bold text-white font-title mb-2 flex items-center gap-3">
-                            <i data-lucide="sparkles" class="text-brand-cyan w-6 h-6"></i>
+                    <div class="p-8 bg-slate-955/40 rounded-[15px]">
+                        <h2 data-i18n="playground_title" class="text-2xl font-bold text-white font-title mb-2 flex items-center gap-3">
+                            <i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i>
                             Interactive Kompress-Ultra Playground
                         </h2>
-                        <p class="text-sm text-slate-400 mb-6">
+                        <p data-i18n="playground_desc" class="text-sm text-slate-400 mb-6">
                             Type or select a preset below. Watch the pruner and rewriter compress your <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">chat history</a> in real-time, preserving the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">critical-syntactic safety floor ($T_{\text{crit}}$)</a>.
                         </p>
 
                         <div class="space-y-6">
                             <div>
-                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2">Select a Preset or Type Below</label>
-                                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2" id="preset-label">Select a Preset or Type Below</label>
+                                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3" role="group" aria-labelledby="preset-label">
                                     <button onclick="loadPreset('auth')" class="text-left text-[11px] bg-slate-900 hover:bg-slate-800 p-2 rounded-lg border border-slate-800 hover:border-brand-cyan/30 transition-all leading-tight">
                                         <strong class="text-white block mb-0.5">OAuth2 Setup</strong>
                                         "I would be happy..."
@@ -196,21 +240,21 @@
                                         "docker build -t..."
                                     </button>
                                 </div>
-                                <textarea id="playground-input" oninput="triggerCompression()" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..."></textarea>
-                                <div id="playground-error" class="hidden text-xs text-red-400 font-mono mt-2 flex items-center gap-2 bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                                    <i data-lucide="alert-triangle" class="w-4 h-4 text-red-450 animate-bounce"></i>
+                                <textarea id="playground-input" oninput="triggerCompression()" rows="3" class="w-full bg-slate-900/80 border border-slate-800 rounded-lg p-4 text-sm text-white font-mono focus:outline-none focus:border-brand-cyan transition-all" placeholder="Type a message to compress..." aria-label="Playground input text"></textarea>
+                                <div id="playground-error" class="hidden text-xs text-red-400 font-mono mt-2 flex items-center gap-2 bg-red-500/5 p-3 rounded-lg border border-red-500/10" role="alert">
+                                    <i data-lucide="alert-triangle" class="w-4 h-4 text-red-450 animate-bounce" aria-hidden="true"></i>
                                     <span id="playground-error-text"></span>
                                 </div>
                             </div>
 
                             <div class="flex justify-between items-center flex-wrap gap-4">
-                                <div class="flex items-center gap-6 text-xs text-slate-400">
+                                <div class="flex items-center gap-6 text-xs text-slate-400" role="status">
                                     <div>Original: <span id="original-tokens" class="text-white font-semibold">0</span> tokens</div>
                                     <div>Compressed: <span id="compressed-tokens" class="text-brand-cyan font-semibold">0</span> tokens</div>
                                     <div class="bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded-full font-semibold"><span id="savings-pct">0</span>% Saved</div>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-brand-cyan bg-brand-cyan/10 px-3 py-1.5 rounded-lg border border-brand-cyan/20">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+                                <div class="flex items-center gap-2 text-xs text-brand-cyan bg-brand-cyan/10 px-3 py-1.5 rounded-lg border border-brand-cyan/20" aria-label="Latency">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" aria-hidden="true"></span>
                                     Real-time (97ms)
                                 </div>
                             </div>
@@ -219,7 +263,7 @@
                             <div class="space-y-4 pt-4 border-t border-slate-900">
                                 <!-- Verbose Chat Bubble (Before) -->
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0">V</div>
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 shrink-0" aria-hidden="true">V</div>
                                     <div class="bg-slate-900/60 p-4 rounded-2xl rounded-tl-none border border-slate-800/80 max-w-[85%]">
                                         <span class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold block mb-1.5">Verbose Input (Prior Turns + Context)</span>
                                         <div id="pruner-output" class="text-xs font-sans leading-relaxed text-slate-300"></div>
@@ -231,13 +275,13 @@
                                     <div class="bg-brand-cyan/5 p-4 rounded-2xl rounded-tr-none border border-brand-cyan/20 max-w-[85%] text-left w-full">
                                         <div class="flex justify-between items-center mb-1.5">
                                             <span class="text-[9px] uppercase tracking-wider text-brand-cyan font-semibold">Optimized Prompt (Passed to LLM)</span>
-                                            <button onclick="copyOptimizedPrompt()" class="text-[9px] text-brand-cyan hover:text-white bg-brand-cyan/10 hover:bg-brand-cyan/25 px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-all">
-                                                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                                            <button onclick="copyOptimizedPrompt()" class="text-[9px] text-brand-cyan hover:text-white bg-brand-cyan/10 hover:bg-brand-cyan/25 px-2 py-0.5 rounded flex items-center gap-1 font-sans transition-all" aria-label="Copy optimized prompt to clipboard">
+                                                <i data-lucide="copy" class="w-3 h-3" aria-hidden="true"></i> Copy
                                             </button>
                                         </div>
                                         <div id="rewriter-output" class="text-xs font-mono leading-relaxed text-brand-cyan break-all"></div>
                                     </div>
-                                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-xs font-bold text-dark shrink-0 font-title">K</div>
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-xs font-bold text-dark shrink-0 font-title" aria-hidden="true">K</div>
                                 </div>
                             </div>
                         </div>
@@ -247,16 +291,16 @@
 
             <!-- Paradox Simulator -->
             <section id="paradox" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">The *Voting Ensemble Paradox*</h2>
+                <h2 data-i18n="paradox_title" class="text-3xl font-bold text-white font-title mb-4">The *Voting Ensemble Paradox*</h2>
                 
                 <div class="bg-slate-955/50 p-6 rounded-xl border border-slate-900 space-y-6">
                     <!-- ELI5 Explanation -->
                     <div class="space-y-3">
                         <span class="text-xs font-semibold uppercase tracking-wider text-brand-cyan">ELI5: The Veto Committee</span>
-                        <p class="text-sm text-slate-355 leading-relaxed">
+                        <p data-i18n="paradox_eli5_1" class="text-sm text-slate-355 leading-relaxed">
                             Imagine a committee of three experts deciding which words to keep in a document to save space. To be extremely conservative, the rule is: <strong>"If even one expert votes to delete a word, we delete it."</strong>
                         </p>
-                        <p class="text-sm text-slate-355 leading-relaxed">
+                        <p data-i18n="paradox_eli5_2" class="text-sm text-slate-355 leading-relaxed">
                             Each expert is smart, but has one blind spot where they always vote to delete.
                             Because of the veto rule, <strong>every single critical item gets deleted</strong> because the expert who doesn't understand it vetoes it. This is the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Voting Ensemble Paradox*</a>—the group becomes worse than any single expert on their own!
                         </p>
@@ -266,7 +310,7 @@
                     <div class="p-5 bg-slate-900/40 rounded-xl border border-slate-800 space-y-6">
                         <div class="flex justify-between items-center flex-wrap gap-4 border-b border-slate-800 pb-3">
                             <span class="text-xs font-bold text-white uppercase tracking-wider">Interactive Veto Simulator</span>
-                            <div class="flex gap-2">
+                            <div class="flex gap-2" role="group" aria-label="Simulator Rules">
                                 <button onclick="setParadoxRule('and')" id="btn-p-and" class="text-[10px] px-2.5 py-1.5 rounded border border-brand-cyan bg-brand-cyan/10 text-brand-cyan font-bold">AND Veto (Standard)</button>
                                 <button onclick="setParadoxRule('majority')" id="btn-p-majority" class="text-[10px] px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold">Majority (2/3)</button>
                                 <button onclick="setParadoxRule('asymmetric')" id="btn-p-asymmetric" class="text-[10px] px-2.5 py-1.5 rounded border border-slate-800 bg-slate-900 text-slate-400 font-bold">Asymmetric Modulation (Ours)</button>
@@ -275,8 +319,8 @@
 
                         <!-- Step 1: Select Token -->
                         <div class="space-y-2">
-                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block">1. Select a Critical Token to Inspect:</label>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                            <label class="text-[10px] uppercase tracking-wider text-slate-500 block" id="token-select-label">1. Select a Critical Token to Inspect:</label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2" role="group" aria-labelledby="token-select-label">
                                 <button onclick="inspectToken('path')" id="btn-tok-path" class="text-xs p-2.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-white font-mono transition-all text-center">src/auth.rs<span class="block text-[8px] text-slate-500 mt-0.5">File Path</span></button>
                                 <button onclick="inspectToken('cmd')" id="btn-tok-cmd" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">cargo test<span class="block text-[8px] text-slate-500 mt-0.5">Command</span></button>
                                 <button onclick="inspectToken('ip')" id="btn-tok-ip" class="text-xs p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-400 font-mono hover:border-brand-cyan transition-all text-center">100.64.0.1<span class="block text-[8px] text-slate-500 mt-0.5">IP Address</span></button>
@@ -293,7 +337,7 @@
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 1 (v3)</span>
                                 <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Paths & Hashes</strong></span>
                                 <div id="vote-v1" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
-                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
+                                    <i data-lucide="check-circle" class="w-5 h-5" aria-hidden="true"></i> Keep
                                 </div>
                             </div>
 
@@ -302,7 +346,7 @@
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 2 (v5)</span>
                                 <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">Cmds & Secrets</strong></span>
                                 <div id="vote-v2" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
-                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
+                                    <i data-lucide="check-circle" class="w-5 h-5" aria-hidden="true"></i> Keep
                                 </div>
                             </div>
 
@@ -311,25 +355,25 @@
                                 <span class="text-[10px] text-slate-500 block mb-1">Expert 3 (v6)</span>
                                 <span class="text-xs text-slate-400 block mb-3">Blind to: <strong class="text-red-400">IPs & Addresses</strong></span>
                                 <div id="vote-v3" class="text-lg font-bold text-brand-emerald flex items-center justify-center gap-1.5">
-                                    <i data-lucide="check-circle" class="w-5 h-5"></i> Keep
+                                    <i data-lucide="check-circle" class="w-5 h-5" aria-hidden="true"></i> Keep
                                 </div>
                             </div>
                         </div>
 
                         <!-- Step 3: Final Decision -->
-                        <div id="decision-box" class="p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center justify-between">
+                        <div id="decision-box" class="p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex items-center justify-between" role="status">
                             <div>
                                 <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Committee Decision</span>
                                 <span id="decision-text" class="text-sm font-bold text-red-400">Evicted! (Item is Lost)</span>
                             </div>
                             <div id="decision-badge" class="px-3 py-1.5 rounded bg-red-500/10 border border-red-500/30 text-xs font-mono font-bold text-red-400 flex items-center gap-1.5">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i> Evicted
+                                <i data-lucide="trash-2" class="w-4 h-4" aria-hidden="true"></i> Evicted
                             </div>
                         </div>
                     </div>
 
                     <div class="p-4 bg-slate-900/30 rounded-lg border border-slate-900 text-xs text-slate-400">
-                        <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom"></i>
+                        <i data-lucide="info" class="inline-block w-4 h-4 text-brand-cyan mr-1.5 align-text-bottom" aria-hidden="true"></i>
                         <span id="p-explanation-text">Under the AND veto rule, Expert 1 doesn't understand file paths and votes to delete it. Even though the other two experts voted to keep it, the item is evicted. The ensemble's recall collapses.<a href="https://kompress.vaked.dev/paper/main.pdf#page=12" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Table 4 on Page 12">[Paper p.12]</a></span>
                     </div>
                 </div>
@@ -337,9 +381,9 @@
 
             <!-- Theoretical Core -->
             <section id="theory" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
+                <h2 data-i18n="theory_title" class="text-3xl font-bold text-white font-title mb-4">Theoretical Core</h2>
                 <div class="prose prose-invert max-w-none space-y-6 text-slate-400 leading-relaxed">
-                    <p>
+                    <p data-i18n="theory_desc" class="text-sm">
                         Learned <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">context-pruning</a> improves long-context agent efficiency but introduces the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Voting Ensemble Paradox*</a>. Under <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">unanimity-to-keep (AND)</a> voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>
                     </p>
                     
@@ -364,14 +408,14 @@
                         </div>
                     </div>
 
-                    <p>
+                    <p data-i18n="theory_para_2" class="text-sm">
                         This yields a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">stratum-wise Pareto collapse</a> where the ensemble's recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:
                     </p>
                     
                     <!-- 4-Role Pipeline SVG Visual -->
                     <div class="my-8 bg-slate-955/40 p-6 rounded-xl border border-slate-900">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-4 text-center">The 4-Role Pipeline Architecture</span>
-                        <svg viewBox="0 0 600 220" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 600 220" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pipeline Architecture: Pruner, Rewriter, Circulator, Composer">
                             <!-- Background Grid Effect -->
                             <rect width="600" height="220" rx="12" fill="#080c14"/>
                             <path d="M 0 40 L 600 40 M 0 80 L 600 80 M 0 120 L 600 120 M 0 160 L 600 160 M 0 200 L 600 200" stroke="#0f172a" stroke-width="1"/>
@@ -432,20 +476,19 @@
 
             <!-- Vaked Capability & Context -->
             <section id="vakedc" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
-                <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+                <h2 data-i18n="vakedc_title" class="text-3xl font-bold text-white font-title mb-4">Vaked Capability & Context (vakedc)</h2>
+                <p data-i18n="vakedc_desc" class="text-sm text-slate-400 mb-6 leading-relaxed">
                     A decentralized routing and verification matrix: <code>vaked-base</code> defines node capacities, <code>vaked</code> orchestrates active routing, and <code>vakedc</code> signs context proofs.
                 </p>
 
                 <div class="bg-slate-955/40 p-6 rounded-xl border border-slate-900">
-                    <svg viewBox="0 0 600 300" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg viewBox="0 0 600 300" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Decentralized Vaked Capability and Context Mapping">
                         <!-- Central Core Router -->
                         <circle cx="300" cy="150" r="40" fill="#090d16" stroke="#00f2fe" stroke-width="2"/>
                         <text x="300" y="148" fill="white" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Vaked</text>
                         <text x="300" y="160" fill="#00f2fe" font-family="monospace" font-size="9" text-anchor="middle">Router</text>
                         
                         <!-- Orbits / Connectors -->
-                        <!-- Orbit lines -->
                         <circle cx="300" cy="150" r="100" stroke="#1e293b" stroke-dasharray="6 6" />
                         
                         <!-- Node 1: Active Context -->
@@ -477,20 +520,20 @@
 
             <!-- Model Architecture -->
             <section id="architecture" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-6">Model Architecture</h2>
+                <h2 data-i18n="architecture_title" class="text-3xl font-bold text-white font-title mb-6">Model Architecture</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold text-white">Dual-Head ModernBERT</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed">
+                        <p data-i18n="architecture_desc" class="text-sm text-slate-400 leading-relaxed">
                             `kompress-v8` uses a 149M-parameter <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:
                         </p>
                         <ul class="space-y-3 text-sm text-slate-400">
                             <li class="flex items-start gap-2.5">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5" aria-hidden="true"></i>
                                 <span><strong><a href="https://en.wikipedia.org/wiki/Token_classification" target="_blank" rel="noopener noreferrer" class="text-white hover:text-brand-cyan hover:underline">Token Classifier Head</a>:</strong> Produces per-token eviction logits.</span>
                             </li>
                             <li class="flex items-start gap-2.5">
-                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5"></i>
+                                <i data-lucide="check-circle" class="w-5 h-5 text-brand-cyan shrink-0 mt-0.5" aria-hidden="true"></i>
                                 <span><strong><a href="https://en.wikipedia.org/wiki/Convolutional_neural_network" target="_blank" rel="noopener noreferrer" class="text-white hover:text-brand-cyan hover:underline">Span-CNN Head</a>:</strong> Scores span-level coherence to prevent evictions from fragmenting syntactic units.</span>
                             </li>
                         </ul>
@@ -571,8 +614,8 @@
 
             <!-- Benchmarks -->
             <section id="benchmarks" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
+                <h2 data-i18n="benchmarks_title" class="text-3xl font-bold text-white font-title mb-4">Empirical Benchmarks</h2>
+                <p data-i18n="benchmarks_desc" class="text-slate-400 mb-6 leading-relaxed">
                     Evaluated on the <strong>Heretic</strong> adversarial benchmark, <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> dominates traditional prompt compression models.
                 </p>
 
@@ -582,17 +625,17 @@
                             <tr class="border-b border-slate-800 text-slate-500 font-semibold uppercase tracking-wider text-xs">
                                 <th class="py-3 px-4">Method</th>
                                 <th class="py-3 px-4">
-                                    <div class="tooltip">Exact Keep % ($T_{\text{crit}}$) <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                    <div class="tooltip">Exact Keep % ($T_{\text{crit}}$) <i data-lucide="info" class="w-3.5 h-3.5 inline" aria-hidden="true"></i>
                                         <span class="tooltiptext">Percentage of critical syntactic tokens (paths, errors, code) successfully preserved after pruning.</span>
                                     </div>
                                 </th>
                                 <th class="py-3 px-4">
-                                    <div class="tooltip">Keep Rate (Tokens) <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                    <div class="tooltip">Keep Rate (Tokens) <i data-lucide="info" class="w-3.5 h-3.5 inline" aria-hidden="true"></i>
                                         <span class="tooltiptext">The ratio of output tokens divided by input tokens. Lower means more compression.</span>
                                     </div>
                                 </th>
                                 <th class="py-3 px-4">
-                                    <div class="tooltip">Avg. Latency <i data-lucide="info" class="w-3.5 h-3.5 inline"></i>
+                                    <div class="tooltip">Avg. Latency <i data-lucide="info" class="w-3.5 h-3.5 inline" aria-hidden="true"></i>
                                         <span class="tooltiptext">Average processing time in milliseconds for the context pruner to run.</span>
                                     </div>
                                 </th>
@@ -602,7 +645,7 @@
                             <tr class="text-white bg-brand-cyan/5">
                                 <td class="py-4 px-4 font-semibold">
                                     <a href="https://huggingface.co/PeetPedro/kompress-v8" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors flex items-center gap-2">
-                                        <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                                        <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" aria-hidden="true"></span>
                                         kompress-v8 (Ours, Production)
                                     </a>
                                 </td>
@@ -657,16 +700,16 @@
 
             <!-- Headroom Integration -->
             <section id="proposal" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-6">Headroom Integration Proposal</h2>
+                <h2 data-i18n="proposal_title" class="text-3xl font-bold text-white font-title mb-6">Headroom Integration Proposal</h2>
                 <div class="space-y-6 text-slate-400 leading-relaxed">
-                    <p>
+                    <p data-i18n="proposal_desc" class="text-sm">
                         <span class="tooltip border-b border-slate-500 border-dashed cursor-help">We<span class="tooltiptext">Peter and the swarm of autonomous coding agents + inference loops that built this project.</span></span> propose integrating `kompress-ultra` directly into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (referencing <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) as a core context-management middleware:
                     </p>
                     
                     <div class="space-y-4">
                         <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
                             <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
-                                <i data-lucide="layers" class="w-4 h-4 text-brand-cyan"></i>
+                                <i data-lucide="layers" class="w-4 h-4 text-brand-cyan" aria-hidden="true"></i>
                                 1. Middleware Chain Integration
                             </h4>
                             <p class="text-xs">
@@ -676,7 +719,7 @@
 
                         <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
                             <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
-                                <i data-lucide="shield" class="w-4 h-4 text-brand-cyan"></i>
+                                <i data-lucide="shield" class="w-4 h-4 text-brand-cyan" aria-hidden="true"></i>
                                 2. Configurable Safety Floors
                             </h4>
                             <p class="text-xs">
@@ -686,7 +729,7 @@
 
                         <div class="p-5 rounded-lg bg-slate-900/40 border border-slate-800">
                             <h4 class="font-semibold text-white mb-2 flex items-center gap-2">
-                                <i data-lucide="database" class="w-4 h-4 text-brand-cyan"></i>
+                                <i data-lucide="database" class="w-4 h-4 text-brand-cyan" aria-hidden="true"></i>
                                 3. Passive Memory Offloading
                             </h4>
                             <p class="text-xs">
@@ -699,14 +742,14 @@
 
             <!-- Reviews & Feedback -->
             <section id="reviews" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">Reviews & Feedback</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
+                <h2 data-i18n="reviews_title" class="text-3xl font-bold text-white font-title mb-4">Reviews & Feedback</h2>
+                <p data-i18n="reviews_desc" class="text-slate-400 mb-6 leading-relaxed">
                     Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a **GitHub Pull Request**, guaranteeing they are **provably immutable** (the author cannot modify them without breaking the signature).
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Submit Form -->
-                    <div class="bg-slate-950/40 p-6 rounded-xl border border-slate-900 space-y-4">
+                    <div class="bg-slate-955/40 p-6 rounded-xl border border-slate-900 space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Submit a Review</span>
                             <span class="text-[10px] bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded font-mono">P-256 Signed</span>
@@ -724,31 +767,31 @@
 
                         <div>
                             <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Rating</label>
-                            <div class="flex gap-1">
-                                <button onclick="setRating(1)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
-                                <button onclick="setRating(2)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
-                                <button onclick="setRating(3)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
-                                <button onclick="setRating(4)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
-                                <button onclick="setRating(5)" class="star-btn text-brand-cyan"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                            <div class="flex gap-1" role="img" aria-label="5 star rating selector">
+                                <button onclick="setRating(1)" class="star-btn text-brand-cyan" aria-label="Rate 1 star"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(2)" class="star-btn text-brand-cyan" aria-label="Rate 2 stars"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(3)" class="star-btn text-brand-cyan" aria-label="Rate 3 stars"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(4)" class="star-btn text-brand-cyan" aria-label="Rate 4 stars"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
+                                <button onclick="setRating(5)" class="star-btn text-brand-cyan" aria-label="Rate 5 stars"><i data-lucide="star" class="w-5 h-5 fill-brand-cyan"></i></button>
                             </div>
                         </div>
 
                         <div>
                             <label class="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Review Comment</label>
-                            <textarea id="review-comment" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-brand-cyan" placeholder="What do you think of this proposal?"></textarea>
+                            <textarea id="review-comment" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-brand-cyan" placeholder="What do you think of this proposal?" aria-label="Review comment text"></textarea>
                         </div>
 
-                        <button onclick="submitReview()" class="w-full bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-sm py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-cyan/20">
-                            <i data-lucide="git-pull-request" class="w-4 h-4"></i> Sign & Submit via GitHub PR
+                        <button onclick="submitReview()" class="w-full bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-sm py-2.5 rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-cyan/20" aria-label="Sign and submit review via GitHub Pull Request">
+                            <i data-lucide="git-pull-request" class="w-4 h-4" aria-hidden="true"></i> Sign & Submit via GitHub PR
                         </button>
                     </div>
 
                     <!-- Reviews List -->
                     <div class="space-y-4">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Verified Reviews</span>
-                        <div id="reviews-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-2">
+                        <div id="reviews-list" class="space-y-4 max-h-[360px] overflow-y-auto pr-2" aria-live="polite">
                             <div class="text-center py-8 text-slate-600 text-xs">
-                                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-slate-700"></i>
+                                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-slate-700" aria-hidden="true"></i>
                                 Loading verified reviews...
                             </div>
                         </div>
@@ -758,15 +801,15 @@
 
             <!-- Academic Telemetry & Verification -->
             <section id="telemetry" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-4">Academic Telemetry & Verification</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
+                <h2 data-i18n="telemetry_title" class="text-3xl font-bold text-white font-title mb-4">Academic Telemetry & Verification</h2>
+                <p data-i18n="telemetry_desc" class="text-slate-400 mb-6 leading-relaxed">
                     This site is dedicated strictly to academic research. There are no tracking scripts, Google Ads, or third-party cookies. The connection is proxied and secured solely through <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a>.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Cryptographic Attestation Statement -->
                     <div class="bg-slate-955/40 p-6 rounded-xl border border-slate-900 space-y-4 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl pointer-events-none" aria-hidden="true"></div>
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Cryptographic Attestation</span>
                         <div class="p-4 bg-slate-900/40 border border-slate-800 rounded-lg text-xs font-mono text-slate-400 leading-relaxed italic">
                             "I, Peter Lodri, the owner of &lt;this&gt;, in terms of cryptographic easter eggs andOr hashes (eg.: genesis hash - vaked.dev) trust Cloudflare. 2026-06-29 --- and I understand that I'm kinda `forced` to choose yet I do this by my own will, noboy is forcing me or giving me any monetary whatever." <span class="text-brand-cyan not-italic font-bold block mt-2 text-right">— peter</span>
@@ -790,7 +833,7 @@
                 <div class="mt-8 bg-slate-955/60 p-6 rounded-xl border border-brand-cyan/10">
                     <div class="flex justify-between items-center mb-4">
                         <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-ping"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan animate-ping" aria-hidden="true"></span>
                             <div>
                                 <span class="text-xs font-bold text-white font-title uppercase tracking-wider block">Ralph-Loop Telemetry (Academic Dogfeeding)</span>
                                 <span class="text-[10px] text-slate-400 block mt-0.5">ELI5: A live feed showing how our coding agent is currently running and compressing its own logs to save memory.</span>
@@ -801,7 +844,7 @@
                         </span>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" role="status">
                         <div class="bg-slate-900/40 p-3 rounded-lg border border-slate-800">
                             <span class="text-[10px] text-slate-500 block">Slices Processed</span>
                             <span id="telemetry-slices" class="text-sm font-mono font-bold text-white">14,820</span>
@@ -824,7 +867,7 @@
 
             <!-- Glossary Section -->
             <section id="glossary" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-6">Glossary</h2>
+                <h2 data-i18n="glossary_title" class="text-3xl font-bold text-white font-title mb-6">Glossary</h2>
                 <div class="bg-slate-955/40 p-6 rounded-xl border border-slate-900">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-xs font-mono text-slate-400">
                         <div>
@@ -895,10 +938,60 @@
                 </div>
             </section>
 
+            <!-- Developer CSS Cheatsheet -->
+            <section id="css-cheatsheet" class="scroll-mt-24">
+                <details class="group bg-slate-955/40 border border-slate-900 rounded-xl overflow-hidden">
+                    <summary class="flex justify-between items-center p-6 cursor-pointer select-none font-title text-xl font-bold text-white hover:bg-slate-900/20 transition-all">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="code" class="text-brand-cyan w-5 h-5" aria-hidden="true"></i>
+                            Developer CSS SOTA Selectors Cheatsheet
+                        </span>
+                        <span class="transition-transform duration-300 group-open:rotate-180" aria-hidden="true">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-slate-500"></i>
+                        </span>
+                    </summary>
+                    <div class="p-6 border-t border-slate-900 text-xs font-mono text-slate-400 space-y-4 leading-relaxed">
+                        <p class="text-slate-300 mb-2">This site leverages state-of-the-art CSS selectors and Tailwind v4 directives. Here is the inline cheatsheet:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">1. Custom Text Selection</span>
+                                <code class="text-slate-200">selection:bg-brand-cyan selection:text-dark</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Customizes the background and text color when a user highlights text on the page.</p>
+                            </div>
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">2. Parent Selector (:has)</span>
+                                <code class="text-slate-200">.group:has(button:hover)</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Styles a parent element based on whether a specific child button is hovered.</p>
+                            </div>
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">3. Tailwind v4 @theme Directive</span>
+                                <code class="text-slate-200">@theme { --color-brand-cyan: #00f2fe; }</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Declares custom design tokens directly in the CSS file without a JS config.</p>
+                            </div>
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">4. Smooth Scrolling</span>
+                                <code class="text-slate-200">html { scroll-behavior: smooth; }</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Enables native smooth page transitions when clicking anchor links.</p>
+                            </div>
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">5. Backdrop Filters</span>
+                                <code class="text-slate-200">backdrop-blur-md bg-slate-950/85</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Creates a frosted glass effect by blurring the content behind the element.</p>
+                            </div>
+                            <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-850">
+                                <span class="text-brand-cyan font-bold block mb-1">6. Color Blending</span>
+                                <code class="text-slate-200">mix-blend-screen</code>
+                                <p class="text-[10px] text-slate-500 mt-1">Blends background glows smoothly with the dark background color.</p>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </section>
+
             <!-- Ecosystem & Related Work -->
             <section id="ecosystem" class="scroll-mt-24">
-                <h2 class="text-3xl font-bold text-white font-title mb-6">Ecosystem & Related Work</h2>
-                <p class="text-slate-400 mb-6 leading-relaxed">
+                <h2 data-i18n="ecosystem_title" class="text-3xl font-bold text-white font-title mb-6">Ecosystem & Related Work</h2>
+                <p data-i18n="ecosystem_desc" class="text-slate-400 mb-6 leading-relaxed">
                     This research is part of a broader ecosystem. All source code, dataset distributions, and experiment logs are open-source and publicly available for replication:
                 </p>
 
@@ -908,7 +1001,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Research Manuscript</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">Read the Full Paper</h4>
                             <p class="text-xs text-slate-400 mt-1">Detailed mathematical proof of the paradox and fine-tuning methodology.</p>
@@ -921,7 +1014,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Orchestration Engine</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">LoopKit GitHub</h4>
                             <p class="text-xs text-slate-400 mt-1">Four-phase autonomous state machine orchestrating the training runs.</p>
@@ -934,7 +1027,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Experiment Log Vault</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">pocoo.vaked.dev</h4>
                             <p class="text-xs text-slate-400 mt-1">Chronological registry of every training run, evaluation, and telemetry.</p>
@@ -947,7 +1040,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Interactive Data Studio</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">Ultrawhale Dogfood Data Studio</h4>
                             <p class="text-xs text-slate-400 mt-1">Explore, filter, and inspect the token-level eviction labels directly on HuggingFace.</p>
@@ -960,7 +1053,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Model & Code Hub</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">Hugging Face Profile</h4>
                             <p class="text-xs text-slate-400 mt-1">Host profile containing the kompress-v8 model weights and research datasets.</p>
@@ -973,7 +1066,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Decentralized Substrate</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">UltrameshAI Project</h4>
                             <p class="text-xs text-slate-400 mt-1">The big-picture decentralized agent routing and lifecycle substrate.</p>
@@ -986,7 +1079,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Community & Discussions</span>
-                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors"></i>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" aria-hidden="true"></i>
                             </div>
                             <h4 class="font-semibold text-white group-hover:text-brand-cyan transition-colors text-sm">Join the Community</h4>
                             <p class="text-xs text-slate-400 mt-1">Contribute to the substrate, participate in discussions, or report issues.</p>
@@ -1000,7 +1093,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950/95 py-16 text-xs text-slate-500 relative">
+    <footer class="border-t border-slate-900 bg-slate-955/95 py-16 text-xs text-slate-500 relative">
         <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             <div>
                 <span class="font-bold text-white uppercase tracking-wider block mb-4 font-title text-[10px]">Substrate</span>
@@ -1041,7 +1134,7 @@
                 <p class="text-[10px] text-slate-600 mt-1">Released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer" class="hover:text-brand-cyan transition-colors">Apache 2.0 License</a>. Funded via decentralized open-source grants.</p>
             </div>
             <div class="flex items-center gap-3">
-                <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse"></span>
+                <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" aria-hidden="true"></span>
                 <span class="text-[10px] text-slate-500 font-mono">All Systems Operational via <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a></span>
             </div>
         </div>

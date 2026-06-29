@@ -1,5 +1,5 @@
 // App logic for proposal.vaked.dev
-// Includes presets, mock compression pipeline, voting paradox simulation, and cryptographic reviews.
+// Includes presets, mock compression pipeline, voting paradox simulation, cryptographic reviews, and i18n translation.
 
 // Initialize Lucide icons
 document.addEventListener('DOMContentLoaded', async () => {
@@ -24,7 +24,201 @@ document.addEventListener('DOMContentLoaded', async () => {
     inspectToken('path');
 });
 
-// Presets for the playground
+// ==========================================
+// i18n Translation Dictionary
+// ==========================================
+const TRANSLATIONS = {
+    en: {
+        hero_title: 'Asymmetric Loss Modulation for <span class="gradient-text">Context Compression</span>',
+        hero_desc: 'Integrating learned context-pruning into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Achieve <strong class="text-white">~78% token savings</strong> and <strong class="text-white">~75% latency reduction</strong> while maintaining a near-perfect <strong class="text-brand-cyan">0.993 exact-keep rate</strong> on critical reasoning tokens.',
+        playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> Interactive Kompress-Ultra Playground',
+        playground_desc: 'Type or select a preset below. Watch the pruner and rewriter compress your <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">chat history</a> in real-time, preserving the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">critical-syntactic safety floor ($T_{\\text{crit}}$)</a>.',
+        paradox_title: 'The *Voting Ensemble Paradox*',
+        paradox_eli5_1: 'Imagine a committee of three experts deciding which words to keep in a document to save space. To be extremely conservative, the rule is: <strong>"If even one expert votes to delete a word, we delete it."</strong>',
+        paradox_eli5_2: 'Each expert is smart, but has one blind spot where they always vote to delete. Because of the veto rule, <strong>every single critical item gets deleted</strong> because the expert who doesn\'t understand it vetoes it. This is the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Voting Ensemble Paradox*</a>—the group becomes worse than any single expert on their own!',
+        theory_title: 'Theoretical Core',
+        theory_desc: 'Learned <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">context-pruning</a> improves long-context agent efficiency but introduces the <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Voting Ensemble Paradox*</a>. Under <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">unanimity-to-keep (AND)</a> voting ($k=1$ drop-if-any), the ensemble eviction indicator equals the pointwise maximum of the individual voter indicators:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="See Theorem 1 on Page 6">[Paper p.6]</a>',
+        theory_para_2: 'This yields a <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">stratum-wise Pareto collapse</a> where the ensemble\'s recall equals that of the weakest voter on each stratum. As a corrective, `kompress-ultra` employs three core mechanisms:',
+        vakedc_title: 'Vaked Capability & Context (vakedc)',
+        vakedc_desc: 'A decentralized routing and verification matrix: <code>vaked-base</code> defines node capacities, <code>vaked</code> orchestrates active routing, and <code>vakedc</code> signs context proofs.',
+        architecture_title: 'Model Architecture',
+        architecture_desc: '`kompress-v8` uses a 149M-parameter <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> backbone with <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> fine-tuning applied to the last 4 attention layers. Two task heads share the encoder:',
+        benchmarks_title: 'Empirical Benchmarks',
+        benchmarks_desc: 'Evaluated on the <strong>Heretic</strong> adversarial benchmark, <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> dominates traditional prompt compression models.',
+        proposal_title: 'Headroom Integration Proposal',
+        proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">We<span class="tooltiptext">Peter and the swarm of autonomous coding agents + inference loops that built this project.</span></span> propose integrating `kompress-ultra` directly into <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (referencing <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) as a core context-management middleware:',
+        reviews_title: 'Reviews & Feedback',
+        reviews_desc: 'Submit a review of this proposal. Reviews are cryptographically signed by your browser and submitted via a **GitHub Pull Request**, guaranteeing they are **provably immutable** (the author cannot modify them without breaking the signature).',
+        telemetry_title: 'Academic Telemetry & Verification',
+        telemetry_desc: 'This site is dedicated strictly to academic research. There are no tracking scripts, Google Ads, or third-party cookies. The connection is proxied and secured solely through <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a>.',
+        glossary_title: 'Glossary',
+        ecosystem_title: 'Ecosystem & Related Work',
+        ecosystem_desc: 'This research is part of a broader ecosystem. All source code, dataset distributions, and experiment logs are open-source and publicly available for replication:'
+    },
+    es: {
+        hero_title: 'Modulación de Pérdida Asimétrica para <span class="gradient-text">Compresión de Contexto</span>',
+        hero_desc: 'Integrando la poda de contexto aprendida en <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Consiga un <strong class="text-white">~78% de ahorro de tokens</strong> y una <strong class="text-white">reducción de latencia del ~75%</strong> manteniendo una tasa de retención exacta casi perfecta de <strong class="text-brand-cyan">0.993</strong> en tokens de razonamiento críticos.',
+        playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> Simulador Interactivo Kompress-Ultra',
+        playground_desc: 'Escriba o seleccione un ajuste preestablecido. Observe cómo el podador y el reescriptor comprimen su <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">historial de chat</a> en tiempo real, preservando el <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">suelo de seguridad sintáctico-crítico ($T_{\\text{crit}}$)</a>.',
+        paradox_title: 'La *Paradoja del Elenco de Votación*',
+        paradox_eli5_1: 'Imagine un comité de tres expertos que deciden qué palabras conservar en un documento para ahorrar espacio. Para ser extremadamente conservadores, la regla es: <strong>"Si un solo experto vota a favor de eliminar una palabra, la eliminamos".</strong>',
+        paradox_eli5_2: 'Cada experto es inteligente, pero tiene un punto ciego donde siempre vota a favor de eliminar. Debido a la regla de veto, <strong>cada elemento crítico se elimina</strong> porque el experto que no lo entiende lo veta. ¡Esta es la <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Paradoja del Elenco de Votación*</a>: el grupo se vuelve peor que cualquier experto por su cuenta!',
+        theory_title: 'Núcleo Teórico',
+        theory_desc: 'La <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">poda de contexto</a> aprendida mejora la eficiencia del agente de contexto largo pero introduce la <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Paradoja del Elenco de Votación*</a>. Bajo la votación de <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">unanimidad para mantener (AND)</a> ($k=1$ soltar si hay alguno), el indicador de desalojo del elenco es igual al máximo puntual de los indicadores de votantes individuales:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="Ver Teorema 1 en la página 6">[Paper p.6]</a>',
+        theory_para_2: 'Esto produce un <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">colapso de Pareto a nivel de estrato</a> donde el recuerdo del elenco es igual al del votante más débil en cada estrato. Como correctivo, `kompress-ultra` emplea tres mecanismos principales:',
+        vakedc_title: 'Capacidad y Contexto Vaked (vakedc)',
+        vakedc_desc: 'Una matriz de enrutamiento y verificación descentralizada: <code>vaked-base</code> define las capacidades del nodo, <code>vaked</code> orquesta el enrutamiento activo y <code>vakedc</code> firma las pruebas de contexto.',
+        architecture_title: 'Arquitectura del Modelo',
+        architecture_desc: '`kompress-v8` utiliza una red troncal <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> de 149 millones de parámetros con ajuste fino de <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> aplicado a las últimas 4 capas de atención. Dos cabezales de tareas comparten el codificador:',
+        benchmarks_title: 'Puntos de Referencia Empíricos',
+        benchmarks_desc: 'Evaluado en el punto de referencia adverso <strong>Heretic</strong>, <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> domina a los modelos tradicionales de compresión de prompts.',
+        proposal_title: 'Propuesta de Integración en Headroom',
+        proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Nosotros<span class="tooltiptext">Peter y el enjambre de agentes de codificación autónomos + bucles de inferencia que construyeron este proyecto.</span></span> proponemos integrar `kompress-ultra` directamente en <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (haciendo referencia a <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) como middleware central de gestión de contexto:',
+        reviews_title: 'Reseñas y Comentarios',
+        reviews_desc: 'Envíe una reseña de esta propuesta. Las reseñas son firmadas criptográficamente por su navegador y enviadas a través de una **Pull Request de GitHub**, lo que garantiza que son **provocadamente inmutables** (el autor no puede modificarlas sin romper la firma).',
+        telemetry_title: 'Telemetría Académica y Verificación',
+        telemetry_desc: 'Este sitio está dedicado estrictamente a la investigación académica. No hay scripts de seguimiento, anuncios de Google ni cookies de terceros. La conexión se realiza a través de un proxy y se protege únicamente mediante <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a>.',
+        glossary_title: 'Glosario',
+        ecosystem_title: 'Ecosistema y Trabajo Relacionado',
+        ecosystem_desc: 'Esta investigación forma parte de un ecosistema más amplio. Todo el código fuente, las distribuciones de conjuntos de datos y los registros de experimentos son de código abierto y están disponibles públicamente para su replicación:'
+    },
+    de: {
+        hero_title: 'Asymmetrische Verlustmodulation für <span class="gradient-text">Kontextkomprimierung</span>',
+        hero_desc: 'Integration von gelerntem Kontext-Pruning in <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Erzielen Sie <strong class="text-white">~78% Token-Einsparung</strong> und eine <strong class="text-white">~75% Latenzreduzierung</strong> bei einer nahezu perfekten Beibehaltungsrate von <strong class="text-brand-cyan">0,993</strong> bei kritischen Argumentationstoken.',
+        playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> Interaktive Kompress-Ultra Spielwiese',
+        playground_desc: 'Geben Sie einen Text ein oder wählen Sie eine Vorlage. Sehen Sie zu, wie der Pruner und Rewriter Ihren <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">Chat-Verlauf</a> in Echtzeit komprimieren und dabei das <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">kritisch-syntaktische Sicherheitsniveau ($T_{\\text{crit}}$)</a> bewahren.',
+        paradox_title: 'Das *Abstimmungs-Ensemble-Paradoxon*',
+        paradox_eli5_1: 'Stellen Sie sich ein Komitee aus drei Experten vor, die entscheiden, welche Wörter in einem Dokument behalten werden sollen, um Platz zu sparen. Um extrem konservativ zu sein, lautet die Regel: <strong>"Wenn auch nur ein Experte für das Löschen eines Wortes stimmt, löschen wir es."</strong>',
+        paradox_eli5_2: 'Jeder Experte ist klug, hat aber einen blinden Fleck, bei dem er immer für das Löschen stimmt. Aufgrund der Veto-Regel wird <strong>jedes einzelne kritische Element gelöscht</strong>, weil der Experte, der es nicht versteht, sein Veto einlegt. Dies ist das <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Abstimmungs-Ensemble-Paradoxon*</a> – die Gruppe wird schlechter als jeder einzelne Experte für sich allein!',
+        theory_title: 'Theoretischer Kern',
+        theory_desc: 'Gelerntes <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">Kontext-Pruning</a> verbessert die Effizienz von Agenten mit langem Kontext, führt jedoch das <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Abstimmungs-Ensemble-Paradoxon*</a> ein. Bei der Abstimmung auf <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">Beibehaltung durch Einstimmigkeit (AND)</a> ($k=1$ Verwerfen-wenn-irgendein) entspricht der Ensemble-Ausschlussindikator dem punktweisen Maximum der einzelnen Wählerindikatoren:<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="Siehe Theorem 1 auf Seite 6">[Paper p.6]</a>',
+        theory_para_2: 'Dies führt zu einem <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">schichtweisen Pareto-Kollaps</a>, bei dem die Trefferquote des Ensembles der des schwächsten Wählers auf jeder Schicht entspricht. Als Korrektur setzt `kompress-ultra` drei Kernmechanismen ein:',
+        vakedc_title: 'Vaked-Fähigkeit & Kontext (vakedc)',
+        vakedc_desc: 'Eine dezentrale Routing- und Verifizierungsmatrix: <code>vaked-base</code> definiert Knotenkapazitäten, <code>vaked</code> orchestriert aktives Routing und <code>vakedc</code> signiert Kontextnachweise.',
+        architecture_title: 'Modellarchitektur',
+        architecture_desc: '`kompress-v8` verwendet ein 149M-Parameter <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a>-Backbone mit <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a>-Feinabstimmung auf den letzten 4 Attention-Schichten. Zwei Task-Heads teilen sich den Encoder:',
+        benchmarks_title: 'Empirische Benchmarks',
+        benchmarks_desc: 'Ermittelt auf dem adversarialen Benchmark <strong>Heretic</strong>, dominiert <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> traditionelle Prompt-Komprimierungsmodelle.',
+        proposal_title: 'Integrationsvorschlag für Headroom',
+        proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Wir<span class="tooltiptext">Peter und der Schwarm autonomer Codierungsagenten + Inferenzschleifen, die dieses Projekt aufgebaut haben.</span></span> schlagen vor, `kompress-ultra` direkt in <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (unter Bezugnahme auf <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) als zentrales Kontextmanagement-Middleware zu integrieren:',
+        reviews_title: 'Bewertungen & Feedback',
+        reviews_desc: 'Geben Sie eine Bewertung zu diesem Vorschlag ab. Bewertungen werden von Ihrem Browser kryptografisch signiert und über einen **GitHub Pull Request** eingereicht, was garantiert, dass sie **nachweisbar unveränderlich** sind (der Autor kann sie nicht ändern, ohne die Signatur zu verletzen).',
+        telemetry_title: 'Akademische Telemetrie & Verifizierung',
+        telemetry_desc: 'Diese Website dient ausschließlich der akademischen Forschung. Es gibt keine Tracking-Skripte, Google-Anzeigen oder Drittanbieter-Cookies. Die Verbindung wird ausschließlich über das <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a> vermittelt und gesichert.',
+        glossary_title: 'Glossar',
+        ecosystem_title: 'Ökosystem & Verwandte Arbeiten',
+        ecosystem_desc: 'Diese Forschung ist Teil eines größeren Ökosystems. Der gesamte Quellcode, die Datensatzverteilungen und die Experimentprotokolle sind Open-Source und für die Replikation öffentlich zugänglich:'
+    },
+    fr: {
+        hero_title: 'Modulation de Perte Asymétrique pour la <span class="gradient-text">Compression de Contexte</span>',
+        hero_desc: 'Intégration de l\'élagage de contexte appris dans <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a>. Obtenez <strong class="text-white">~78% d\'économie de jetons</strong> et une <strong class="text-white">réduction de latence de ~75%</strong> tout en maintenant un taux de conservation exact de <strong class="text-brand-cyan">0,993</strong> sur les jetons de raisonnement critiques.',
+        playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> Zone de Jeu Interactive Kompress-Ultra',
+        playground_desc: 'Saisissez du texte ou sélectionnez un préréglage. Regardez le pruner et le rewriter compresser votre <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">historique de chat</a> en temps réel, préservant le <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">seuil de sécurité syntaxique-critique ($T_{\\text{crit}}$)</a>.',
+        paradox_title: 'Le *Paradoxe de l\'Ensemble de Vote*',
+        paradox_eli5_1: 'Imaginez un comité de trois experts décidant quels mots conserver dans un document pour gagner de l\'espace. Pour être extrêmement conservateur, la règle est : <strong>"Si ne serait-ce qu\'un seul expert vote pour supprimer un mot, nous le supprimons."</strong>',
+        paradox_eli5_2: 'Chaque expert est intelligent, mais a un point faible où il vote toujours pour supprimer. En raison de la règle du veto, <strong>chaque élément critique est supprimé</strong> parce que l\'expert qui ne le comprend pas y oppose son veto. C\'est le <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Paradoxe de l\'Ensemble de Vote*</a> — le groupe devient moins efficace que n\'importe quel expert pris individuellement !',
+        theory_title: 'Noyau Théorique',
+        theory_desc: 'L\'<a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">élagage de contexte</a> appris améliore l\'efficacité de l\'agent dans les contextes longs mais introduit le <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">*Paradoxe de l\'Ensemble de Vote*</a>. Sous un vote à <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">l\'unanimité pour conserver (AND)</a> ($k=1$ abandonner si présent), l\'indicateur d\'expulsion de l\'ensemble est égal au maximum ponctuel des indicateurs de vote individuels :<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="Voir le théorème 1 à la page 6">[Paper p.6]</a>',
+        theory_para_2: 'Cela produit un <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">effondrement de Pareto par strate</a> où le rappel de l\'ensemble est égal à celui du votant le plus faible sur chaque strate. En guise de correctif, `kompress-ultra` utilise trois mécanismes fondamentaux :',
+        vakedc_title: 'Capacité et Contexte Vaked (vakedc)',
+        vakedc_desc: 'Une matrice de routage et de vérification décentralisée : <code>vaked-base</code> définit les capacités des nœuds, <code>vaked</code> orchestre le routage actif et <code>vakedc</code> signe les preuves de contexte.',
+        architecture_title: 'Architecture du Modèle',
+        architecture_desc: '`kompress-v8` utilise un squelette <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> de 149M de paramètres avec un réglage fin <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> appliqué aux 4 dernières couches d\'attention. Deux têtes de tâche partagent l\'encodeur :',
+        benchmarks_title: 'Bancs d\'Essai Empiriques',
+        benchmarks_desc: 'Évalué sur le banc d\'essai contradictoire <strong>Heretic</strong>, <code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> domine les modèles traditionnels de compression de prompts.',
+        proposal_title: 'Proposition d\'Intégration de Headroom',
+        proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">Nous<span class="tooltiptext">Peter et l\'essaim d\'agents de codage autonomes + boucles d\'inférence qui ont construit ce projet.</span></span> proposons d\'intégrer `kompress-ultra` directement dans <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a> (en référence au <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>) en tant que middleware central de gestion de contexte :',
+        reviews_title: 'Avis & Commentaires',
+        reviews_desc: 'Soumettez un avis sur cette proposition. Les avis sont signés cryptographiquement par votre navigateur et soumis via une **Pull Request GitHub**, garantissant qu\'ils sont **prouvables immuables** (l\'auteur ne peut pas les modifier sans rompre la signature).',
+        telemetry_title: 'Télémétrie Académique & Vérification',
+        telemetry_desc: 'Ce site est strictement dédié à la recherche académique. Il n\'y a pas de scripts de suivi, de publicités Google ou de cookies tiers. La connexion est relayée par proxy et sécurisée uniquement via le <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">CDN Cloudflare</a>.',
+        glossary_title: 'Glossaire',
+        ecosystem_title: 'Écosystème & Travaux Connexes',
+        ecosystem_desc: 'Cette recherche fait partie d\'un écosystème plus large. Tout le code source, les distributions de jeux de données et les journaux d\'expériences sont open-source et publics pour réplication :'
+    },
+    zh: {
+        hero_title: '用于<span class="gradient-text">上下文压缩</span>的非对称损失调制',
+        hero_desc: '将学习到的上下文裁剪集成到 <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom</a> 中。实现 <strong class="text-white">~78% 的 Token 节省</strong>和 <strong class="text-white">~75% 的延迟降低</strong>，同时对关键推理 Token 保持近乎完美的 <strong class="text-brand-cyan">0.993 精确保留率</strong>。',
+        playground_title: '<i data-lucide="sparkles" class="text-brand-cyan w-6 h-6" aria-hidden="true"></i> 交互式 Kompress-Ultra 沙盒',
+        playground_desc: '在下方输入或选择预设。实时查看修剪器和重写器如何压缩您的 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">聊天历史记录</a>，同时保留 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">关键语法安全底线 ($T_{\\text{crit}}$)</a>。',
+        paradox_title: '“投票集成悖论”',
+        paradox_eli5_1: '想象一个由三位专家组成的委员会，决定保留文档中的哪些词以节省空间。为了极其保守，规则是：<strong>“如果哪怕只有一位专家投票删除一个词，我们就将其删除。”</strong>',
+        paradox_eli5_2: '每位专家都很聪明，但都有一个总是投票删除的盲区。由于否决权规则，<strong>每一个关键项都会被删除</strong>，因为不理解它的专家会否决它。这就是 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">“投票集成悖论”</a> —— 集体的效果变得比任何一个单独的专家还要差！',
+        theory_title: '理论核心',
+        theory_desc: '学习到的 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">上下文裁剪</a> 提高了长上下文智能体的效率，但引入了 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">“投票集成悖论”</a>。在 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">一致同意保留 (AND)</a> 投票下（$k=1$ 遇否即丢），集成驱逐指标等于单个投票者指标的点状最大值：<a href="https://kompress.vaked.dev/paper/main.pdf#page=6" target="_blank" rel="noopener noreferrer" class="cite-link" title="请参阅第 6 页的定理 1">[Paper p.6]</a>',
+        theory_para_2: '这导致了 <a href="#glossary" class="text-brand-cyan hover:underline decoration-dashed decoration-1">分层帕累托塌陷</a>，即集成的召回率等于每个层级上最弱投票者的召回率。作为纠正，`kompress-ultra` 采用了三个核心机制：',
+        vakedc_title: 'Vaked 能力与上下文 (vakedc)',
+        vakedc_desc: '一个去中心化的路由和验证矩阵：<code>vaked-base</code> 定义节点容量，<code>vaked</code> 编排主动路由，而 <code>vakedc</code> 签署上下文证明。',
+        architecture_title: '模型架构',
+        architecture_desc: '`kompress-v8` 使用了 149M 参数的 <a href="https://github.com/AnswerDotAI/ModernBERT" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">ModernBERT</a> 骨干网络，并在最后 4 个注意力层上应用了 <a href="https://en.wikipedia.org/wiki/Low-rank_adaptation" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">LoRA</a> 微调。两个任务头部共享编码器：',
+        benchmarks_title: '基准测试',
+        benchmarks_desc: '在 <strong>Heretic</strong> 对抗性基准测试中，<code class="font-mono bg-slate-900 px-1.5 py-0.5 rounded text-brand-cyan">kompress-v8</code> 碾压了传统的提示词压缩模型。',
+        proposal_title: 'Headroom 集成提议',
+        proposal_desc: '<span class="tooltip border-b border-slate-500 border-dashed cursor-help">我们<span class="tooltiptext">彼得和构建该项目的自主编码智能体群 + 推理循环。</span></span> 提议将 `kompress-ultra` 直接集成到 <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline">Headroom</a>（参考 <a href="https://github.com/headroomlabs-ai/headroom/pull/1419" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline font-semibold">Headroom PR #1419</a>）作为核心上下文管理中间件：',
+        reviews_title: '评估与反馈',
+        reviews_desc: '提交对此提案的评估。评估由您的浏览器进行加密签署，并通过 **GitHub Pull Request** 提交，以确保它们是 **可证实的不可变性**（作者在不破坏签名的情况下无法修改它们）。',
+        telemetry_title: '学术遥测与验证',
+        telemetry_desc: '本网站严格致力于学术研究。没有跟踪脚本、Google 广告或第三方 Cookie。连接已代理并仅通过 <a href="https://www.cloudflare.com" target="_blank" rel="noopener noreferrer" class="text-brand-emerald hover:underline">Cloudflare CDN</a> 进行保护。',
+        glossary_title: '词汇表',
+        ecosystem_title: '生态系统与相关工作',
+        ecosystem_desc: '这项研究是一个更广泛生态系统的一部分。所有的源代码、数据集分发和实验日志都是开源的，可公开用于复制：'
+    }
+};
+
+function changeLanguage(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    
+    // Update elements with data-i18n attributes
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (TRANSLATIONS[lang][key]) {
+            el.innerHTML = TRANSLATIONS[lang][key];
+        }
+    });
+
+    // Re-render math and icons for translated content
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ]
+        });
+    }
+    lucide.createIcons();
+}
+
+function showSelfGenTranslationPrompt() {
+    const jsonDict = JSON.stringify(TRANSLATIONS.en, null, 2);
+    const promptText = `Please translate the following JSON dictionary of UI terms into [YOUR_TARGET_LANGUAGE]. Maintain all HTML tags and formatting:
+
+\`\`\`json
+${jsonDict}
+\`\`\``;
+    
+    // Create a beautiful modal to display this copy-pastable prompt
+    const modal = document.createElement('div');
+    modal.className = "fixed inset-0 bg-black/80 flex items-center justify-center p-6 z-50 backdrop-blur-sm";
+    modal.innerHTML = `
+        <div class="bg-slate-955 border border-slate-800 rounded-xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white font-mono flex items-center gap-1.5"><i data-lucide="languages" class="w-4 h-4 text-brand-cyan"></i> Self-Generate Translation Prompt</span>
+                <button onclick="this.closest('.fixed').remove()" class="text-slate-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Copy this prompt and paste it into any LLM to translate the entire interface into your language. Once you get the JSON output, you can open a PR to add it to <code>app.js</code>!</p>
+            <textarea readonly class="w-full h-48 bg-slate-900 border border-slate-800 rounded-lg p-3 text-[10px] font-mono text-brand-cyan focus:outline-none focus:border-brand-cyan">${promptText}</textarea>
+            <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value); this.innerText='Prompt Copied!';" class="w-full bg-gradient-to-r from-brand-cyan to-brand-blue text-dark font-bold text-xs py-2.5 rounded-lg hover:opacity-90 transition-all font-mono">
+                Copy Prompt to Clipboard
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    lucide.createIcons();
+}
+
+// ==========================================
+// Preset and Compressor Logic
+// ==========================================
 const PRESETS = {
     auth: {
         text: "I would be happy to help you implement the authentication system with OAuth2. Let me write the code for the passport middleware. We will require the client ID and client secret in the .env file.",

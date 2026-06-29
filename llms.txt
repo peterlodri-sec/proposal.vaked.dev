@@ -1,0 +1,33 @@
+# Kompress-Ultra for Headroom
+
+> Integrating learned context-pruning into Headroom. Solve context bloat with asymmetric loss modulation.
+
+## Overview
+Kompress-Ultra is a context-management middleware designed for the Headroom agent framework. It compresses verbose chat histories, compiler logs, and tool outputs, achieving ~78% token savings and ~75% latency reduction while maintaining a 0.993 exact-keep rate on critical reasoning tokens.
+
+## Mathematical Core
+To resolve the **Voting Ensemble Paradox** (where conservative voting collapses stratum-wise recall under unanimity-to-keep (AND) voting):
+
+$$I_{\text{ens}}(x) = \bigvee_{i=1}^N I_i(x) = I_{i^*_k}(x)$$
+
+We define a critical-syntactic safety floor ($T_{\text{crit}}$) matching numbers, file paths, compiler error codes, environment variables, and capitalized identifiers. During training, we apply an asymmetric loss penalty ($\lambda = 3.0$) on the false eviction of these tokens:
+
+$$\mathcal{L}_i = \mathcal{L}_{\text{base}}(\theta_i) + \lambda \cdot \frac{1}{|T_{\text{crit}}|} \sum_{x \in T_{\text{crit}}} I^{\text{fe}}_i(x)$$
+
+## Model Architecture
+* **Backbone:** 149M-parameter ModernBERT encoder with LoRA fine-tuning on the last 4 attention layers.
+* **Heads:**
+  * **Token Classifier Head:** Produces per-token eviction logits.
+  * **Span-CNN Head:** Scores span-level coherence.
+* **Gate:** Asymmetric Modulation Gate scales token logits to suppress eviction in high-coherence spans:
+  $$\tilde{I}_i(x) = \sigma\left(\text{logits}_{\text{tok}}(x) - \gamma g(\text{logits}_{\text{span}}(x))\right)$$
+
+## Key Resources
+* **Proposal Site:** [https://proposal.vaked.dev](https://proposal.vaked.dev)
+* **Academic Paper:** [https://kompress.vaked.dev/paper/main.pdf](https://kompress.vaked.dev/paper/main.pdf)
+* **Hugging Face Model:** [PeetPedro/kompress-v8](https://huggingface.co/PeetPedro/kompress-v8)
+* **Hugging Face Dataset:** [PeetPedro/ultrawhale-dogfood](https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood)
+* **Dataset Studio:** [https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood/viewer](https://huggingface.co/datasets/PeetPedro/ultrawhale-dogfood/viewer)
+* **Playground Space:** [https://huggingface.co/spaces/PeetPedro/kompress-playground](https://huggingface.co/spaces/PeetPedro/kompress-playground)
+* **Headroom Integration PR:** [Headroom PR #1419](https://github.com/headroomlabs-ai/headroom/pull/1419)
+* **Substrate Repo:** [UltrameshAI](https://github.com/peterlodri-sec/ultrameshai)
