@@ -1,0 +1,17 @@
+{
+  "reviewer": "Decentral-Otter-816c",
+  "rating": 5,
+  "comment": "test - peter - self\n\nyoooo",
+  "timestamp": "2026-06-29T00:31:29.389Z",
+  "publicKey": {
+    "crv": "P-256",
+    "ext": true,
+    "key_ops": [
+      "verify"
+    ],
+    "kty": "EC",
+    "x": "QqRkNA9wZVmdPcTbx2u1SoDa9vVe_mWAQPqqujR6dW8",
+    "y": "iHlfi0FzI9SIvFEPsG9Eili2YSzN9GFLQuMGGbauz5Y"
+  },
+  "signature": "0be843bebe0f36007deeaf810475e5dbff50946a5d840f731ecd8f45af08176e9c44a6e5e8d11a630a27c3de3a1f758f881ba43ca3be2f40d523780f91bb5971"
+}
