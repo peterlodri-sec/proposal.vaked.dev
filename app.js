@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await initCryptoKeys();
     await fetchAndRenderReviews();
     initTelemetryLoop();
+    initFluidBackground();
+    initFooterPreviews();
     // Initialize the paradox simulator
     inspectToken('path');
 });
@@ -505,4 +507,80 @@ function initTelemetryLoop() {
             latencyEl.innerText = `${latencyVal} ms`;
         }
     }, 3000);
+}
+
+// ==========================================
+// Fluid Ambient Background Canvas
+// ==========================================
+function initFluidBackground() {
+    const canvas = document.getElementById('fluid-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+    
+    const blobs = [
+        { x: width * 0.2, y: height * 0.3, rx: 250, ry: 250, vx: 0.2, vy: 0.15, color: 'rgba(0, 242, 254, 0.04)' },
+        { x: width * 0.8, y: height * 0.2, rx: 300, ry: 300, vx: -0.15, vy: 0.2, color: 'rgba(79, 172, 254, 0.04)' },
+        { x: width * 0.5, y: height * 0.7, rx: 350, ry: 350, vx: 0.1, vy: -0.15, color: 'rgba(168, 85, 247, 0.03)' },
+        { x: width * 0.3, y: height * 0.8, rx: 280, ry: 280, vx: -0.1, vy: 0.1, color: 'rgba(16, 185, 129, 0.03)' }
+    ];
+    
+    function animate() {
+        ctx.fillStyle = '#080c14';
+        ctx.fillRect(0, 0, width, height);
+        
+        blobs.forEach(blob => {
+            blob.x += blob.vx;
+            blob.y += blob.vy;
+            
+            // Bounce off boundaries including radii padding
+            if (blob.x < -blob.rx || blob.x > width + blob.rx) blob.vx *= -1;
+            if (blob.y < -blob.ry || blob.y > height + blob.ry) blob.vy *= -1;
+            
+            const grad = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, Math.max(blob.rx, blob.ry));
+            grad.addColorStop(0, blob.color);
+            grad.addColorStop(1, 'rgba(8, 12, 20, 0)');
+            
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(blob.x, blob.y, Math.max(blob.rx, blob.ry), 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+}
+
+// ==========================================
+// Ecosystem Hover Preview Cards
+// ==========================================
+function initFooterPreviews() {
+    const previewCard = document.createElement('div');
+    // Styling the hover card to look premium and match the site UI
+    previewCard.className = "fixed pointer-events-none opacity-0 bg-slate-955/95 border border-brand-cyan/20 p-3 rounded-lg shadow-xl text-[10px] text-slate-300 max-w-[220px] z-50 font-mono transition-opacity duration-200 backdrop-blur-md leading-relaxed";
+    document.body.appendChild(previewCard);
+    
+    document.querySelectorAll('[data-preview]').forEach(el => {
+        el.addEventListener('mouseenter', (e) => {
+            previewCard.innerHTML = `<span class="text-brand-cyan font-bold block mb-1">Ecosystem Resource</span>${el.getAttribute('data-preview')}`;
+            previewCard.style.opacity = '1';
+        });
+        el.addEventListener('mousemove', (e) => {
+            // Keep card offset from cursor
+            previewCard.style.left = `${e.clientX + 15}px`;
+            previewCard.style.top = `${e.clientY + 15}px`;
+        });
+        el.addEventListener('mouseleave', () => {
+            previewCard.style.opacity = '0';
+        });
+    });
 }
