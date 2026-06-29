@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initInteractiveMath();
     // Initialize the paradox simulator
     inspectToken('path');
+    initDashboard();
 });
 
 // ==========================================
@@ -742,6 +743,134 @@ function escapeHtml(str) {
               .replace(/>/g, "&gt;")
               .replace(/"/g, "&quot;")
               .replace(/'/g, "&#039;");
+}
+
+// ==========================================
+// Loss & Attention Dashboard Logic
+// ==========================================
+let simLambda = 3.0;
+let simGamma = 1.0;
+let epochCount = 1;
+const mockTokens = ["src/auth.rs", "cargo", "test", "100.64.0.1", "secret", "0x7f", "import", "docker"];
+
+function initDashboard() {
+    const matrix = document.getElementById('attention-matrix');
+    if (!matrix) return;
+    matrix.innerHTML = '';
+    
+    for (let i = 0; i < 64; i++) {
+        const cell = document.createElement('div');
+        const row = Math.floor(i / 8);
+        const col = i % 8;
+        cell.className = "w-full h-full rounded bg-brand-cyan/20 border border-slate-900 hover:border-brand-cyan/80 transition-all cursor-crosshair";
+        cell.setAttribute('role', 'gridcell');
+        
+        cell.addEventListener('mouseenter', () => {
+            const weight = (0.2 + (Math.sin(row + col + simLambda) * 0.3) + (Math.cos(row * col * simGamma) * 0.4)).toFixed(3);
+            const clampedWeight = Math.max(0.01, Math.min(0.99, weight));
+            const srcToken = mockTokens[row];
+            const dstToken = mockTokens[col];
+            document.getElementById('heatmap-tooltip').innerHTML = `Attention <strong class="text-brand-cyan">[${srcToken} → ${dstToken}]</strong>: <span class="text-white font-mono">${clampedWeight}</span>`;
+            cell.classList.add('bg-brand-cyan/60');
+        });
+        
+        cell.addEventListener('mouseleave', () => {
+            document.getElementById('heatmap-tooltip').innerHTML = "Hover over cells to inspect token-to-token attention weights.";
+            cell.classList.remove('bg-brand-cyan/60');
+        });
+        
+        matrix.appendChild(cell);
+    }
+    
+    updateDashboardParams();
+}
+
+function updateDashboardParams() {
+    const lambdaSlider = document.getElementById('slider-lambda');
+    const gammaSlider = document.getElementById('slider-gamma');
+    if (!lambdaSlider || !gammaSlider) return;
+
+    simLambda = parseFloat(lambdaSlider.value);
+    simGamma = parseFloat(gammaSlider.value);
+
+    document.getElementById('val-lambda').innerText = simLambda.toFixed(1);
+    document.getElementById('val-gamma').innerText = simGamma.toFixed(1);
+
+    // 1. Calculate and update stratum survival rates
+    const pathRate = Math.min(100, Math.round((simLambda / 3.0) * 100));
+    const cmdRate = Math.min(100, Math.round((simLambda / 2.8) * 100));
+    const secretRate = Math.min(100, Math.round((simLambda / 2.5) * 100));
+    const noiseRate = Math.max(5, Math.round(50 - (simLambda * 8) - (simGamma * 5)));
+
+    updateRateBar('paths', pathRate);
+    updateRateBar('cmds', cmdRate);
+    updateRateBar('secrets', secretRate);
+    updateRateBar('noise', noiseRate);
+
+    // 2. Redraw Loss Curve
+    drawLossCurve();
+
+    // 3. Update Attention Heatmap Opacity
+    const cells = document.getElementById('attention-matrix').children;
+    if (cells.length === 64) {
+        for (let i = 0; i < 64; i++) {
+            const row = Math.floor(i / 8);
+            const col = i % 8;
+            const weight = 0.1 + (Math.abs(Math.sin(row + col + simLambda)) * 0.4) + (Math.abs(Math.cos(row * col * simGamma)) * 0.4);
+            const clampedWeight = Math.max(0.1, Math.min(0.9, weight));
+            cells[i].style.opacity = clampedWeight;
+        }
+    }
+}
+
+function updateRateBar(type, rate) {
+    const bar = document.getElementById(`bar-${type}`);
+    const label = document.getElementById(`rate-val-${type}`);
+    if (bar && label) {
+        bar.style.width = `${rate}%`;
+        label.innerText = `${rate}%`;
+        if (rate > 90) {
+            label.className = "text-brand-emerald font-bold";
+        } else if (rate > 50) {
+            label.className = "text-brand-cyan font-bold";
+        } else {
+            label.className = "text-slate-500";
+        }
+    }
+}
+
+function drawLossCurve() {
+    const lossLine = document.getElementById('path-loss-line');
+    if (!lossLine) return;
+    
+    const startY = 130 - (simLambda * 5);
+    const controlY = 90 - (simLambda * 12);
+    const endY = Math.max(10, 30 - (simLambda * 4) - (simGamma * 8));
+    
+    const d = `M 10 ${startY} Q 120 ${controlY}, 180 45 T 290 ${endY}`;
+    lossLine.setAttribute('d', d);
+}
+
+function triggerMockTrainingRun() {
+    epochCount++;
+    const btn = document.querySelector('[onclick="triggerMockTrainingRun()"]');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 text-brand-cyan animate-spin"></i> Running Epoch...`;
+    lucide.createIcons();
+    
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        lucide.createIcons();
+        
+        const lambdaSlider = document.getElementById('slider-lambda');
+        const gammaSlider = document.getElementById('slider-gamma');
+        
+        lambdaSlider.value = Math.min(5.0, parseFloat(lambdaSlider.value) + 0.2).toFixed(1);
+        gammaSlider.value = Math.min(2.0, parseFloat(gammaSlider.value) + 0.1).toFixed(1);
+        
+        updateDashboardParams();
+    }, 800);
 }
 
 // ==========================================
