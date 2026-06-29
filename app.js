@@ -694,57 +694,73 @@ async function verifySignature(review) {
 
 async function fetchAndRenderReviews() {
     const listContainer = document.getElementById('reviews-list');
+    const staticReviews = [
+        {
+            "reviewer": "Decentral-Otter-816c",
+            "rating": 5,
+            "comment": "test - peter - self\n\nyoooo",
+            "timestamp": "2026-06-29T00:31:29.389Z",
+            "publicKey": {
+                "crv": "P-256",
+                "ext": true,
+                "key_ops": ["verify"],
+                "kty": "EC",
+                "x": "QqRkNA9wZVmdPcTbx2u1SoDa9vVe_mWAQPqqujR6dW8",
+                "y": "iHlfi0FzI9SIvFEPsG9Eili2YSzN9GFLQuMGGbauz5Y"
+            },
+            "signature": "0be843bebe0f36007deeaf810475e5dbff50946a5d840f731ecd8f45af08176e9c44a6e5e8d11a630a27c3de3a1f758f881ba43ca3be2f40d523780f91bb5971"
+        }
+    ];
     
+    let reviews = [];
     try {
         const response = await fetch('reviews.json');
         const contentType = response.headers.get('content-type');
-        if (!response.ok || !contentType || !contentType.includes('application/json')) {
-            listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
-            return;
+        if (response.ok && contentType && contentType.includes('application/json')) {
+            reviews = await response.json();
+        } else {
+            reviews = staticReviews;
         }
-        
-        const reviews = await response.json();
-        
-        if (!Array.isArray(reviews) || reviews.length === 0) {
-            listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
-            return;
-        }
-        
-        listContainer.innerHTML = '';
-        
-        for (const review of reviews) {
-            const isValid = await verifySignature(review);
-            const starsHtml = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-            
-            const reviewCard = document.createElement('div');
-            reviewCard.className = `p-4 rounded-lg border bg-slate-955/50 ${isValid ? 'border-slate-900' : 'border-red-900/50'}`;
-            
-            reviewCard.innerHTML = `
-                <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
-                    <div>
-                        <span class="text-xs font-bold text-white">${escapeHtml(review.reviewer)}</span>
-                        <span class="text-[10px] text-slate-500 block">${new Date(review.timestamp).toLocaleDateString()}</span>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-brand-cyan text-xs font-mono">${starsHtml}</div>
-                        ${isValid 
-                            ? `<span class="inline-flex items-center gap-1 text-[9px] text-brand-emerald bg-brand-emerald/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified Sig</span>`
-                            : `<span class="inline-flex items-center gap-1 text-[9px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Tampered / Invalid</span>`
-                        }
-                    </div>
-                </div>
-                <p class="text-xs text-slate-400 leading-relaxed">${escapeHtml(review.comment)}</p>
-            `;
-            
-            listContainer.appendChild(reviewCard);
-        }
-        
-        lucide.createIcons();
-        
     } catch (e) {
-        console.error("Failed to fetch or render reviews:", e);
-        listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
+        console.warn("Failed to fetch reviews.json (likely CSP restriction). Using static fallback.", e);
+        reviews = staticReviews;
     }
+    
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+        listContainer.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No reviews submitted yet. Be the first to open a PR!</div>`;
+        return;
+    }
+    
+    listContainer.innerHTML = '';
+    
+    for (const review of reviews) {
+        const isValid = await verifySignature(review);
+        const starsHtml = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        
+        const reviewCard = document.createElement('div');
+        reviewCard.className = `p-4 rounded-lg border bg-slate-955/50 ${isValid ? 'border-slate-900' : 'border-red-900/50'}`;
+        
+        reviewCard.innerHTML = `
+            <div class="flex justify-between items-start mb-2 flex-wrap gap-2">
+                <div>
+                    <span class="text-xs font-bold text-white">${escapeHtml(review.reviewer)}</span>
+                    <span class="text-[10px] text-slate-500 block">${new Date(review.timestamp).toLocaleDateString()}</span>
+                </div>
+                <div class="text-right">
+                    <div class="text-brand-cyan text-xs font-mono">${starsHtml}</div>
+                    ${isValid 
+                        ? `<span class="inline-flex items-center gap-1 text-[9px] text-brand-emerald bg-brand-emerald/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified Sig</span>`
+                        : `<span class="inline-flex items-center gap-1 text-[9px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded font-mono mt-1"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Tampered / Invalid</span>`
+                    }
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">${escapeHtml(review.comment)}</p>
+        `;
+        
+        listContainer.appendChild(reviewCard);
+    }
+    
+    lucide.createIcons();
 }
 
 function escapeHtml(str) {
