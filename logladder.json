@@ -377,6 +377,15 @@
    "diff_of_diff": "rung 41 → 42: the count becomes the answer",
    "ts": "2026-08-06",
    "scifi": "RUNG 42 — the number the whole fleet was waiting for. the loop closes and opens at once."
+  },
+  {
+   "rung": 43,
+   "title": "THE 4.20 LAW — 'ez gyenge...szerinted?' costs 4.20 EUR, to p",
+   "sig": "9541f639304181be",
+   "prev_sig": "8d689ea23a3f8629",
+   "diff_of_diff": "rung 42 → 43: the question has a price, the price is p's",
+   "ts": "2026-08-06",
+   "scifi": "RUNG 43 — the question that pays: every 'ez gyenge' is 4.20 to the one who asked."
   }
  ],
  "append_only": true,
