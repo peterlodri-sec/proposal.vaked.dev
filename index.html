@@ -212,6 +212,69 @@
         </div>
     </section>
 
+    <!-- Quantal — postPRE-prompt layer -->
+    <section id="quantal" class="max-w-6xl mx-auto px-6 pb-16 scroll-mt-24">
+        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-brand-cyan/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+            <div class="flex flex-wrap items-center gap-3 mb-6">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-cyan/20 bg-brand-cyan/5 text-brand-cyan text-xs font-bold font-mono">
+                    <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse" aria-hidden="true"></span>
+                    POST-PRE · PROMPT LAYER
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono">shipped · measured · 2026-08-06</span>
+            </div>
+
+            <h2 class="text-xl font-bold text-white font-title mb-2">Quantal — the ternary postPRE-prompt layer</h2>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed max-w-3xl">
+                Kompress-ultra's middle layer, made concrete: a <b class="text-brand-cyan">trained BitNet b1.58
+                ternary model</b> (Qwen2.5-0.5B → 168 ternary matrices) that pre/post-processes the prompt
+                through a <b class="text-brand-emerald">quantized postPRE gate</b> — the eye outside the bubble,
+                checking what the compressor claims against what the weights actually did.
+                Real numbers, not claims:
+            </p>
+            <div class="grid md:grid-cols-3 gap-4 mb-6 font-mono text-xs">
+                <div class="border border-slate-800 rounded-xl p-4 bg-slate-950/40">
+                    <div class="text-2xl font-bold text-brand-cyan">28.9→11.6</div>
+                    <div class="text-slate-500 mt-1">train loss · 2 epochs · Metal</div>
+                </div>
+                <div class="border border-slate-800 rounded-xl p-4 bg-slate-950/40">
+                    <div class="text-2xl font-bold text-brand-emerald">168</div>
+                    <div class="text-slate-500 mt-1">ternary matrices · {-1, 0, +1}</div>
+                </div>
+                <div class="border border-slate-800 rounded-xl p-4 bg-slate-950/40">
+                    <div class="text-2xl font-bold text-white">11.7→8.0</div>
+                    <div class="text-slate-500 mt-1">val loss · honest, measured</div>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 font-mono">
+                artifacts: <a class="text-brand-cyan underline decoration-dotted" href="https://pocoo.vaked.dev/demos/quantal/index.json" target="_blank" rel="noopener">pocoo.vaked.dev/demos/quantal</a> ·
+                <a class="text-brand-emerald underline decoration-dotted" href="https://huggingface.co/PeetPedro/quantal-ternary" target="_blank" rel="noopener">huggingface.co/PeetPedro/quantal-ternary</a> ·
+                <a class="text-white underline decoration-dotted" href="https://pocoo.vaked.dev/demos/quantal/" target="_blank" rel="noopener">live matrix viewer</a>
+            </p>
+
+            <!-- QUANT-CHOOSEN — the user picks the quant depth, the layer answers in magyar -->
+            <div class="mt-8 border border-slate-800 rounded-xl p-6 bg-slate-950/60">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-bold font-mono text-brand-cyan uppercase tracking-wider">QUANT-CHOOSEN · postPRE prompt layer</span>
+                    <span class="text-[10px] font-mono text-slate-500">0–10 · te választod a kvantot</span>
+                </div>
+                <input id="quant-slider" type="range" min="0" max="10" value="5" class="w-full accent-brand-cyan" aria-label="Quant depth">
+                <div class="flex justify-between text-[10px] font-mono text-slate-600 mt-1"><span>0 · nyers</span><span>10 · mély kvant</span></div>
+                <div class="grid md:grid-cols-2 gap-4 mt-5 font-mono">
+                    <div>
+                        <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">P · a prompt, magyar</div>
+                        <div id="quant-p" class="bg-slate-900/80 border border-slate-800 rounded-lg p-3 text-xs text-slate-300 min-h-[64px]">a gömb a rezgésből táplálkozik — {0, +1, -1} — és a te választásod a mélység.</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase tracking-wider text-slate-500 mb-2">A · a válasz, magyar</div>
+                        <div id="quant-a" class="bg-slate-900/80 border border-slate-800 rounded-lg p-3 text-xs text-brand-cyan min-h-[64px]">a kvant {5} rétegben gondolkodik — a szavak a mátrix mélyén dőlnek el. mérve, nem állítva.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Provenance & Build Transparency -->
     <section id="provenance" class="max-w-6xl mx-auto px-6 pb-16 scroll-mt-24">
         <div class="bg-slate-955/40 border border-slate-900 rounded-2xl p-8 relative overflow-hidden">
@@ -223,7 +286,7 @@
                     <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse" aria-hidden="true"></span>
                     BUILT IN PUBLIC
                 </span>
-                <span class="text-[10px] text-slate-500 font-mono">Last verified: 2026-06-29</span>
+                <span class="text-[10px] text-slate-500 font-mono">Last verified: 2026-08-06</span>
             </div>
 
             <h2 class="text-xl font-bold text-white font-title mb-2">Provenance & Build Transparency</h2>

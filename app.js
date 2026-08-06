@@ -1310,3 +1310,44 @@ const runContextCompression = () => Vaked.Compressor.run();
 const loadDogfoodPreset = (type) => Vaked.Compressor.loadPreset(type);
 const handleOneshotFold = (event, url, foldId, title) => Vaked.UI.handleOneshotFold(event, url, foldId, title);
 const toggleStackPayload = (stackId) => Vaked.UI.toggleStackPayload(stackId);
+
+// ── QUANT-CHOOSEN — postPRE prompt layer (magyar A + P, user picks depth) ──
+(function () {
+  const slider = document.getElementById('quant-slider');
+  if (!slider) return;
+  const pEl = document.getElementById('quant-p');
+  const aEl = document.getElementById('quant-a');
+  const DEPTH_P = [
+    'a gömb üres — a kvant 0, csak a csend.',
+    'az első réteg ébredezik — a 0 az 1 felé billen.',
+    'két állapot lüktet — a gömb lélegzik.',
+    'a harmadik réteg: a hármas skála megszólal.',
+    'a kvant sűrűsödik — a mátrix dönteni kezd.',
+    'öt réteg — a rezgés és a csend egyensúlya.',
+    'a mélység nő — a szavak a mátrixban dőlnek el.',
+    'hét réteg — a konstellation kirajzolódik.',
+    'a kvant majdnem tiszta — kevés a zaj.',
+    'kilenc réteg — a gömb szinte szilárd.',
+    'a teljes kvant — minden egy döntés, {-1, 0, +1}.',
+  ];
+  const DEPTH_A = [
+    'a válasz a csend — semmi nem dőlt el még. mérve, nem állítva.',
+    'a válasz az első rezdülés — a kvant {D} épp megszólalt.',
+    'a válasz két állapot közt lebeg — {D} réteg, {D} döntés.',
+    'a válasz a hármas skálán mozog — {D} a mélység, mérve.',
+    'a válasz {D} rétegben sűrűsödik — a mátrix beszél.',
+    'a válasz a rezgésből születik — {D} mélység, valós számok.',
+    'a válasz {D} rétegben dől el — a konstellation igazol.',
+    'a válasz {D} réteg — a gömb kirajzolódott, mérve.',
+    'a válasz {D} — kevés zaj, tiszta döntés.',
+    'a válasz {D} — a mátrix majdnem szilárd.',
+    'a válasz a teljes kvant — {D} döntés, mindegyik mérve. shipped means measured.',
+  ];
+  function render() {
+    const d = +slider.value;
+    if (pEl) pEl.textContent = DEPTH_P[d];
+    if (aEl) aEl.textContent = DEPTH_A[d].replace('{D}', d);
+  }
+  slider.addEventListener('input', render);
+  render();
+})();
