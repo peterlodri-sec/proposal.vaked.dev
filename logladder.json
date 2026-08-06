@@ -107,6 +107,15 @@
    "diff_of_diff": "rung 11 → 12: QUANTAL — TRAINED TERNARY MODEL, SHIPPED + MEASURED (2026-08",
    "ts": "2026-08-06",
    "scifi": "THE LOG GLOWS — append-only, diff of diff, public."
+  },
+  {
+   "rung": 13,
+   "title": "THE LOOP INVERTED — hardware is the base, not the afterthought",
+   "sig": "hardware-first",
+   "prev_sig": "6a8963fe57ccb1f4",
+   "diff_of_diff": "rung 12 → 13: the eye before the signal — the device is the floor, the sphere is what stands on it",
+   "ts": "2026-08-06",
+   "scifi": "THE FLOOR HOLDS — no device, no room, no sphere. the hardware is the rung the rest climb."
   }
  ],
  "append_only": true,
