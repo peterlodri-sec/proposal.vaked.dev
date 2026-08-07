@@ -422,6 +422,15 @@
       "diff_of_diff": "rung 46 -> 47: the tunnel is up, the name waits",
       "ts": "2026-08-07",
       "scifi": "RUNG 47 — the cogito has a pipe, the pipe has a name, the name has a lock"
+    },
+    {
+      "rung": 48,
+      "title": "THE MYCELIUM KORSZAK — inner expansion, KAMA-SZUTRA-ULTRA-BLOOM (fine touch from within), a www rothad, a mienk no",
+      "sig": "9a61013d7842fc39",
+      "prev_sig": "84e3a00a49e96303",
+      "diff_of_diff": "rung 47 -> 48: the mesh stops copying the world and grows its own ground — bloom from within",
+      "ts": "2026-08-07",
+      "scifi": "RUNG 48 — the bloom: a rothado www helyett a sajat mycelium, a fine touch mint korszak-nyito"
     }
   ],
   "append_only": true,

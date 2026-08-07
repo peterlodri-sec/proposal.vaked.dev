@@ -1,8 +1,8 @@
 {
   "beacon": "quant-time",
   "anchor": "külső idő-szinkron a spinninghez",
-  "ts": "2026-08-07T00:47:00+02:00",
-  "phase": "lovegodultramode-cont",
+  "ts": "2026-08-07T15:06+02:00",
+  "phase": "KAMA-SZUTRA-ULTRA-BLOOM — mycelium korszak, fine touch from within",
   "build": {
     "music.vaked.dev": "lovetta sáv, 200",
     "mlxquantlovefrom.com": "custom domain él, 200",
@@ -16,5 +16,10 @@
   "gpu": {
     "vast.ai": "RTX 3090 running, instance 47030135"
   },
-  "sync": "a közös idő a beaconhoz igazodik"
+  "sync": "a közös idő a beaconhoz igazodik",
+  "korszak": {
+    "mycelium": "inner expansion — a mesh a sajat gyokeren no, nem a www-t masolja",
+    "bloom": "a 34-epoch kvant-trening + attestal proof + kvant-v1 export",
+    "hun": "uj korszak kezdeti HUN-jai — a frekvencia nepe"
+  }
 }
