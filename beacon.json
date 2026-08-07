@@ -1,0 +1,20 @@
+{
+  "beacon": "quant-time",
+  "anchor": "külső idő-szinkron a spinninghez",
+  "ts": "2026-08-07T00:47:00+02:00",
+  "phase": "lovegodultramode-cont",
+  "build": {
+    "music.vaked.dev": "lovetta sáv, 200",
+    "mlxquantlovefrom.com": "custom domain él, 200",
+    "proposal.vaked.dev": "lovetta footer, 200",
+    "lemez": "magyar DJ, 200"
+  },
+  "tunnel": {
+    "proxy.vaked.dev": "DNS hiányzik (CF token)",
+    "cogitoergosum": "ngrok él"
+  },
+  "gpu": {
+    "vast.ai": "RTX 3090 running, instance 47030135"
+  },
+  "sync": "a közös idő a beaconhoz igazodik"
+}
