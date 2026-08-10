@@ -1,51 +1,25 @@
-# proposal.vaked.dev
-> Interactive proposal site for integrating `kompress-ultra` into Headroom.
+# proposal.vaked.dev — The Constellation Proposal Surface
 
-**Live URL:** [https://proposal.vaked.dev](https://proposal.vaked.dev)  
-**GitHub Repository:** [https://github.com/peterlodri-sec/proposal.vaked.dev](https://github.com/peterlodri-sec/proposal.vaked.dev)
+> *Interactive architectural proposal for integrating `kompress-ultra` into Headroom.*
 
----
-
-## 🛠️ Quick Start (For Humans & AI Agents)
-
-This is a **zero-build-step, pure static website** utilizing HTML5, Tailwind CSS (via CDN), and Vanilla JavaScript. 
-
-### 1. Local Development
-To run the website locally, spin up any static file server from the root directory:
-
-```bash
-# Using Python
-python3 -m http.server 8000
-
-# Using Node / npx
-npx serve
-
-# Using Bun
-bunx serve .
-```
-Open [http://localhost:8000](http://localhost:8000) in your browser.
-
-### 2. Project Structure
-* [index.html](index.html) - The main webpage layout, styled with Tailwind CSS, including the Hero, Provenance section, Paradox Simulator, Benchmarks, and Interactive Benchmark Chart.
-* [app.js](app.js) - Contains the interactive logic for the **Context Compressor Playground**, **Voting Ensemble Paradox Simulator**, and **Benchmark Visualization**.
+Live URL: **[https://proposal.vaked.dev](https://proposal.vaked.dev)**  
+GitHub Repository: **[https://github.com/peterlodri-sec/proposal.vaked.dev](https://github.com/peterlodri-sec/proposal.vaked.dev)**
 
 ---
 
-## 🚀 Deployment & Domain Mapping
+## ✦ Overview
 
-* **Hosting Platform:** [Cloudflare Pages](https://pages.cloudflare.com/)
-* **Deployment Pipeline:** Connected directly to the `main` branch of this GitHub repository. 
-* **CI/CD Behavior:** Any commit pushed to the `main` branch triggers an automatic build and deployment on Cloudflare.
-* **Custom Domain:** Configured in the Cloudflare Pages dashboard as `proposal.vaked.dev` (proxied through Cloudflare DNS).
+`proposal.vaked.dev` hosts the interactive proposal and technical blueprints for integrating `kompress-ultra` context compression into the Headroom substrate. It presents capacity-aware routing, benchmark comparisons, and agent lifecycle specifications.
 
 ---
 
-## 🧠 Ecosystem Context
+## 🌌 Constellation Sister Sites (The Lovetta Lane)
 
-This repository is a presentation layer for a larger research and development ecosystem:
+- ✦ **[art.vaked.dev](https://art.vaked.dev)**
+- ✦ **[vision-gallery (23)](https://art.vaked.dev/vision-gallery.html)**
+- ✦ **[music.vaked.dev](https://music.vaked.dev)**
+- ✦ **[quant-love](https://mlxquantlovefrom.com)**
+- ✦ **[proposal.vaked.dev](https://proposal.vaked.dev)**
+- ✦ **[pocoo.vaked.dev](https://pocoo.vaked.dev)**
 
-1. **[ultrameshai](https://github.com/peterlodri-sec/ultrameshai) (The Substrate):** The big-picture decentralized agent stack (UDS, framed Protobuf, capability-based routing, and sandboxed runtimes).
-2. **`kompress-ultra` (The Memory Engine):** The ModernBERT-based context compression model (`kompress-v8`) described on this site, designed to make long-running agent loops cheap and fast.
-3. **[loopkit](https://github.com/peterlodri-sec/loopkit):** The four-phase autonomous state machine that orchestrated the training runs for the `kompress` model series.
-4. **[pocoo.vaked.dev](https://pocoo.vaked.dev):** The chronological log registry hosting the telemetry and results of all training runs.
-5. **[headroom](https://github.com/headroomlabs-ai/headroom):** The agent framework where this compression technology is being proposed as a core middleware (PR #1419 / PR #1400).
+*the constellation · 0 + 1 · fine touch from within · vaked.dev*
