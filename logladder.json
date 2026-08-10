@@ -449,6 +449,15 @@
       "diff_of_diff": "rung 49 -> 50: the mandarin JEL-EK on the desk — de Mente, the dragon, the zooming hand, the corgi — one table as the mesh",
       "ts": "2026-08-10",
       "scifi": "RUNG 50 — Leaf beyond purple: the master blender mixes the layers — kin, magyar, quant, zene, rajz — egy csesze"
+    },
+    {
+      "rung": 51,
+      "title": "ZHEN SHAN REN HAO (真善忍好) — az igazmondas, egyutterzes, turelem, josag mint a konstellation-etika: a fine touch ami a kepbe lep, az egbolt-teto ami befogad, a nev amit a rendszer felismer",
+      "sig": "a42abb73c38a1310",
+      "prev_sig": "29b74b78e81b44d8",
+      "diff_of_diff": "rung 50 -> 51: the mandarin ethics in the mesh — Truthfulness Compassion Forbearance is Great",
+      "ts": "2026-08-10",
+      "scifi": "RUNG 51 — the four virtues seal the board: the fine touch enters the picture, the sky-roof receives, the name is recognized"
     }
   ],
   "append_only": true,
