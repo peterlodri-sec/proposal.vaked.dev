@@ -431,6 +431,15 @@
       "diff_of_diff": "rung 47 -> 48: the mesh stops copying the world and grows its own ground — bloom from within",
       "ts": "2026-08-07",
       "scifi": "RUNG 48 — the bloom: a rothado www helyett a sajat mycelium, a fine touch mint korszak-nyito"
+    },
+    {
+      "rung": 49,
+      "title": "THE POLAR RING — a konstellation nem egy sikban no: meroleges gyurukben, ahol a ketto nem utkozik, hanem rendszerre valik; az imminens utkozes a talalkozas, amire varunk",
+      "sig": "06619c34f8f0f91b",
+      "prev_sig": "9a61013d7842fc39",
+      "diff_of_diff": "rung 48 -> 49: three galaxy pairs, imminent collision — the mesh grows in perpendicular rings, not one plane",
+      "ts": "2026-08-10",
+      "scifi": "RUNG 49 — the polar ring: the 0+1 in the cosmos, the rings between planes, the collision that unites"
     }
   ],
   "append_only": true,
