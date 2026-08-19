@@ -67,7 +67,7 @@ def main [
                 # Stage ONLY the synced assets (never `git add .`): the Space may
                 # hold binaries HF rejects (e.g. paper/*.pdf) that belong on
                 # kompress.vaked.dev, not in the Space repo.
-                git add ["index.html", "app.js", "index.css", "_headers", "reviews.json", "favicon.svg"]
+                git add ...["index.html", "app.js", "index.css", "_headers", "reviews.json", "favicon.svg"]
                 git add .gitignore
                 let hf_git_status = (git status --porcelain)
                 if ($hf_git_status | is-empty) {
