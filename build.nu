@@ -64,7 +64,11 @@ def main [
             } else {
                 print $"(ansi -e '90m')  Pushing to Hugging Face Space...(ansi reset)"
                 cd $hf_space_dir
-                git add .
+                # Stage ONLY the synced assets (never `git add .`): the Space may
+                # hold binaries HF rejects (e.g. paper/*.pdf) that belong on
+                # kompress.vaked.dev, not in the Space repo.
+                git add ["index.html", "app.js", "index.css", "_headers", "reviews.json", "favicon.svg"]
+                git add .gitignore
                 let hf_git_status = (git status --porcelain)
                 if ($hf_git_status | is-empty) {
                     print $"(ansi -e '90m')  No changes to commit on Hugging Face.(ansi reset)"
